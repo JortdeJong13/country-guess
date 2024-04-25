@@ -1,0 +1,60 @@
+from flask import Flask, render_template, request, jsonify
+#from data import *
+#from backend import *
+#from model import model, get_prediction
+from countryguess.utils import proces_lines, save_drawing
+from countryguess.data import Dataset
+from countryguess.model import Model, predict
+
+
+app = Flask(__name__)
+
+# Load model
+model = Model()
+model.load_weights('model_weights.npz')
+ref_data = Dataset()
+model.load_reference(ref_data)
+
+# Global variable to store drawing
+current_drawing = None
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/guess', methods=['POST'])
+def guess():
+    global current_drawing
+    global model
+    
+    data = request.json
+    lines = data['lines']
+    drawing = proces_lines(lines)
+
+    # Store the drawing in the global variable
+    current_drawing = drawing
+
+    # Get predicitions
+    ranking = predict(model, drawing)
+
+    return jsonify({'message': 'Success', 'ranking': ranking})
+
+
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    global current_drawing
+    
+    data = request.json
+    country_name = data['country']
+    save_drawing(country_name, current_drawing)
+
+    # Clear the global variable after processing
+    current_drawing = None
+    
+    return jsonify({'message': 'Feedback received'})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
