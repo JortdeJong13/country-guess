@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-#from data import *
-#from backend import *
-#from model import model, get_prediction
+
 from countryguess.utils import proces_lines, save_drawing
 from countryguess.data import Dataset
 from countryguess.model import Model, predict
