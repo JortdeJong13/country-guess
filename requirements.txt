@@ -1,0 +1,9 @@
+Flask==3.0.3
+geopandas==0.14.3
+imgaug==0.4.0
+mlx==0.10.0
+mlx_data==0.0.2
+numpy==1.26.4
+Shapely==2.0.4
+shapelysmooth==0.2.0
+skimage==0.0
