@@ -54,21 +54,21 @@ def lines_to_img(lines, shape):
             rr, cc = draw.line(r0, c0, r1, c1)
             img[rr, cc] = 1
     
-    return np.expand_dims(img, axis=-1)
+    return img
 
 
 def poly_to_img(polygon, shape):
-	if isinstance(polygon, Polygon):
-		polygon = MultiPolygon([polygon])
+    if isinstance(polygon, Polygon):
+        polygon = MultiPolygon([polygon])
 
-	img = np.zeros(shape, dtype=np.uint8)
+    img = np.zeros(shape, dtype=np.uint8)
 
-	for poly in polygon.geoms:
-	    points = np.array(poly.exterior.coords)
-	    rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
-	    img[rr, cc] = 1
+    for poly in polygon.geoms:
+        points = np.array(poly.exterior.coords)
+        rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
+        img[rr, cc] = 1
 
-	return np.expand_dims(img, axis=-1)
+    return img
 
 
 def rm_island(polygons, area):
