@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/8b4ea3ed3a71496db711b26d8391bb4a/artifacts
+deleted_time: 1714747939796
+end_time: 1714746900849
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 8b4ea3ed3a71496db711b26d8391bb4a
+run_name: rogue-newt-688
+run_uuid: 8b4ea3ed3a71496db711b26d8391bb4a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714746552663
+status: 3
+tags: []
+user_id: jortdejong

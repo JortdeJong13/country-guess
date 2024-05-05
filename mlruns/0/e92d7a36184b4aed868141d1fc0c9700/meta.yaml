@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/e92d7a36184b4aed868141d1fc0c9700/artifacts
+deleted_time: 1714743874715
+end_time: 1714741484675
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: e92d7a36184b4aed868141d1fc0c9700
+run_name: worried-sheep-744
+run_uuid: e92d7a36184b4aed868141d1fc0c9700
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714741043550
+status: 3
+tags: []
+user_id: jortdejong

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/6627825eb57f4546858914dd26037011/artifacts
+end_time: 1714857537473
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 6627825eb57f4546858914dd26037011
+run_name: blushing-swan-227
+run_uuid: 6627825eb57f4546858914dd26037011
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714856843413
+status: 3
+tags: []
+user_id: jortdejong

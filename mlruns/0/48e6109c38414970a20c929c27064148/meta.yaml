@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/48e6109c38414970a20c929c27064148/artifacts
+deleted_time: 1714835074015
+end_time: 1714835060767
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 48e6109c38414970a20c929c27064148
+run_name: peaceful-mule-17
+run_uuid: 48e6109c38414970a20c929c27064148
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714834981110
+status: 3
+tags: []
+user_id: jortdejong

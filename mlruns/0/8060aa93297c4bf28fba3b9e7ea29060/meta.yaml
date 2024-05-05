@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/8060aa93297c4bf28fba3b9e7ea29060/artifacts
+deleted_time: 1714749477175
+end_time: 1714747268767
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 8060aa93297c4bf28fba3b9e7ea29060
+run_name: ambitious-hawk-18
+run_uuid: 8060aa93297c4bf28fba3b9e7ea29060
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714746957053
+status: 3
+tags: []
+user_id: jortdejong

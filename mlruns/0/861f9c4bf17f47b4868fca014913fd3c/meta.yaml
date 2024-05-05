@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/861f9c4bf17f47b4868fca014913fd3c/artifacts
+end_time: 1714810869407
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 861f9c4bf17f47b4868fca014913fd3c
+run_name: intrigued-lark-424
+run_uuid: 861f9c4bf17f47b4868fca014913fd3c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714809481130
+status: 3
+tags: []
+user_id: jortdejong

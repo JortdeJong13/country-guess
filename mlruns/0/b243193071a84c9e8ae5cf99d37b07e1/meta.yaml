@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/b243193071a84c9e8ae5cf99d37b07e1/artifacts
+deleted_time: 1714743874716
+end_time: 1714743551720
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: b243193071a84c9e8ae5cf99d37b07e1
+run_name: tasteful-crane-492
+run_uuid: b243193071a84c9e8ae5cf99d37b07e1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714743125122
+status: 4
+tags: []
+user_id: jortdejong

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/e710ae46d4fe4da9b28d035fe0e6d715/artifacts
+end_time: 1714816890605
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e710ae46d4fe4da9b28d035fe0e6d715
+run_name: fearless-grub-642
+run_uuid: e710ae46d4fe4da9b28d035fe0e6d715
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714815612007
+status: 3
+tags: []
+user_id: jortdejong

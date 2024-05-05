@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/98d0350b04e343f690e8d54ff24fbfe6/artifacts
+end_time: 1714813682283
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 98d0350b04e343f690e8d54ff24fbfe6
+run_name: righteous-bird-521
+run_uuid: 98d0350b04e343f690e8d54ff24fbfe6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714812455504
+status: 3
+tags: []
+user_id: jortdejong

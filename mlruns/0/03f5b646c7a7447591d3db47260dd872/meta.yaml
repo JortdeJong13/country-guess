@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/03f5b646c7a7447591d3db47260dd872/artifacts
+end_time: 1714893250433
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 03f5b646c7a7447591d3db47260dd872
+run_name: unleashed-rat-831
+run_uuid: 03f5b646c7a7447591d3db47260dd872
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714892911423
+status: 3
+tags: []
+user_id: jortdejong

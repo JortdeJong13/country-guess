@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/ae92d4eec700404eb81c67411d33ec29/artifacts
+end_time: 1714820855727
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ae92d4eec700404eb81c67411d33ec29
+run_name: delicate-croc-858
+run_uuid: ae92d4eec700404eb81c67411d33ec29
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714819080038
+status: 3
+tags: []
+user_id: jortdejong

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/1f62a687b05443e2b247bba143b8a923/artifacts
+end_time: 1714752325504
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 1f62a687b05443e2b247bba143b8a923
+run_name: able-panda-595
+run_uuid: 1f62a687b05443e2b247bba143b8a923
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714751430460
+status: 3
+tags: []
+user_id: jortdejong

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/20049c893b784e8c9ea13efc8341d53f/artifacts
+end_time: 1714846716525
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 20049c893b784e8c9ea13efc8341d53f
+run_name: secretive-colt-973
+run_uuid: 20049c893b784e8c9ea13efc8341d53f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714846486832
+status: 3
+tags: []
+user_id: jortdejong

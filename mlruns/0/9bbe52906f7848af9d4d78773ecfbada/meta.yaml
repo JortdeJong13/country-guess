@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/9bbe52906f7848af9d4d78773ecfbada/artifacts
+end_time: 1714854680985
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9bbe52906f7848af9d4d78773ecfbada
+run_name: thoughtful-loon-335
+run_uuid: 9bbe52906f7848af9d4d78773ecfbada
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714854458877
+status: 3
+tags: []
+user_id: jortdejong

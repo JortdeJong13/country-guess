@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/bf80f41ba7c140e89273ca169da9e687/artifacts
+end_time: 1714812352357
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: bf80f41ba7c140e89273ca169da9e687
+run_name: persistent-sheep-597
+run_uuid: bf80f41ba7c140e89273ca169da9e687
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714811036672
+status: 3
+tags: []
+user_id: jortdejong
