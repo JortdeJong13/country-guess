@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a8ab5658a48b4ab497e8c47411f88830/artifacts
+end_time: 1714914020378
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: a8ab5658a48b4ab497e8c47411f88830
+run_name: persistent-midge-197
+run_uuid: a8ab5658a48b4ab497e8c47411f88830
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714913834543
+status: 3
+tags: []
+user_id: jortdejong

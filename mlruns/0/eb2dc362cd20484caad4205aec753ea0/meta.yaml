@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/eb2dc362cd20484caad4205aec753ea0/artifacts
+end_time: 1714915281663
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: eb2dc362cd20484caad4205aec753ea0
+run_name: melodic-mouse-104
+run_uuid: eb2dc362cd20484caad4205aec753ea0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714914637143
+status: 3
+tags: []
+user_id: jortdejong

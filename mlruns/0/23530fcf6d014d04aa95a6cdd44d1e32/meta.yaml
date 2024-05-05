@@ -1,5 +1,5 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/23530fcf6d014d04aa95a6cdd44d1e32/artifacts
-end_time: null
+end_time: 1714913707182
 entry_point_name: ''
 experiment_id: '0'
 lifecycle_stage: active
@@ -10,6 +10,6 @@ source_name: ''
 source_type: 4
 source_version: ''
 start_time: 1714913475043
-status: 1
+status: 3
 tags: []
 user_id: jortdejong

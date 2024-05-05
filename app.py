@@ -8,7 +8,7 @@ from countryguess.data import Dataset
 app = Flask(__name__)
 
 # Load model
-model = load_model("models:/triplet_model/latest")#.to(device)
+model = load_model("models:/triplet_model/latest")
 
 # Global variable to store drawing
 current_drawing = None
