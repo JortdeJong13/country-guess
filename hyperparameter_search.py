@@ -14,6 +14,7 @@ device = torch.device("xpu")
 
 mlflow.set_experiment("hyperparameter_search")
 
+idx=0
 while True:
     params = {"channels": 8*random.randint(1, 4),
               "nr_conv_blocks": random.randint(4, 6),
@@ -90,5 +91,5 @@ while True:
 
         print('{}\t Average rank: {:.2f}\t top 10 acc: {:.1f}%\t top 1 acc: {:.1f}%\t'
             .format(idx, np.mean(ranking)+1, 100*np.mean(ranking < 10), 100*np.mean(ranking < 1))) 
-
+        idx+=1
 
