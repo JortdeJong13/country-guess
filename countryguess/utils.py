@@ -54,7 +54,7 @@ def lines_to_img(lines, shape):
             rr, cc = draw.line(r0, c0, r1, c1)
             img[rr, cc] = 1
     
-    return img
+    return np.swapaxes(img, 0, 1)
 
 
 def poly_to_img(polygon, shape):
@@ -68,7 +68,7 @@ def poly_to_img(polygon, shape):
         rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
         img[rr, cc] = 1
 
-    return img
+    return np.swapaxes(img, 0, 1)
 
 
 def rm_island(polygons, area):
@@ -81,7 +81,7 @@ def rm_island(polygons, area):
 
 def generate_drawing(polygon, shape, temp=1.0):
     #Simplify Polygon
-    polygon = simplify(polygon, tolerance=random.uniform(0.02, 2.1*temp))
+    polygon = simplify(polygon, tolerance=random.uniform(0, 3*temp))
 
     #Decompose MultiPolygon
     polygon = decompose(polygon)
@@ -91,7 +91,7 @@ def generate_drawing(polygon, shape, temp=1.0):
     
     #Smooth Polygon
     polygon = [chaikin_smooth(poly, 
-                             iters=int(random.uniform(1, 5*temp))) 
+                             iters=int(random.uniform(1, 4.5*temp))) 
                for poly in polygon]
 
     #Move Polygon to Imgaug Polygon
@@ -101,14 +101,13 @@ def generate_drawing(polygon, shape, temp=1.0):
     
     #Augment Polygon
     aug = iaa.Sequential([
-        iaa.Rotate((-14*temp, 14*temp)),
-        iaa.ScaleX((1-0.4*temp, 1+0.4*temp)),
-        iaa.ShearX((-10*temp, 10*temp)),
-        iaa.PerspectiveTransform(scale=(0, 0.2*temp)),
+        iaa.ScaleX((1/(1+0.6*temp), 1+0.6*temp)),
+        iaa.ShearX((-19*temp, 19*temp)),
+        iaa.PerspectiveTransform(scale=(0, 0.13*temp)),
         iaa.WithPolarWarping(
             iaa.Affine(translate_percent={
-                "x": (-0.07*temp, 0.07*temp), 
-                "y": (-0.07*temp, 0.07*temp)})
+                "x": (-0.06*temp, 0.06*temp), 
+                "y": (-0.06*temp, 0.06*temp)})
             ),
         ])
     polygon = aug(polygons=polygon)

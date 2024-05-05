@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/de02d8a63c4b4032904e7f69ae3f4026/artifacts
+deleted_time: 1714912512155
+end_time: 1714912295880
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: de02d8a63c4b4032904e7f69ae3f4026
+run_name: sincere-asp-604
+run_uuid: de02d8a63c4b4032904e7f69ae3f4026
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714912203546
+status: 3
+tags: []
+user_id: jortdejong

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/3b2cf75f13914c83b360312237723a99/artifacts
+end_time: 1714912072114
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 3b2cf75f13914c83b360312237723a99
+run_name: lyrical-pig-781
+run_uuid: 3b2cf75f13914c83b360312237723a99
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714911849176
+status: 3
+tags: []
+user_id: jortdejong

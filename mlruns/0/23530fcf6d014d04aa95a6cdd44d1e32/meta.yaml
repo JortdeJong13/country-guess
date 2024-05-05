@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/23530fcf6d014d04aa95a6cdd44d1e32/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 23530fcf6d014d04aa95a6cdd44d1e32
+run_name: merciful-swan-999
+run_uuid: 23530fcf6d014d04aa95a6cdd44d1e32
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714913475043
+status: 1
+tags: []
+user_id: jortdejong
