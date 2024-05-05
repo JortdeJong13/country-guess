@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/b3c360dbcead4b8c8baa4f12dbdcdf0c/artifacts
+deleted_time: 1714746433648
+end_time: 1714744467628
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: b3c360dbcead4b8c8baa4f12dbdcdf0c
+run_name: monumental-perch-35
+run_uuid: b3c360dbcead4b8c8baa4f12dbdcdf0c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714744038139
+status: 3
+tags: []
+user_id: jortdejong

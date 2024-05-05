@@ -1,0 +1,7 @@
+artifact_location: file:///Users/jortdejong/GitHub/country-guess/mlruns/0
+creation_time: 1714741043098
+experiment_id: '0'
+last_update_time: 1714759673329
+lifecycle_stage: active
+name: triplet_model
+tags: {}

@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1714899889670
+current_stage: None
+description: ''
+last_updated_timestamp: 1714899889670
+name: triplet_model
+run_id: a776a798c37a40e98a7a761b9effc2b4
+run_link: ''
+source: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a776a798c37a40e98a7a761b9effc2b4/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a776a798c37a40e98a7a761b9effc2b4/artifacts/model
+user_id: null
+version: 1

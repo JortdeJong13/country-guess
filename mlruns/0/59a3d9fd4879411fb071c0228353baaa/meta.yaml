@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/59a3d9fd4879411fb071c0228353baaa/artifacts
+end_time: 1714826831569
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 59a3d9fd4879411fb071c0228353baaa
+run_name: auspicious-goat-31
+run_uuid: 59a3d9fd4879411fb071c0228353baaa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714825334790
+status: 3
+tags: []
+user_id: jortdejong

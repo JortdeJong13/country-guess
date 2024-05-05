@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/259e061666e1416c837f4d6ee8cc6942/artifacts
+deleted_time: 1714751451018
+end_time: 1714751295772
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 259e061666e1416c837f4d6ee8cc6942
+run_name: luminous-cat-852
+run_uuid: 259e061666e1416c837f4d6ee8cc6942
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714751254555
+status: 3
+tags: []
+user_id: jortdejong

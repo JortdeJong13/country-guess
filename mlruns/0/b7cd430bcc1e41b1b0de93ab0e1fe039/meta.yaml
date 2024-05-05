@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/b7cd430bcc1e41b1b0de93ab0e1fe039/artifacts
+end_time: 1714847581809
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b7cd430bcc1e41b1b0de93ab0e1fe039
+run_name: gentle-perch-223
+run_uuid: b7cd430bcc1e41b1b0de93ab0e1fe039
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714847344846
+status: 3
+tags: []
+user_id: jortdejong

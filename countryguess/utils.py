@@ -54,21 +54,21 @@ def lines_to_img(lines, shape):
             rr, cc = draw.line(r0, c0, r1, c1)
             img[rr, cc] = 1
     
-    return np.expand_dims(img, axis=-1)
+    return img
 
 
 def poly_to_img(polygon, shape):
-	if isinstance(polygon, Polygon):
-		polygon = MultiPolygon([polygon])
+    if isinstance(polygon, Polygon):
+        polygon = MultiPolygon([polygon])
 
-	img = np.zeros(shape, dtype=np.uint8)
+    img = np.zeros(shape, dtype=np.uint8)
 
-	for poly in polygon.geoms:
-	    points = np.array(poly.exterior.coords)
-	    rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
-	    img[rr, cc] = 1
+    for poly in polygon.geoms:
+        points = np.array(poly.exterior.coords)
+        rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
+        img[rr, cc] = 1
 
-	return np.expand_dims(img, axis=-1)
+    return img
 
 
 def rm_island(polygons, area):
@@ -79,19 +79,19 @@ def rm_island(polygons, area):
     return polygons
 
 
-def generate_drawing(polygon, shape):
+def generate_drawing(polygon, shape, temp=1.0):
     #Simplify Polygon
-    polygon = simplify(polygon, tolerance=random.uniform(0.02, 2.1))
+    polygon = simplify(polygon, tolerance=random.uniform(0.02, 2.1*temp))
 
     #Decompose MultiPolygon
     polygon = decompose(polygon)
 
     #Forget island
-    polygon = rm_island(polygon, area=random.triangular(0, 0.07, 0))
+    polygon = rm_island(polygon, area=random.triangular(0, 0.08*temp, 0))
     
     #Smooth Polygon
     polygon = [chaikin_smooth(poly, 
-                             iters=2) 
+                             iters=int(random.uniform(1, 5*temp))) 
                for poly in polygon]
 
     #Move Polygon to Imgaug Polygon
@@ -101,12 +101,16 @@ def generate_drawing(polygon, shape):
     
     #Augment Polygon
     aug = iaa.Sequential([
-        iaa.Rotate((-15, 15)),
-        iaa.ScaleX((0.7, 1.3)),
-        iaa.ShearX((-8, 8)),
-        iaa.PerspectiveTransform(scale=(0, 0.1)),
-        iaa.PiecewiseAffine(scale=(0, 0.07)),
-    ])
+        iaa.Rotate((-14*temp, 14*temp)),
+        iaa.ScaleX((1-0.4*temp, 1+0.4*temp)),
+        iaa.ShearX((-10*temp, 10*temp)),
+        iaa.PerspectiveTransform(scale=(0, 0.2*temp)),
+        iaa.WithPolarWarping(
+            iaa.Affine(translate_percent={
+                "x": (-0.07*temp, 0.07*temp), 
+                "y": (-0.07*temp, 0.07*temp)})
+            ),
+        ])
     polygon = aug(polygons=polygon)
 
     #Transform Polygon into Shapley MultiPolygon
@@ -119,6 +123,19 @@ def generate_drawing(polygon, shape):
     img = poly_to_img(polygon, shape)
 
     return img
+
+
+#tmp
+import torch
+def predict(model, drawing):
+    drawing = lines_to_img(drawing, model.shape)[None, None, :, :]
+    drawing = torch.tensor(drawing, dtype=torch.float32).to(torch.device("mps"))
+    countries, distances = model.rank_countries(drawing)
+    ranking = zip(countries, np.squeeze(distances))
+    ranking = sorted(ranking, key=lambda t: t[1])
+    countries = [country for country, rank in ranking]
+
+    return countries
 
 
 def save_drawing(country_name, drawing, path='./data/drawings.geojson'):

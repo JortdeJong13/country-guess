@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a776a798c37a40e98a7a761b9effc2b4/artifacts
+end_time: 1714899465701
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: a776a798c37a40e98a7a761b9effc2b4
+run_name: painted-shoat-940
+run_uuid: a776a798c37a40e98a7a761b9effc2b4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714898645722
+status: 3
+tags: []
+user_id: jortdejong

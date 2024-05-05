@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/f6e480a680764e4b8d7e739bdae5d367/artifacts
+end_time: 1714750204957
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f6e480a680764e4b8d7e739bdae5d367
+run_name: trusting-grub-936
+run_uuid: f6e480a680764e4b8d7e739bdae5d367
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714749356406
+status: 3
+tags: []
+user_id: jortdejong

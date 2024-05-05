@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/3096e725d7f34168aba5a6b2c44dc35d/artifacts
+end_time: 1714893703509
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 3096e725d7f34168aba5a6b2c44dc35d
+run_name: sassy-crow-728
+run_uuid: 3096e725d7f34168aba5a6b2c44dc35d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714893355585
+status: 3
+tags: []
+user_id: jortdejong

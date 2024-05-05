@@ -64,13 +64,14 @@ class TestDataset(Dataset):
 class ValDataset(Dataset):
     """Extends the base dataset for evaluating on generated drawings
     """
-    def __init__(self, path='./data/reference.geojson', shape=(64, 64)):
+    def __init__(self, temp=1.0, path='./data/reference.geojson', shape=(64, 64)):
         Dataset.__init__(self, path=path, shape=shape)
+        self.temp = temp
 
     
     def __getitem__(self, idx):
         geom = super().__getitem__(idx)
-        drawing = generate_drawing(geom, self.shape)
+        drawing = generate_drawing(geom, self.shape, self.temp)
         
         return {"country_name": self.country_name[idx], 
                 "drawing": drawing}
@@ -79,16 +80,17 @@ class ValDataset(Dataset):
 class TripletDataset(Dataset):
     """Extends the base dataset for fetching triplet samples
     """
-    def __init__(self, path='./data/reference.geojson', shape=(64, 64)):
+    def __init__(self, temp=1.0, path='./data/reference.geojson', shape=(64, 64)):
         Dataset.__init__(self, path=path, shape=shape)
-        
+        self.temp = temp
+
 
     def __getitem__(self, idx):
         pos_poly = super().__getitem__(idx)
         neg_idx = self.random_neg(idx)
         neg_poly = super().__getitem__(neg_idx)
 
-        drawing = generate_drawing(pos_poly, self.shape)
+        drawing = generate_drawing(pos_poly, self.shape, self.temp)
         pos_img = poly_to_img(pos_poly, self.shape)
         neg_img = poly_to_img(neg_poly, self.shape)
         

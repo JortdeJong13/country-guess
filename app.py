@@ -1,17 +1,14 @@
 from flask import Flask, render_template, request, jsonify
+from mlflow.pytorch import load_model
 
-from countryguess.utils import proces_lines, save_drawing
+from countryguess.utils import proces_lines, save_drawing, predict
 from countryguess.data import Dataset
-from countryguess.model import Model, predict
 
 
 app = Flask(__name__)
 
 # Load model
-model = Model()
-model.load_weights('model_weights.npz')
-ref_data = Dataset()
-model.load_reference(ref_data)
+model = load_model("models:/triplet_model/latest")#.to(device)
 
 # Global variable to store drawing
 current_drawing = None

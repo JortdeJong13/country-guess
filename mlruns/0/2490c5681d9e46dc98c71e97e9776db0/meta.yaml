@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/2490c5681d9e46dc98c71e97e9776db0/artifacts
+end_time: 1714760616881
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 2490c5681d9e46dc98c71e97e9776db0
+run_name: intrigued-donkey-688
+run_uuid: 2490c5681d9e46dc98c71e97e9776db0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714759691272
+status: 3
+tags: []
+user_id: jortdejong

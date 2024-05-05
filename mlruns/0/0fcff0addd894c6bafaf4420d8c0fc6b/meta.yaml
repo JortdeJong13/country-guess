@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/0fcff0addd894c6bafaf4420d8c0fc6b/artifacts
+end_time: 1714815490448
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 0fcff0addd894c6bafaf4420d8c0fc6b
+run_name: sneaky-pug-266
+run_uuid: 0fcff0addd894c6bafaf4420d8c0fc6b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714814245470
+status: 3
+tags: []
+user_id: jortdejong
