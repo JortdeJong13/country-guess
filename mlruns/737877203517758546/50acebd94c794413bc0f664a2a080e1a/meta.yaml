@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/737877203517758546/50acebd94c794413bc0f664a2a080e1a/artifacts
+deleted_time: 1715065681834
+end_time: 1715065171137
+entry_point_name: ''
+experiment_id: '737877203517758546'
+lifecycle_stage: deleted
+run_id: 50acebd94c794413bc0f664a2a080e1a
+run_name: orderly-trout-25
+run_uuid: 50acebd94c794413bc0f664a2a080e1a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715064748956
+status: 4
+tags: []
+user_id: jortdejong

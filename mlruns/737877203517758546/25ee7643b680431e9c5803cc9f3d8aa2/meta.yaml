@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/737877203517758546/25ee7643b680431e9c5803cc9f3d8aa2/artifacts
+end_time: 1715065880630
+entry_point_name: ''
+experiment_id: '737877203517758546'
+lifecycle_stage: active
+run_id: 25ee7643b680431e9c5803cc9f3d8aa2
+run_name: stylish-mule-753
+run_uuid: 25ee7643b680431e9c5803cc9f3d8aa2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715065615292
+status: 3
+tags: []
+user_id: jortdejong

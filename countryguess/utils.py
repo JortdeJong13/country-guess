@@ -37,14 +37,6 @@ def proces_lines(lines):
 	return lines
 
 
-def decompose(polygon):
-    if isinstance(polygon, Polygon):
-        return [polygon]
-    
-    if isinstance(polygon, MultiPolygon):
-        return [poly for poly in polygon.geoms]
-
-
 def lines_to_img(lines, shape):
     img = np.zeros(shape, dtype=np.uint8)
     
@@ -58,9 +50,6 @@ def lines_to_img(lines, shape):
 
 
 def poly_to_img(polygon, shape):
-    if isinstance(polygon, Polygon):
-        polygon = MultiPolygon([polygon])
-
     img = np.zeros(shape, dtype=np.uint8)
 
     for poly in polygon.geoms:
@@ -77,6 +66,14 @@ def rm_island(polygons, area):
     polygons = [poly for poly in polygons if poly.area/max_area > area]
     
     return polygons
+
+
+def decompose(polygon):
+    if isinstance(polygon, Polygon):
+        return [polygon]
+    
+    if isinstance(polygon, MultiPolygon):
+        return [poly for poly in polygon.geoms]
 
 
 def generate_drawing(polygon, shape, temp=1.0):

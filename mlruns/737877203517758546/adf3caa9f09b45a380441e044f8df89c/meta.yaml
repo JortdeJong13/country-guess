@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/737877203517758546/adf3caa9f09b45a380441e044f8df89c/artifacts
+deleted_time: 1715068958669
+end_time: 1715068197189
+entry_point_name: ''
+experiment_id: '737877203517758546'
+lifecycle_stage: deleted
+run_id: adf3caa9f09b45a380441e044f8df89c
+run_name: able-asp-791
+run_uuid: adf3caa9f09b45a380441e044f8df89c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715068196053
+status: 4
+tags: []
+user_id: jortdejong

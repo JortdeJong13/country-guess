@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/737877203517758546/232f109523e94b0babe2c47a55cdce7c/artifacts
+end_time: 1715064623429
+entry_point_name: ''
+experiment_id: '737877203517758546'
+lifecycle_stage: active
+run_id: 232f109523e94b0babe2c47a55cdce7c
+run_name: legendary-fowl-666
+run_uuid: 232f109523e94b0babe2c47a55cdce7c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715064162588
+status: 3
+tags: []
+user_id: jortdejong
