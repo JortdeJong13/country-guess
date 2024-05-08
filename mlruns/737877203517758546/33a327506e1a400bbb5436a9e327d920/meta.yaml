@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/737877203517758546/33a327506e1a400bbb5436a9e327d920/artifacts
+end_time: 1715158014855
+entry_point_name: ''
+experiment_id: '737877203517758546'
+lifecycle_stage: active
+run_id: 33a327506e1a400bbb5436a9e327d920
+run_name: luxuriant-crow-24
+run_uuid: 33a327506e1a400bbb5436a9e327d920
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715157818521
+status: 3
+tags: []
+user_id: jortdejong

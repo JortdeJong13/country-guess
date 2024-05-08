@@ -43,7 +43,7 @@ class Model(nn.Module):
         
         return x
 
-    
+    @torch.no_grad
     def load_reference(self, ref_data):
         assert ref_data.shape==self.shape
         self._ref_countries = {}

@@ -124,6 +124,7 @@ def generate_drawing(polygon, shape, temp=1.0):
 #tmp
 import torch
 def predict(model, drawing):
+    drawing = normalize_geom(drawing, model.shape)
     drawing = lines_to_img(drawing, model.shape)[None, None, :, :]
     drawing = torch.tensor(drawing, dtype=torch.float32).to(torch.device("mps"))
     countries, distances = model.rank_countries(drawing)
