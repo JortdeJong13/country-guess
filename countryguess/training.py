@@ -5,7 +5,7 @@ import numpy as np
 from countryguess.utils import poly_to_img
 
 
-class Model(nn.Module):
+class TripletModel(nn.Module):
     def __init__(self, nr_conv_blocks=4, channels=16, embedding_size=128, dropout=0.2, shape=64, **kwargs):
         super().__init__()
         self.shape = (shape, shape)
