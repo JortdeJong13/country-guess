@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/244304607579014566/d6e27317eaa544f4af2e7854ea4f227d/artifacts
+end_time: 1715185924052
+entry_point_name: ''
+experiment_id: '244304607579014566'
+lifecycle_stage: active
+run_id: d6e27317eaa544f4af2e7854ea4f227d
+run_name: sassy-newt-165
+run_uuid: d6e27317eaa544f4af2e7854ea4f227d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715182748639
+status: 3
+tags: []
+user_id: jortdejong

@@ -1,0 +1,22 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.12.2
+- pip<=24.0
+- pip:
+  - mlflow==2.12.1
+  - cffi==1.16.0
+  - cloudpickle==3.0.0
+  - defusedxml==0.7.1
+  - imgaug==0.4.0
+  - numpy==1.26.4
+  - opencv-python==4.9.0.80
+  - packaging==24.0
+  - pandas==2.2.2
+  - pyyaml==6.0.1
+  - scikit-image==0.23.2
+  - scipy==1.13.0
+  - shapely==2.0.4
+  - shapelysmooth==0.2.0
+  - torch==2.3.0
+name: mlflow-env
