@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/244304607579014566/191a098c8a084e439137ab9ff5ab9ce4/artifacts
+end_time: 1715173964622
+entry_point_name: ''
+experiment_id: '244304607579014566'
+lifecycle_stage: active
+run_id: 191a098c8a084e439137ab9ff5ab9ce4
+run_name: shivering-hog-812
+run_uuid: 191a098c8a084e439137ab9ff5ab9ce4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715173415941
+status: 3
+tags: []
+user_id: jortdejong

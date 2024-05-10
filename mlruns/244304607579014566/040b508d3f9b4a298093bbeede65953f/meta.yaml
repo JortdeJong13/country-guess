@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/244304607579014566/040b508d3f9b4a298093bbeede65953f/artifacts
+end_time: 1715180376298
+entry_point_name: ''
+experiment_id: '244304607579014566'
+lifecycle_stage: active
+run_id: 040b508d3f9b4a298093bbeede65953f
+run_name: nervous-dove-320
+run_uuid: 040b508d3f9b4a298093bbeede65953f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715179800283
+status: 3
+tags: []
+user_id: jortdejong
