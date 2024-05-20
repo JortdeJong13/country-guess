@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  mlfserver:
+    restart: always
+    build: ./mlflowserver
+    image: mlflowserver
+    expose:
+      - 5000
