@@ -1,11 +1,10 @@
 Flask
 geopandas
 imgaug
-#intel_extension_for_pytorch
 mlflow
 numpy
 Shapely
 shapelysmooth
-scikit-mage
+scikit-image
 torch
 matplotlib

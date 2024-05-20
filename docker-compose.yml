@@ -1,8 +1,16 @@
-version: '3.8'
 services:
-  mlfserver:
-    restart: always
-    build: ./mlflowserver
-    image: mlflowserver
+  # mlflowserver:
+  #   restart: always
+  #   build: 
+  #     context: ./
+  #     dockerfile: ./mlflowserver/Dockerfile
+  #   image: mlflowserver
+  #   expose:
+  #     - 5001
+  webapp:
+    build:
+      context: ./
+      dockerfile: ./webapp/Dockerfile
+    image: webapp
     expose:
       - 5000

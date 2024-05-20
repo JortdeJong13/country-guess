@@ -8,4 +8,4 @@ model = load_model("models:/triplet_model@champion")
 model.load_reference(Dataset(shape=model.shape))
 
 # Start inference server
-model.serve(port=5000)
+model.serve(port=5001)

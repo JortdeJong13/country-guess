@@ -1,9 +1,9 @@
 FROM python:3.8-slim-buster
-WORKDIR /server
-COPY requirements.txt .
+WORKDIR /webapp
+COPY webapp/requirements.txt .
 RUN pip install -r requirements.txt
-COPY mlflowserver/serve.py .
+COPY webapp/app.py .
+COPY webapp/templates templates
 COPY countryguess/data.py countryguess/
 COPY countryguess/utils.py countryguess/
-COPY data/reference.geojson data/
-CMD ["python", "serve.py"]
+CMD ["python", "app.py"]
