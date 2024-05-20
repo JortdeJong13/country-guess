@@ -1,12 +1,12 @@
 services:
-  # mlflowserver:
-  #   restart: always
-  #   build: 
-  #     context: ./
-  #     dockerfile: ./mlflowserver/Dockerfile
-  #   image: mlflowserver
-  #   expose:
-  #     - 5001
+  mlflowserver:
+    restart: always
+    build: 
+      context: ./
+      dockerfile: ./mlflowserver/Dockerfile
+    image: mlflowserver
+    expose:
+      - 5001
   webapp:
     build:
       context: ./
