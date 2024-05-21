@@ -1,8 +1,7 @@
-Flask
 geopandas
-imgaug
 mlflow
 numpy
+imgaug
 Shapely
 shapelysmooth
 scikit-image
