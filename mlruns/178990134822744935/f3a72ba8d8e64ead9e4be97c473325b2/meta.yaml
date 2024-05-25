@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/f3a72ba8d8e64ead9e4be97c473325b2/artifacts
+end_time: 1716628106556
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: f3a72ba8d8e64ead9e4be97c473325b2
+run_name: bittersweet-cub-184
+run_uuid: f3a72ba8d8e64ead9e4be97c473325b2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716626933623
+status: 3
+tags: []
+user_id: jortdejong
