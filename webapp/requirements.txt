@@ -1,1 +1,11 @@
 Flask
+
+geopandas
+mlflow
+numpy
+imgaug
+Shapely
+shapelysmooth
+scikit-image
+torch
+matplotlib

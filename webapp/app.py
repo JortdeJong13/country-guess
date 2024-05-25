@@ -1,16 +1,16 @@
 from flask import Flask, render_template, request, jsonify
-from mlflow.pytorch import load_model
+#from mlflow.pytorch import load_model
 
-from countryguess.utils import proces_lines, save_drawing, predict
-from countryguess.data import Dataset
+from countryguess.utils import proces_lines, save_drawing #, predict
+#from countryguess.data import Dataset
 
 
 app = Flask(__name__)
 
 # Load model
-model = load_model("models:/triplet_model@champion")
+#model = load_model("models:/triplet_model@champion")
 # Load reference data 
-model.load_reference(Dataset(shape=model.shape))
+#model.load_reference(Dataset(shape=model.shape))
 
 # Global variable to store drawing
 current_drawing = None
