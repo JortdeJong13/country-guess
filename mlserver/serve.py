@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify
 import mlflow.pytorch
-from countryguess.data import Dataset
 import torch
+from shapely import from_geojson
+
+from countryguess.data import Dataset
+from countryguess.utils import poly_to_img
 
 
 app = Flask(__name__)
-
-
-print("This:", mlflow.get_tracking_uri())
 
 # Load the model
 #model = mlflow.pytorch.load_model(f"models:/triplet_model@Champion")
@@ -19,9 +19,14 @@ model.load_reference(reference_data)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.json
-    input_tensor = torch.tensor(data['input'])
-    output = model(input_tensor)
+    drawing = from_geojson(request.json)
+    drawing = poly_to_img(drawing, model.shape)[None, None, :, :]
+    drawing = torch.tensor(drawing, dtype=torch.float32)
+    countries, distances = model.rank_countries(drawing)
+    print(countries)
+    print(distances)
+
+
     result = output.detach().numpy().tolist()
     return jsonify(result)
 

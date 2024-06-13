@@ -1,9 +1,9 @@
 services:
-  mlflowserver:
+  mlserver:
     build: 
       context: ./
-      dockerfile: ./mlflowserver/Dockerfile
-    image: mlflowserver
+      dockerfile: ./mlserver/Dockerfile
+    image: mlserver
     expose:
       - 5001
     #Add port temporarly for testing the ml server
