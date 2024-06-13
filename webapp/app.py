@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from mlflow.pytorch import 
-import json
+from shapely import to_geojson
 
 
 from countryguess.utils import proces_lines, save_drawing, predict
@@ -18,7 +18,7 @@ app = Flask(__name__)
 # model.load_reference(Dataset(shape=model.shape))
 
 
-#This probably should be a an env variable
+# This probably should be an env variable
 mlserver_url = "localhost:5001/predict"
 
 # Global variable to store drawing
@@ -44,17 +44,9 @@ def guess():
 
     # Get predicitions
     #ranking = predict(model, drawing)
-    drawing = json.loads(drawing.to_geojson())
-    
-    response = request.post(mlserver_url, json={"drawing": drawing})
+    response = request.post(mlserver_url, json={"drawing": to_geojson(drawing)})
 
-    if response.status_code == 200:
-        print("Success:", response.json())
-    else:
-        print("Failed:", response.text)
-
-
-    return jsonify({'message': 'Success', 'ranking': ranking})
+    return jsonify({'message': 'Success', 'ranking': ranking.json()})
 
 
 @app.route('/feedback', methods=['POST'])
