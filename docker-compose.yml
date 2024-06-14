@@ -17,3 +17,5 @@ services:
       - '5000:5000'
     environment:
       - MLSERVER_URL=http://mlserver:5001/predict
+    # volumes:
+    #   - ./data/drawings.geojson:/data/ # Optional
