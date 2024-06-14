@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/dc29f28bc4f04f9e94281c07bb2ce345/artifacts
+deleted_time: 1718369078713
 end_time: null
 entry_point_name: ''
 experiment_id: '178990134822744935'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: dc29f28bc4f04f9e94281c07bb2ce345
 run_name: serious-croc-383
 run_uuid: dc29f28bc4f04f9e94281c07bb2ce345
