@@ -1,6 +1,0 @@
-artifact_location: file:///home/jortdejong/GitHub/country-guess/mlruns/244304607579014566
-creation_time: 1715173164639
-experiment_id: '244304607579014566'
-last_update_time: 1715173164639
-lifecycle_stage: active
-name: cpu_server
