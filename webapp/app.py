@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, jsonify
-from shapely import to_geojson
+from flask import Flask, render_template, request, jsonify, current_app
 import requests
+from requests.exceptions import ConnectionError, Timeout, HTTPError
+from shapely import to_geojson
 import os
 import sys
 
@@ -12,8 +13,7 @@ from countryguess.utils import proces_lines, save_drawing
 app = Flask(__name__)
 
 
-# This probably should be an env variable
-mlserver_url = "http://127.0.0.1:5001/predict"
+mlserver_url = os.environ['MLSERVER_URL']
 
 # Global variable to store drawing
 current_drawing = None
@@ -44,11 +44,11 @@ def guess():
 
         return jsonify({'message': 'Success', 'ranking': response.json()})
 
-    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as conn_err:
+    except (ConnectionError, Timeout) as conn_err:
         # Handle connection errors and timeouts
         return jsonify({'message': 'Server unreachable', 'error': str(conn_err)}), 502
     
-    except (requests.exceptions.HTTPError, ValueError) as http_err:
+    except (HTTPError, ValueError) as http_err:
         # Handle HTTP errors and JSON decoding errors
         return jsonify({'message': 'Server error', 'error': str(http_err)}), 500
     

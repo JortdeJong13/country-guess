@@ -34,6 +34,9 @@ class Dataset():
         
     
     def __getitem__(self, idx):
+        while idx < 0:
+            idx += len(self)
+        
         geom = self.gdf.loc[idx, 'normal_geom']
         
         return geom
