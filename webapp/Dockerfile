@@ -12,7 +12,8 @@ RUN mkdir -p /data && echo '{"type": "FeatureCollection", "features": []}' > /da
 # Copy code
 COPY countryguess countryguess
 COPY webapp/templates webapp/templates
-COPY webapp/app.py webap/
+COPY webapp/app.py webapp/
 COPY mlruns mlruns
 
-CMD [ "python", "flask", "run", "--host=0.0.0.0"]
+CMD ["python", "flask", "run", "--host=0.0.0.0"]
+#CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"] # This one worked

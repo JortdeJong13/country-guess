@@ -16,8 +16,8 @@ app = Flask(__name__)
 
 
 # Load the model
-model = mlflow.pytorch.load_model(f"models:/triplet_model@Champion")
-#model = mlflow.pytorch.load_model("/server/mlruns/217199850258879704/99e3a0230ba84bababfb00c377a70b51/artifacts/model")
+#model = mlflow.pytorch.load_model(f"models:/triplet_model@Champion")
+model = mlflow.pytorch.load_model("/server/mlruns/217199850258879704/99e3a0230ba84bababfb00c377a70b51/artifacts/model")
 
 # Load reference data
 ref_data = Dataset(shape=model.shape)
