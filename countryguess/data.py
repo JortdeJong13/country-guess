@@ -1,7 +1,8 @@
 import geopandas as gpd
 import random
 
-from .utils import normalize_geom, generate_drawing, lines_to_img, poly_to_img
+from .utils import normalize_geom, lines_to_img, poly_to_img
+from .generate import generate_drawing
 
 
 class Dataset():
@@ -36,7 +37,7 @@ class Dataset():
     def __getitem__(self, idx):
         while idx < 0:
             idx += len(self)
-        
+
         geom = self.gdf.loc[idx, 'normal_geom']
         
         return geom

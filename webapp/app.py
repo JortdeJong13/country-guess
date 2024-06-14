@@ -13,8 +13,6 @@ from countryguess.utils import proces_lines, save_drawing
 app = Flask(__name__)
 
 
-mlserver_url = os.environ['MLSERVER_URL']
-
 # Global variable to store drawing
 current_drawing = None
 
@@ -37,7 +35,9 @@ def guess():
 
     try:
         # Request prediction from ML server
-        response = requests.post(mlserver_url, json=to_geojson(drawing))
+        response = requests.post(
+            os.environ['MLSERVER_URL'], 
+            json=to_geojson(drawing))
 
         # Check if there is an error
         response.raise_for_status()
