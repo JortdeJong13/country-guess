@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 from shapely import to_geojson
 import requests
-
-# tmp
+import os
 import sys
-sys.path.insert(0, '/Users/jortdejong/GitHub/country-guess')
 
+# Add the top-level directory to the sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from countryguess.utils import proces_lines, save_drawing
 
 
@@ -59,7 +59,8 @@ def feedback():
     
     data = request.json
     country_name = data['country']
-    save_drawing(country_name, current_drawing)
+    drawing_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/drawings.geojson'))
+    save_drawing(country_name, current_drawing, path=drawing_path)
 
     # Clear the global variable after processing
     current_drawing = None
