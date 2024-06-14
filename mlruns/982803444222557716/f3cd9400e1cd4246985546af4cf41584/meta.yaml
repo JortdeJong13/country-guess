@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/982803444222557716/f3cd9400e1cd4246985546af4cf41584/artifacts
+end_time: 1716628992767
+entry_point_name: ''
+experiment_id: '982803444222557716'
+lifecycle_stage: active
+run_id: f3cd9400e1cd4246985546af4cf41584
+run_name: gaudy-squid-825
+run_uuid: f3cd9400e1cd4246985546af4cf41584
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716628990385
+status: 3
+tags: []
+user_id: jortdejong

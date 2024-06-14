@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/7bbc9c861c264fd7b43594cf8f4c38a5/artifacts
+end_time: 1718194166651
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: 7bbc9c861c264fd7b43594cf8f4c38a5
+run_name: welcoming-worm-974
+run_uuid: 7bbc9c861c264fd7b43594cf8f4c38a5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718192397719
+status: 3
+tags: []
+user_id: jortdejong

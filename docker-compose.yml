@@ -1,0 +1,20 @@
+services:
+  mlserver:
+    build: 
+      context: ./
+      dockerfile: ./mlserver/Dockerfile
+    image: mlserver
+    expose:
+      - 5001
+    #Add port temporarly for testing the ml server
+    ports:
+      - '5001:5001'
+    volumes:
+      - ./mlruns:/server/mlruns
+  # webapp:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./webapp/Dockerfile
+  #   image: webapp
+  #   ports:
+  #     - '5002:5000'

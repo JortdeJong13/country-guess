@@ -135,6 +135,7 @@ def predict(model, drawing):
     return countries
 
 
+
 def save_drawing(country_name, drawing, path='./data/drawings.geojson'):
     feature = {
         "type": "Feature",
@@ -142,6 +143,7 @@ def save_drawing(country_name, drawing, path='./data/drawings.geojson'):
             "cntry_name": country_name,
             "timestamp": datetime.now().isoformat()
         },
+        #"geometry": json.loads(to_geojson(drawing))
         "geometry": json.loads(to_geojson(drawing))
     }
     
