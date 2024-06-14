@@ -139,13 +139,32 @@
                     },
                     body: JSON.stringify({ lines: lines })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message || 'Unknown server error');
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     document.getElementById('guess-message').innerText = "It looks like you tried to draw " + data.ranking[0];
                     showConfirmation(data.ranking);
                 })
                 .catch(error => {
                     console.error('Error:', error);
+
+                    // Provide user feedback of the error
+                    let userMessage = '';
+                    if (error.message === 'Server unreachable') {
+                        userMessage = 'Could not reach the ML server.';
+                    } else if (error.message === 'Server error') {
+                        userMessage = 'There was an error with the ML server response.';
+                    } else {
+                        userMessage = 'An unexpected error occurred.';
+                    }
+
+                    document.getElementById('guess-message').innerText = userMessage;
                 });
             } else {
                 console.log('Coordinates list is empty, please draw something before guessing')

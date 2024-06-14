@@ -1,25 +1,19 @@
 from flask import Flask, render_template, request, jsonify
-from mlflow.pytorch import 
 from shapely import to_geojson
+import requests
 
+# tmp
+import sys
+sys.path.insert(0, '/Users/jortdejong/GitHub/country-guess')
 
-from countryguess.utils import proces_lines, save_drawing, predict
-from countryguess.data import Dataset
-from mlflow import MlflowClient
+from countryguess.utils import proces_lines, save_drawing
+
 
 app = Flask(__name__)
 
-# # Load model
-# client = MlflowClient()
-# model_version = client.get_latest_versions("triplet_model")
-# model_path = '/'.join(model_version[0].source.split('/')[-5:])
-# model = load_model(model_path)
-# # Load reference data 
-# model.load_reference(Dataset(shape=model.shape))
-
 
 # This probably should be an env variable
-mlserver_url = "localhost:5001/predict"
+mlserver_url = "http://127.0.0.1:5001/predict"
 
 # Global variable to store drawing
 current_drawing = None
@@ -33,7 +27,6 @@ def index():
 @app.route('/guess', methods=['POST'])
 def guess():
     global current_drawing
-    global model
     
     data = request.json
     lines = data['lines']
@@ -42,12 +35,23 @@ def guess():
     # Store the drawing in the global variable
     current_drawing = drawing
 
-    # Get predicitions
-    #ranking = predict(model, drawing)
-    response = request.post(mlserver_url, json={"drawing": to_geojson(drawing)})
+    try:
+        # Request prediction from ML server
+        response = requests.post(mlserver_url, json=to_geojson(drawing))
 
-    return jsonify({'message': 'Success', 'ranking': ranking.json()})
+        # Check if there is an error
+        response.raise_for_status()
 
+        return jsonify({'message': 'Success', 'ranking': response.json()})
+
+    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as conn_err:
+        # Handle connection errors and timeouts
+        return jsonify({'message': 'Server unreachable', 'error': str(conn_err)}), 502
+    
+    except (requests.exceptions.HTTPError, ValueError) as http_err:
+        # Handle HTTP errors and JSON decoding errors
+        return jsonify({'message': 'Server error', 'error': str(http_err)}), 500
+    
 
 @app.route('/feedback', methods=['POST'])
 def feedback():
