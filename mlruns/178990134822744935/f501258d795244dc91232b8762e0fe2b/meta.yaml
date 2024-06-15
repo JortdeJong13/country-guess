@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/f501258d795244dc91232b8762e0fe2b/artifacts
+deleted_time: 1718454080662
+end_time: 1718450000918
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: f501258d795244dc91232b8762e0fe2b
+run_name: nervous-sow-143
+run_uuid: f501258d795244dc91232b8762e0fe2b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718449960422
+status: 3
+tags: []
+user_id: jortdejong

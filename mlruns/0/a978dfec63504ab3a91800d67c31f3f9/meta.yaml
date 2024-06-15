@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a978dfec63504ab3a91800d67c31f3f9/artifacts
+deleted_time: 1718443647759
 end_time: 1714856089077
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: a978dfec63504ab3a91800d67c31f3f9
 run_name: enthused-zebra-264
 run_uuid: a978dfec63504ab3a91800d67c31f3f9

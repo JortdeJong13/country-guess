@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/b7cd430bcc1e41b1b0de93ab0e1fe039/artifacts
+deleted_time: 1718443647763
 end_time: 1714847581809
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: b7cd430bcc1e41b1b0de93ab0e1fe039
 run_name: gentle-perch-223
 run_uuid: b7cd430bcc1e41b1b0de93ab0e1fe039

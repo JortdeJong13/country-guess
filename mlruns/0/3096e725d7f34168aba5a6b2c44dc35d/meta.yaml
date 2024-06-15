@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/3096e725d7f34168aba5a6b2c44dc35d/artifacts
+deleted_time: 1718443647754
 end_time: 1714893703509
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 3096e725d7f34168aba5a6b2c44dc35d
 run_name: sassy-crow-728
 run_uuid: 3096e725d7f34168aba5a6b2c44dc35d

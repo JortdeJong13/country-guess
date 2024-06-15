@@ -1,11 +1,8 @@
-import numpy as np
-import random
-import json
-from datetime import datetime
 from shapely.affinity import scale, translate, affine_transform
 from shapely import Polygon, MultiPolygon, simplify, LineString, MultiLineString
 from shapely import to_geojson
-from skimage import draw
+import json
+from datetime import datetime
 
 
 def normalize_geom(geom, shape=(64, 64), pad=2, eps=0.0001):
@@ -34,29 +31,6 @@ def proces_lines(lines):
 	return lines
 
 
-def lines_to_img(lines, shape):
-    img = np.zeros(shape, dtype=np.uint8)
-    
-    for line in lines.geoms:
-        points = np.array(line.coords).astype(int)
-        for r0, c0, r1, c1 in zip(points[:-1, 0], points[:-1, 1], points[1:, 0], points[1:, 1]):
-            rr, cc = draw.line(r0, c0, r1, c1)
-            img[rr, cc] = 1
-    
-    return np.swapaxes(img, 0, 1)
-
-
-def poly_to_img(polygon, shape):
-    img = np.zeros(shape, dtype=np.uint8)
-
-    for poly in polygon.geoms:
-        points = np.array(poly.exterior.coords)
-        rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
-        img[rr, cc] = 1
-
-    return np.swapaxes(img, 0, 1)
-
-
 def decompose(polygon):
     if isinstance(polygon, Polygon):
         return [polygon]
@@ -72,7 +46,6 @@ def save_drawing(country_name, drawing, path='./data/drawings.geojson'):
             "cntry_name": country_name,
             "timestamp": datetime.now().isoformat()
         },
-        #"geometry": json.loads(to_geojson(drawing))
         "geometry": json.loads(to_geojson(drawing))
     }
     

@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/23530fcf6d014d04aa95a6cdd44d1e32/artifacts
+deleted_time: 1718443647750
 end_time: 1714913707182
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 23530fcf6d014d04aa95a6cdd44d1e32
 run_name: merciful-swan-999
 run_uuid: 23530fcf6d014d04aa95a6cdd44d1e32

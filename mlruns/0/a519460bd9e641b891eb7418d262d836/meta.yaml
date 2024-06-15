@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a519460bd9e641b891eb7418d262d836/artifacts
+deleted_time: 1718443647772
 end_time: 1714822891320
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: a519460bd9e641b891eb7418d262d836
 run_name: whimsical-koi-33
 run_uuid: a519460bd9e641b891eb7418d262d836

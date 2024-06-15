@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/eb766fb18d64488cada7ed57f10c0320/artifacts
+deleted_time: 1718443647779
 end_time: 1714759613528
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: eb766fb18d64488cada7ed57f10c0320
 run_name: hilarious-fly-191
 run_uuid: eb766fb18d64488cada7ed57f10c0320

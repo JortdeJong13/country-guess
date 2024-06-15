@@ -6,8 +6,10 @@ services:
     image: mlserver
     expose:
       - 5001
+    environment:
+      - MODEL_NAME=triplet_model
     volumes:
-      - ./mlruns:/server/mlruns
+      - ./mlruns:/mlruns
 
   webapp:
     build:

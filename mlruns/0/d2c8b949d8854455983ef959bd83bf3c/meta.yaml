@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/d2c8b949d8854455983ef959bd83bf3c/artifacts
+deleted_time: 1718443647764
 end_time: 1714847001180
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: d2c8b949d8854455983ef959bd83bf3c
 run_name: stately-finch-865
 run_uuid: d2c8b949d8854455983ef959bd83bf3c

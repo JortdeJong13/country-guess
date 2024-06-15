@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/b75eef3f114045f7b7d3c8c6874b7942/artifacts
+deleted_time: 1718443647783
 end_time: 1714753374589
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: b75eef3f114045f7b7d3c8c6874b7942
 run_name: exultant-yak-990
 run_uuid: b75eef3f114045f7b7d3c8c6874b7942

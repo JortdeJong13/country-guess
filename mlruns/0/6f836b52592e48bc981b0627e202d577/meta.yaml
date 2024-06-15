@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/6f836b52592e48bc981b0627e202d577/artifacts
+deleted_time: 1718443647768
 end_time: 1714833501631
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 6f836b52592e48bc981b0627e202d577
 run_name: bold-moth-439
 run_uuid: 6f836b52592e48bc981b0627e202d577

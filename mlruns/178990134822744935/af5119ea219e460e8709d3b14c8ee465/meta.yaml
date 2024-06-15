@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/af5119ea219e460e8709d3b14c8ee465/artifacts
+deleted_time: 1718443682657
 end_time: 1718370284902
 entry_point_name: ''
 experiment_id: '178990134822744935'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: af5119ea219e460e8709d3b14c8ee465
 run_name: honorable-cod-931
 run_uuid: af5119ea219e460e8709d3b14c8ee465

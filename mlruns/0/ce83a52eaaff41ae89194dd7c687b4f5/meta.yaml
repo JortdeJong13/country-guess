@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/ce83a52eaaff41ae89194dd7c687b4f5/artifacts
+deleted_time: 1718443647780
 end_time: 1714757298641
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: ce83a52eaaff41ae89194dd7c687b4f5
 run_name: loud-steed-69
 run_uuid: ce83a52eaaff41ae89194dd7c687b4f5

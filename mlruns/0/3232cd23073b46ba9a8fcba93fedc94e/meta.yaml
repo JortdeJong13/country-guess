@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/3232cd23073b46ba9a8fcba93fedc94e/artifacts
+deleted_time: 1718443647767
 end_time: 1714834211086
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 3232cd23073b46ba9a8fcba93fedc94e
 run_name: efficient-smelt-812
 run_uuid: 3232cd23073b46ba9a8fcba93fedc94e

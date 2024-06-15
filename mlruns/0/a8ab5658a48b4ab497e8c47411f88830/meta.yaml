@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a8ab5658a48b4ab497e8c47411f88830/artifacts
+deleted_time: 1718443647743
 end_time: 1714914020378
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: a8ab5658a48b4ab497e8c47411f88830
 run_name: persistent-midge-197
 run_uuid: a8ab5658a48b4ab497e8c47411f88830

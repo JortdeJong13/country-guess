@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/cd7909ff51fd4eb9a817423942ac15a1/artifacts
+end_time: 1718449801846
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: cd7909ff51fd4eb9a817423942ac15a1
+run_name: invincible-whale-943
+run_uuid: cd7909ff51fd4eb9a817423942ac15a1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718441907509
+status: 3
+tags: []
+user_id: jortdejong

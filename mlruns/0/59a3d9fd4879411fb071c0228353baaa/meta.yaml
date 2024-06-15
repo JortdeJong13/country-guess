@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/59a3d9fd4879411fb071c0228353baaa/artifacts
+deleted_time: 1718443647771
 end_time: 1714826831569
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 59a3d9fd4879411fb071c0228353baaa
 run_name: auspicious-goat-31
 run_uuid: 59a3d9fd4879411fb071c0228353baaa

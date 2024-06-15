@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/4bf948c9b29e4bfc994b37497e6e97a8/artifacts
+deleted_time: 1718443647768
 end_time: 1714833909569
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 4bf948c9b29e4bfc994b37497e6e97a8
 run_name: beautiful-bird-711
 run_uuid: 4bf948c9b29e4bfc994b37497e6e97a8

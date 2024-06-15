@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/e6e9ca159b304b7ab1224f65240f6d5b/artifacts
+deleted_time: 1718443647783
 end_time: 1714751205417
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: e6e9ca159b304b7ab1224f65240f6d5b
 run_name: painted-dog-828
 run_uuid: e6e9ca159b304b7ab1224f65240f6d5b

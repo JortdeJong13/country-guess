@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/7292e95cdcc74dbb9eba83df576c02fb/artifacts
+deleted_time: 1718443647752
 end_time: 1714895205613
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 7292e95cdcc74dbb9eba83df576c02fb
 run_name: bouncy-swan-332
 run_uuid: 7292e95cdcc74dbb9eba83df576c02fb

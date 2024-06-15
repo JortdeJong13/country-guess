@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/2490c5681d9e46dc98c71e97e9776db0/artifacts
+deleted_time: 1718443647778
 end_time: 1714760616881
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 2490c5681d9e46dc98c71e97e9776db0
 run_name: intrigued-donkey-688
 run_uuid: 2490c5681d9e46dc98c71e97e9776db0

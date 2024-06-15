@@ -1,9 +1,7 @@
-geopandas
+Flask
 mlflow
-numpy
-imgaug
-Shapely
-shapelysmooth
-scikit-image
 torch
-matplotlib
+numpy
+Shapely
+geopandas
+scikit-image

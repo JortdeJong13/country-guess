@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/4dafcc5c876b47769f28cadbc81fcce9/artifacts
+deleted_time: 1718454080670
+end_time: null
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: 4dafcc5c876b47769f28cadbc81fcce9
+run_name: vaunted-shrew-132
+run_uuid: 4dafcc5c876b47769f28cadbc81fcce9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718452161544
+status: 1
+tags: []
+user_id: jortdejong

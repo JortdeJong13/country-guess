@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/f6e480a680764e4b8d7e739bdae5d367/artifacts
+deleted_time: 1718443647783
 end_time: 1714750204957
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: f6e480a680764e4b8d7e739bdae5d367
 run_name: trusting-grub-936
 run_uuid: f6e480a680764e4b8d7e739bdae5d367

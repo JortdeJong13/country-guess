@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/8133934d91474f9581adc20c73667298/artifacts
+deleted_time: 1718443647780
 end_time: 1714756313439
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 8133934d91474f9581adc20c73667298
 run_name: likeable-hound-913
 run_uuid: 8133934d91474f9581adc20c73667298

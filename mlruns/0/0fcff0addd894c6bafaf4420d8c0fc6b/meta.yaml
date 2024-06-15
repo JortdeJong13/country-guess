@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/0fcff0addd894c6bafaf4420d8c0fc6b/artifacts
+deleted_time: 1718443647774
 end_time: 1714815490448
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 0fcff0addd894c6bafaf4420d8c0fc6b
 run_name: sneaky-pug-266
 run_uuid: 0fcff0addd894c6bafaf4420d8c0fc6b

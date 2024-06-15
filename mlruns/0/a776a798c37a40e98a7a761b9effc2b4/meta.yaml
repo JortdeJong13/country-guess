@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/a776a798c37a40e98a7a761b9effc2b4/artifacts
+deleted_time: 1718454080661
 end_time: 1714899465701
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: a776a798c37a40e98a7a761b9effc2b4
 run_name: painted-shoat-940
 run_uuid: a776a798c37a40e98a7a761b9effc2b4

@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/d82bd56f91e144588cfffd1171593798/artifacts
+deleted_time: 1718443647759
 end_time: 1714848404636
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: d82bd56f91e144588cfffd1171593798
 run_name: gaudy-wasp-401
 run_uuid: d82bd56f91e144588cfffd1171593798

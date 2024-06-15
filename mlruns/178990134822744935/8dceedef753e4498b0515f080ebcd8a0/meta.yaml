@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/8dceedef753e4498b0515f080ebcd8a0/artifacts
+deleted_time: 1718441075646
+end_time: 1718440913574
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: 8dceedef753e4498b0515f080ebcd8a0
+run_name: bald-mouse-604
+run_uuid: 8dceedef753e4498b0515f080ebcd8a0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718440821671
+status: 4
+tags: []
+user_id: jortdejong

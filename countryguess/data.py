@@ -1,8 +1,31 @@
 import geopandas as gpd
-import random
+from skimage import draw
+import numpy as np
 
-from .utils import normalize_geom, lines_to_img, poly_to_img
-from .generate import generate_drawing
+from .utils import normalize_geom
+
+
+def lines_to_img(lines, shape):
+    img = np.zeros(shape, dtype=np.uint8)
+    
+    for line in lines.geoms:
+        points = np.array(line.coords).astype(int)
+        for r0, c0, r1, c1 in zip(points[:-1, 0], points[:-1, 1], points[1:, 0], points[1:, 1]):
+            rr, cc = draw.line(r0, c0, r1, c1)
+            img[rr, cc] = 1
+    
+    return np.swapaxes(img, 0, 1)
+
+
+def poly_to_img(polygon, shape):
+    img = np.zeros(shape, dtype=np.uint8)
+
+    for poly in polygon.geoms:
+        points = np.array(poly.exterior.coords)
+        rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
+        img[rr, cc] = 1
+
+    return np.swapaxes(img, 0, 1)
 
 
 class Dataset():
@@ -63,51 +86,3 @@ class TestDataset(Dataset):
         
         return {"country_name": self.country_name[idx], 
                 "drawing": drawing}
-
-
-class ValDataset(Dataset):
-    """Extends the base dataset for evaluating on generated drawings
-    """
-    def __init__(self, temp=1.0, path='./data/reference.geojson', shape=(64, 64)):
-        Dataset.__init__(self, path=path, shape=shape)
-        self.temp = temp
-
-    
-    def __getitem__(self, idx):
-        geom = super().__getitem__(idx)
-        drawing = generate_drawing(geom, self.shape, self.temp)
-        
-        return {"country_name": self.country_name[idx], 
-                "drawing": drawing}
-
-
-class TripletDataset(Dataset):
-    """Extends the base dataset for fetching triplet samples
-    """
-    def __init__(self, temp=1.0, path='./data/reference.geojson', shape=(64, 64)):
-        Dataset.__init__(self, path=path, shape=shape)
-        self.temp = temp
-
-
-    def __getitem__(self, idx):
-        pos_poly = super().__getitem__(idx)
-        neg_idx = self.random_neg(idx)
-        neg_poly = super().__getitem__(neg_idx)
-
-        drawing = generate_drawing(pos_poly, self.shape, self.temp)
-        pos_img = poly_to_img(pos_poly, self.shape)
-        neg_img = poly_to_img(neg_poly, self.shape)
-        
-        return {"drawing": drawing,
-                "pos_img": pos_img,
-                "pos_idx": idx,
-                "neg_img": neg_img,
-                "neg_idx": neg_idx}
-
-
-    def random_neg(self, ref_idx):
-        idx = random.randint(0, len(self.gdf) - 1)
-        while idx == ref_idx:
-            idx = random.randint(0, len(self.gdf) - 1)
-            
-        return idx

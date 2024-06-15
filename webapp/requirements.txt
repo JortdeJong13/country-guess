@@ -1,11 +1,4 @@
 Flask
-
-geopandas
-mlflow
-numpy
-imgaug
+Requests
 Shapely
-shapelysmooth
-scikit-image
-torch
-matplotlib
+datetime

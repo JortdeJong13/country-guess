@@ -1,8 +1,9 @@
 artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/c7861aac157c481b86c0f155ebb0afcb/artifacts
+deleted_time: 1718443647761
 end_time: 1714848121017
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: c7861aac157c481b86c0f155ebb0afcb
 run_name: treasured-zebra-319
 run_uuid: c7861aac157c481b86c0f155ebb0afcb

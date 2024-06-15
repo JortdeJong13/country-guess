@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/9d473a793f0941cd9393f52a186f0698/artifacts
+deleted_time: 1718454080669
+end_time: 1718450809903
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: 9d473a793f0941cd9393f52a186f0698
+run_name: puzzled-snipe-574
+run_uuid: 9d473a793f0941cd9393f52a186f0698
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718450705686
+status: 3
+tags: []
+user_id: jortdejong

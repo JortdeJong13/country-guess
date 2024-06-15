@@ -8,16 +8,26 @@ import sys
 
 # Add the top-level directory to the sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from countryguess.data import Dataset
-from countryguess.utils import lines_to_img, normalize_geom
+from countryguess.data import Dataset, lines_to_img
+from countryguess.utils import normalize_geom
 
 
 app = Flask(__name__)
 
+print(mlflow.get_tracking_uri())
+
+# tmp Get model path
+from mlflow import MlflowClient
+client = MlflowClient()
+model_version = client.get_model_version_by_alias(os.environ['MODEL_NAME'], "Champion")
+model_path = '/'.join(model_version.source.split('/')[-5:])
 
 # Load the model
-#model = mlflow.pytorch.load_model(f"models:/triplet_model@Champion")
-model = mlflow.pytorch.load_model("/server/mlruns/217199850258879704/99e3a0230ba84bababfb00c377a70b51/artifacts/model")
+try:
+    model = mlflow.pytorch.load_model(model_path)
+except RuntimeError as e:
+    # Fallback to CPU
+    model = mlflow.pytorch.load_model(model_path, map_location=torch.device("cpu"))
 
 # Load reference data
 ref_data = Dataset(shape=model.shape)
