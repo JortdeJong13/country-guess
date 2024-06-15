@@ -19,7 +19,7 @@ print(mlflow.get_tracking_uri())
 # tmp Get model path
 from mlflow import MlflowClient
 client = MlflowClient()
-model_version = client.get_model_version_by_alias(os.environ['MODEL_NAME'], "Champion")
+model_version = client.get_model_version_by_alias(os.environ['MODEL_NAME'], "champion")
 model_path = '/'.join(model_version.source.split('/')[-5:])
 
 # Load the model
