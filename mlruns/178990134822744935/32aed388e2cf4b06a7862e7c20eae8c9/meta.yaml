@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/32aed388e2cf4b06a7862e7c20eae8c9/artifacts
+end_time: 1718461217452
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: 32aed388e2cf4b06a7862e7c20eae8c9
+run_name: welcoming-doe-538
+run_uuid: 32aed388e2cf4b06a7862e7c20eae8c9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718459978012
+status: 3
+tags: []
+user_id: jortdejong
