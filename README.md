@@ -27,11 +27,13 @@ Welcome to the Country Shape Recognition App! This Python-based machine learning
 2. Install the required packages:
 ‘''pip install -r mlserver/requirements.txt
    pip install -r webapp/requirements.txt’''
-3. Run the ML server:
+3. Set env variable MODEL_NAME 
+'''export MODEL_NAME
+4. Run the ML server:
 ‘''python mlserver/serve.py'''
-4. Start the web app:
+5. Start the web app:
 ‘’’python webapp/app.py’''
-5. Access the web app at http://localhost:5000
+6. Access the web app at http://localhost:5000
 
 ### Docker Installation
 1. Navigate to the project directory.
