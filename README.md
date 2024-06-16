@@ -31,7 +31,7 @@ Welcome to the Country Shape Recognition App! This Python-based machine learning
 pip install -r mlserver/requirements.txt
 pip install -r webapp/requirements.txt
 ```
-3. Set env variable MODEL_NAME 
+3. Set the MODEL_NAME 
 ```export MODEL_NAME=triplet_model```
 4. Run the ML server:
 ```python mlserver/serve.py```
@@ -45,7 +45,7 @@ pip install -r webapp/requirements.txt
 1. Navigate to the project directory.
 2. Run the app using Docker Compose:
 ```docker-compose up -d```
-3. Access web app at [http://localhost:5000](http://localhost:5000)
+3. Access app at [http://localhost:5000](http://localhost:5000)
 
 ## Usage
 
@@ -69,9 +69,9 @@ The architecture and design of the app can be visualized with the following diag
 
 ![Architecture](images/Architecture.png)
 
-The application consists of two main services as described in the docker-compose.yml file: the ML server and the web app. The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns volume is not mounted, the ML server will fall back on a default model within the image.
+The application consists of two main services as described in the docker-compose.yml file: the ML server and the web app. The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns volume is not mounted, the ML server will fall back on a default model within the image. [dataset](https://public.opendatasoft.com/explore/dataset/country_shapes/information/?location=2,-32.99024,1.40625&basemap=jawg.light)
 
-To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made by users will not persist outside the Docker container.
+The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server resonse with a ranking of all the countries within the reference country set. Users can confirm this guess or select the correct country from a dropdown list. To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made will not persist outside the Docker container.
 
 ## License
 
