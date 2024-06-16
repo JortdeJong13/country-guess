@@ -16,8 +16,8 @@ Welcome to the Country Shape Recognition App! This Python-based machine learning
 
 ## Screenshots
 
-![Drawing](images/drawing.png)
-![Prediction](images/prediction.png)
+![Drawing](images/Drawing.png)
+![Prediction](images/Prediction.png)
 
 ## Getting Started
 
