@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/971abaa09fdb46e0954da13e7d3bf63b/artifacts
+end_time: 1718517929601
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 971abaa09fdb46e0954da13e7d3bf63b
+run_name: merciful-kit-286
+run_uuid: 971abaa09fdb46e0954da13e7d3bf63b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718517370739
+status: 3
+tags: []
+user_id: jortdejong

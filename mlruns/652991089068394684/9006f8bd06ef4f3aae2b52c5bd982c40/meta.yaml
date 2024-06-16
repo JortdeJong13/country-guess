@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/9006f8bd06ef4f3aae2b52c5bd982c40/artifacts
+end_time: 1718476215819
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 9006f8bd06ef4f3aae2b52c5bd982c40
+run_name: overjoyed-skink-295
+run_uuid: 9006f8bd06ef4f3aae2b52c5bd982c40
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718475967137
+status: 3
+tags: []
+user_id: jortdejong

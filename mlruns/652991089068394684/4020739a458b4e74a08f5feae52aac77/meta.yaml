@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/4020739a458b4e74a08f5feae52aac77/artifacts
+end_time: 1718520199171
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 4020739a458b4e74a08f5feae52aac77
+run_name: grandiose-grouse-68
+run_uuid: 4020739a458b4e74a08f5feae52aac77
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718519802639
+status: 3
+tags: []
+user_id: jortdejong

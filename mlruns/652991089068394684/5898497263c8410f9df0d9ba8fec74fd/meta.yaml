@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/5898497263c8410f9df0d9ba8fec74fd/artifacts
+end_time: 1718507290155
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 5898497263c8410f9df0d9ba8fec74fd
+run_name: amusing-sloth-413
+run_uuid: 5898497263c8410f9df0d9ba8fec74fd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718506757746
+status: 3
+tags: []
+user_id: jortdejong

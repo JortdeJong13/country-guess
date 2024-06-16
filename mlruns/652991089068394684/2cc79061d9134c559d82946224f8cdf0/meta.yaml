@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/2cc79061d9134c559d82946224f8cdf0/artifacts
+end_time: 1718506754079
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 2cc79061d9134c559d82946224f8cdf0
+run_name: bemused-bird-803
+run_uuid: 2cc79061d9134c559d82946224f8cdf0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718505755645
+status: 3
+tags: []
+user_id: jortdejong

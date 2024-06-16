@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/ca9e3907185e4991b5a254e817b03a74/artifacts
+end_time: 1718467889816
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: ca9e3907185e4991b5a254e817b03a74
+run_name: skittish-worm-27
+run_uuid: ca9e3907185e4991b5a254e817b03a74
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718466540909
+status: 3
+tags: []
+user_id: jortdejong

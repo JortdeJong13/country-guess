@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/1903305e52ec4f3b8a40c1cab36ad73f/artifacts
+end_time: 1718486586905
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 1903305e52ec4f3b8a40c1cab36ad73f
+run_name: unleashed-lark-422
+run_uuid: 1903305e52ec4f3b8a40c1cab36ad73f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718485870302
+status: 3
+tags: []
+user_id: jortdejong

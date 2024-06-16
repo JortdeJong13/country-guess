@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/eb84a0692ccd414cb5ce01fe50ec8062/artifacts
+end_time: 1718524404679
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: eb84a0692ccd414cb5ce01fe50ec8062
+run_name: angry-fox-966
+run_uuid: eb84a0692ccd414cb5ce01fe50ec8062
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718523654804
+status: 3
+tags: []
+user_id: jortdejong
