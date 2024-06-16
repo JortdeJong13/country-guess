@@ -39,19 +39,19 @@ pip install -r webapp/requirements.txt
 ```export MLSERVER_URL=http://127.0.0.1:5001/predict```
 6. Start the web app:
 ```python webapp/app.py```
-7. Access the web app at ![http://localhost:5000](http://localhost:5000)
+7. Access the web app at [http://localhost:5000](http://localhost:5000)
 
 ### Docker Installation
 1. Navigate to the project directory.
 2. Run the app using Docker Compose:
-‘’’Docker-compose up -d’''
-3. Access the web app at ![http://localhost:5000](http://localhost:5000)
+```docker-compose up -d```
+3. Access the web app at [http://localhost:5000](http://localhost:5000)
 
 ## Usage
 
 ### Running the app
 
-Once the app is running, you can draw a country shape in the browser. The ML model will guess the country, and you can confirm or correct the guess using a dropdown list.
+Once the app is running, you can draw a country shape in the browser. The ML model will guess the country, and you can confirm or correct the guess using a dropdown list. The drawing will be included in the test set for model evaluation. 
 
 ### Jupyter Notebooks
 
