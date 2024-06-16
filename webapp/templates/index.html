@@ -6,9 +6,12 @@
     <title>Draw Shapes</title> 
     <style> 
         body { 
-            font-family: Arial, 
-            sans-serif; text-align:
-            center; margin: 0; padding: 0; 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #0d1117; 
+            color: #c9d1d9; 
         }
 
         #canvas-container {
@@ -18,8 +21,9 @@
         }
 
         canvas {
-            border: 2px solid black;
+            border: 2px solid #30363d;
             cursor: crosshair;
+            background-color: #161b22;
         }
 
         #buttons-container {
@@ -31,25 +35,48 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            background-color: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        #country-name {
+        button:hover {
+            background-color: #30363d;
+            color: #c9d1d9;
+        }
+
+        #guess-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #d29922; /* Dark yellow color for the guess message */
+        }
+
+        #instruction-message {
+            display: none;
+            font-style: italic;
+            color: #8b949e;
             margin-top: 20px;
         }
 
         #confirmation-container {
-            display: none; /* Hide the confirmation container initially */
+            display: none;
             margin-top: 20px;
         }
 
-        #country-confirm-btn {
-            display: none; /* Hide the confirm button initially */
+        select {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 5px;
         }
-        
-        #instruction-message {
-            display: none; /* Hide the instruction message initially */
-            font-style: italic;
-            color: #666;
+
+        select option {
+            background-color: #21262d;
+            color: #c9d1d9;
         }
     </style>
 </head>
@@ -112,6 +139,7 @@
                 ctx.beginPath();
                 ctx.moveTo(lastX, lastY);
                 ctx.lineTo(x, y);
+                ctx.strokeStyle = '#ffffff';
                 ctx.stroke();
 
                 [lastX, lastY] = [x, y];
