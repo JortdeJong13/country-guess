@@ -1,0 +1,16 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/74a5652d8e504f4da214a5de7c996125/artifacts
+deleted_time: 1718535634536
+end_time: 1718535601177
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: deleted
+run_id: 74a5652d8e504f4da214a5de7c996125
+run_name: gregarious-mare-834
+run_uuid: 74a5652d8e504f4da214a5de7c996125
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718535462983
+status: 4
+tags: []
+user_id: jortdejong

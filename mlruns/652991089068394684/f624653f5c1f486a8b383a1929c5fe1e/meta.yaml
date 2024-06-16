@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/f624653f5c1f486a8b383a1929c5fe1e/artifacts
+end_time: 1718508053638
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: f624653f5c1f486a8b383a1929c5fe1e
+run_name: nosy-tern-465
+run_uuid: f624653f5c1f486a8b383a1929c5fe1e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718507783122
+status: 3
+tags: []
+user_id: jortdejong

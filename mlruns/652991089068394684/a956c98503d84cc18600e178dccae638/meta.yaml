@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/a956c98503d84cc18600e178dccae638/artifacts
+end_time: 1718504354334
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: a956c98503d84cc18600e178dccae638
+run_name: welcoming-cub-95
+run_uuid: a956c98503d84cc18600e178dccae638
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718503830972
+status: 3
+tags: []
+user_id: jortdejong

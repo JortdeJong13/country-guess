@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/b373ceae8ede4e12a52774984480d0bc/artifacts
+end_time: 1718495216752
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: b373ceae8ede4e12a52774984480d0bc
+run_name: peaceful-auk-253
+run_uuid: b373ceae8ede4e12a52774984480d0bc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718494936782
+status: 3
+tags: []
+user_id: jortdejong

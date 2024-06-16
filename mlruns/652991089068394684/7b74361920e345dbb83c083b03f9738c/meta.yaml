@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/7b74361920e345dbb83c083b03f9738c/artifacts
+end_time: 1718512564519
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 7b74361920e345dbb83c083b03f9738c
+run_name: upset-toad-393
+run_uuid: 7b74361920e345dbb83c083b03f9738c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718511433031
+status: 3
+tags: []
+user_id: jortdejong

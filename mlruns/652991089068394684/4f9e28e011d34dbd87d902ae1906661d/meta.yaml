@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/4f9e28e011d34dbd87d902ae1906661d/artifacts
+end_time: 1718529887361
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 4f9e28e011d34dbd87d902ae1906661d
+run_name: youthful-zebra-488
+run_uuid: 4f9e28e011d34dbd87d902ae1906661d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718527827095
+status: 3
+tags: []
+user_id: jortdejong

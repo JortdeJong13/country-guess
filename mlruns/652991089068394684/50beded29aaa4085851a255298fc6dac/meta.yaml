@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/50beded29aaa4085851a255298fc6dac/artifacts
+end_time: 1718492441935
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 50beded29aaa4085851a255298fc6dac
+run_name: loud-kit-323
+run_uuid: 50beded29aaa4085851a255298fc6dac
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718489387726
+status: 3
+tags: []
+user_id: jortdejong

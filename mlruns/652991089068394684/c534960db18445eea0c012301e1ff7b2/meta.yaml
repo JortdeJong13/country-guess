@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/c534960db18445eea0c012301e1ff7b2/artifacts
+end_time: 1718497526770
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: c534960db18445eea0c012301e1ff7b2
+run_name: mysterious-lamb-1
+run_uuid: c534960db18445eea0c012301e1ff7b2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718497100066
+status: 3
+tags: []
+user_id: jortdejong

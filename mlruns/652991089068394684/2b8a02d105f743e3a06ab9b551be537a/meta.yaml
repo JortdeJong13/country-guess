@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jortdejong/GitHub/country-guess/mlruns/652991089068394684/2b8a02d105f743e3a06ab9b551be537a/artifacts
+end_time: 1718494933457
+entry_point_name: ''
+experiment_id: '652991089068394684'
+lifecycle_stage: active
+run_id: 2b8a02d105f743e3a06ab9b551be537a
+run_name: whimsical-chimp-282
+run_uuid: 2b8a02d105f743e3a06ab9b551be537a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718493974113
+status: 3
+tags: []
+user_id: jortdejong
