@@ -23,7 +23,7 @@ Welcome to the Country Shape Recognition App! This Python-based machine learning
 
 ## Getting Started
 
-### Local Installation
+### Local
 
 1. Navigate to the project directory.
 2. Install the required packages:
@@ -41,7 +41,7 @@ pip install -r webapp/requirements.txt
 ```python webapp/app.py```
 7. Access the app at [http://localhost:5000](http://localhost:5000)
 
-### Docker Installation
+### Docker
 1. Navigate to the project directory.
 2. Run the app using Docker Compose:
 ```docker-compose up -d```
