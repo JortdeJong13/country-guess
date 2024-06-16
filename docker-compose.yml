@@ -8,8 +8,8 @@ services:
       - 5001
     environment:
       - MODEL_NAME=triplet_model
-    volumes:
-      - ./mlruns:/mlruns # Optional
+    # volumes:
+    #   - ./mlruns:/mlruns # Optional
 
   webapp:
     build:
@@ -17,9 +17,9 @@ services:
       dockerfile: ./webapp/Dockerfile
     image: webapp
     ports:
-      - '5002:5000'
+      - '5000:5000'
     environment:
       - MLSERVER_URL=http://mlserver:5001/predict
       - FLASK_APP=/webapp/app.py
-    volumes:
-      - ./data/drawings.geojson:/data/drawings.geojson # Optional
+    # volumes:
+    #   - ./data/drawings.geojson:/data/drawings.geojson # Optional

@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1718539873355
+current_stage: None
+description: ''
+last_updated_timestamp: 1718539873355
+name: default
+run_id: 4e97bf19913841d8ab3e99d8b76fa78c
+run_link: ''
+source: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/4e97bf19913841d8ab3e99d8b76fa78c/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/4e97bf19913841d8ab3e99d8b76fa78c/artifacts/model
+user_id: null
+version: 1
