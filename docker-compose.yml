@@ -9,7 +9,7 @@ services:
     environment:
       - MODEL_NAME=triplet_model
     volumes:
-      - ./mlruns:/mlruns
+      - ./mlruns:/mlruns # Optional
 
   webapp:
     build:

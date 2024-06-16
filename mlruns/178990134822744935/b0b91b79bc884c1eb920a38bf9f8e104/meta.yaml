@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/b0b91b79bc884c1eb920a38bf9f8e104/artifacts
+end_time: 1718532891045
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: b0b91b79bc884c1eb920a38bf9f8e104
+run_name: righteous-fly-576
+run_uuid: b0b91b79bc884c1eb920a38bf9f8e104
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718532484738
+status: 3
+tags: []
+user_id: jortdejong

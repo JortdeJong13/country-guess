@@ -1,8 +1,10 @@
 import torch
 from torch import nn
 import numpy as np
+from mlflow import MlflowClient
+from mlflow.pytorch import load_model
 
-from .data import poly_to_img
+from .data import poly_to_img, Dataset
 
 
 class TripletModel(nn.Module):
@@ -23,13 +25,13 @@ class TripletModel(nn.Module):
     
     def conv_block(self, in_dim, out_dim):
         return nn.Sequential(
-            nn.Conv2d(in_dim, out_dim, 3, padding=1),
+            nn.Conv2d(in_dim, out_dim, 3, padding=1, bias=False),
             nn.BatchNorm2d(out_dim),
             nn.ReLU(),
-            nn.Conv2d(out_dim, out_dim, 3, padding=1),
+            nn.Conv2d(out_dim, out_dim, 3, padding=1, bias=False),
             nn.BatchNorm2d(out_dim),
             nn.ReLU(),
-            nn.Conv2d(out_dim, out_dim, 3, padding=1),
+            nn.Conv2d(out_dim, out_dim, 3, padding=1, bias=False),
             nn.BatchNorm2d(out_dim),
             nn.ReLU(),
             nn.MaxPool2d(2))
@@ -68,3 +70,30 @@ class TripletModel(nn.Module):
             distances.append(distance.cpu())
 
         return countries, np.array(distances)
+
+
+def fetch_model(model_name):
+    # Get model version
+    client = MlflowClient()
+    try:
+        model_version = client.get_model_version_by_alias(model_name, "champion")
+
+    except Exception as e:
+        # Fallback to default model
+        model_version = client.get_model_version_by_alias("default", "champion")
+    
+    model_path = '/'.join(model_version.source.split('/')[-5:])
+
+    # Load the model
+    try:
+        model = load_model(model_path)
+        
+    except RuntimeError as e:
+        # Fallback to CPU
+        model = load_model(model_path, map_location=torch.device("cpu"))
+
+    # Load reference data
+    ref_data = Dataset(shape=model.shape)
+    model.load_reference(ref_data)
+
+    return model

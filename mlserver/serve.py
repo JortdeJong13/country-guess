@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import mlflow.pytorch
 import torch
 import numpy as np
 from shapely import from_geojson
@@ -8,30 +7,15 @@ import sys
 
 # Add the top-level directory to the sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from countryguess.data import Dataset, lines_to_img
+from countryguess.data import lines_to_img
 from countryguess.utils import normalize_geom
+from countryguess.model import fetch_model
 
 
 app = Flask(__name__)
 
-print(mlflow.get_tracking_uri())
-
-# tmp Get model path
-from mlflow import MlflowClient
-client = MlflowClient()
-model_version = client.get_model_version_by_alias(os.environ['MODEL_NAME'], "champion")
-model_path = '/'.join(model_version.source.split('/')[-5:])
-
-# Load the model
-try:
-    model = mlflow.pytorch.load_model(model_path)
-except RuntimeError as e:
-    # Fallback to CPU
-    model = mlflow.pytorch.load_model(model_path, map_location=torch.device("cpu"))
-
-# Load reference data
-ref_data = Dataset(shape=model.shape)
-model.load_reference(ref_data)
+# Load model
+model = fetch_model(os.environ['MODEL_NAME'])
 
 
 @app.route('/predict', methods=['POST'])

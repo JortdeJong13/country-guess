@@ -7,6 +7,8 @@ RUN pip install -r mlserver/requirements.txt
 
 # Copy reference data and code
 COPY data/reference.geojson data/
+COPY mlruns/0 mlruns/
+COPY mlruns/models/default mlruns/models/
 COPY countryguess/utils.py countryguess/
 COPY countryguess/data.py countryguess/
 COPY countryguess/model.py countryguess/
