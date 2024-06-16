@@ -39,17 +39,17 @@ pip install -r webapp/requirements.txt
 ```export MLSERVER_URL=http://127.0.0.1:5001/predict```
 6. Start the web app:
 ```python webapp/app.py```
-7. Access the web app at [http://localhost:5000](http://localhost:5000)
+7. Access the app at [http://localhost:5000](http://localhost:5000)
 
 ### Docker Installation
 1. Navigate to the project directory.
 2. Run the app using Docker Compose:
 ```docker-compose up -d```
-3. Access the web app at [http://localhost:5000](http://localhost:5000)
+3. Access web app at [http://localhost:5000](http://localhost:5000)
 
 ## Usage
 
-### Running the app
+### Drawing
 
 Once the app is running, you can draw a country shape in the browser. The ML model will guess the country, and you can confirm or correct the guess using a dropdown list. The drawing will be included in the test set for model evaluation. 
 
@@ -69,9 +69,9 @@ The architecture and design of the app can be visualized with the following diag
 
 ![Architecture](images/Architecture.png)
 
-The application consists of two main services as described in the docker-compose.yml file: the ML server and the web app. The ML server image is built using a copy of the reference data. To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made by users will not persist outside the Docker container.
+The application consists of two main services as described in the docker-compose.yml file: the ML server and the web app. The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns volume is not mounted, the ML server will fall back on a default model within the image.
 
-If the mlruns volume is not mounted, the ML server will fall back on a default model embedded within the image. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias.
+To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made by users will not persist outside the Docker container.
 
 ## License
 
