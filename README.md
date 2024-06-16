@@ -16,8 +16,10 @@ Welcome to the Country Shape Recognition App! This Python-based machine learning
 
 ## Screenshots
 
-![Drawing](images/Drawing.png)
-![Prediction](images/Prediction.png)
+<div style="display: flex; justify-content: space-around;">
+  <img src="images/Drawing.png" alt="Drawing" style="width: 45%;">
+  <img src="images/Prediction.png" alt="Prediction" style="width: 45%;">
+</div>
 
 ## Getting Started
 
@@ -25,21 +27,25 @@ Welcome to the Country Shape Recognition App! This Python-based machine learning
 
 1. Navigate to the project directory.
 2. Install the required packages:
-‘''pip install -r mlserver/requirements.txt
-   pip install -r webapp/requirements.txt’''
+```
+pip install -r mlserver/requirements.txt
+pip install -r webapp/requirements.txt
+```
 3. Set env variable MODEL_NAME 
-'''export MODEL_NAME
+```export MODEL_NAME=triplet_model```
 4. Run the ML server:
-‘''python mlserver/serve.py'''
-5. Start the web app:
-‘’’python webapp/app.py’''
-6. Access the web app at http://localhost:5000
+```python mlserver/serve.py```
+5. Set the ML server URL:
+```export MLSERVER_URL=http://127.0.0.1:5001/predict```
+6. Start the web app:
+```python webapp/app.py```
+7. Access the web app at ![http://localhost:5000](http://localhost:5000)
 
 ### Docker Installation
 1. Navigate to the project directory.
 2. Run the app using Docker Compose:
 ‘’’Docker-compose up -d’''
-3. Access the web app at http://localhost:5000
+3. Access the web app at ![http://localhost:5000](http://localhost:5000)
 
 ## Usage
 
@@ -60,6 +66,8 @@ Example of synthetic drawing augmentation:
 ## Architecture and design
 
 The architecture and design of the app can be visualized with the following diagram:
+
+![Architecture](images/Architecture.png)
 
 The application consists of two main services as described in the docker-compose.yml file: the ML server and the web app. The ML server image is built using a copy of the reference data. To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made by users will not persist outside the Docker container.
 
