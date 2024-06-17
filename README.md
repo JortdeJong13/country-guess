@@ -31,7 +31,7 @@ Welcome to my Country Guess App side project! With this machine learning applica
 pip install -r mlserver/requirements.txt
 pip install -r webapp/requirements.txt
 ```
-3. Set the model name
+3. Set the model name:
 ```export MODEL_NAME=triplet_model```
 4. Run the ML server:
 ```python mlserver/serve.py```
