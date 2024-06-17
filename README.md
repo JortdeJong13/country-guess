@@ -1,6 +1,6 @@
 # Country Guess App
 
-Welcome to my Country Guess App side project! With this machine learning application you can test your drawing skills. You can draw a country shape in the browser. A Convolutional Neural Network will then guess which country has been drawn.
+Welcome to my Country Guess App side project! With this machine learning application you can test your drawing skills. You can draw a country shape in the browser, a Convolutional Neural Network will then guess which country you have drawn.
 
 ## Table of Contents
 
