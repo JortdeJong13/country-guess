@@ -44,7 +44,7 @@ pip install -r webapp/requirements.txt
 ### Docker
 1. Navigate to the project directory.
 2. Run the app using Docker Compose:
-```docker-compose up -d```
+```docker-compose up -d --build```
 3. Access app at [http://localhost:5000](http://localhost:5000)
 
 ## Usage
