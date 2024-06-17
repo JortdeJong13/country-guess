@@ -51,7 +51,7 @@ pip install -r webapp/requirements.txt
 
 ### Drawing
 
-Once the app is running, you can draw a country shape in the browser. The ML model will guess which country has been drawn, you can confirm or correct the guess using the dropdown list. This drawing will then be included in the test set for future model evaluation. 
+Once the app is running, you can draw a country. The ML model will guess which country has been drawn, you can confirm or correct the guess using the dropdown list. This drawing will then be included in the test set for future model evaluation.
 
 ### Diving in
 
@@ -70,9 +70,9 @@ The architecture and design of the app can be visualized with the following diag
 
 ![Architecture](images/Architecture.png)
 
-The application consists of two main services as described in the docker-compose.yml file: the ML server and the web app. The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns volume is not mounted, the ML server will fall back on a default model within the image. 
+The application consists of two independent services: the ML server and the web app backend. The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns directory is not mounted, the ML server will fall back on a default model within the image. 
 
-The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server resonse with a ranking of all the countries within the reference country set. Users can confirm this guess or select the correct country from a dropdown list. To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made will not persist outside the Docker container.
+The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server resonse with a ranking of all the countries in the reference country dataset. Users can confirm this guess or select the correct country from a dropdown list. The drawing will be saved along with the country name. To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made will not persist outside the Docker container.
 
 ## License
 
