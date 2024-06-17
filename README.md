@@ -64,7 +64,7 @@ Example of generated drawing:
 
 When training a model, you can start an MLflow Tracking server by running the ```mlflow ui``` command. Here you can compare different runs and register a model through the UI. The model name can be set in the docker-compose.yml or by changing the environment variable when running the app locally. The ML server will select the model with the “champion” alias.
 
-## Architecture and design
+## Architecture and Design
 
 The architecture and design of the app can be visualized with the following diagram:
 
