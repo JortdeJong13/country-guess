@@ -31,15 +31,15 @@ Welcome to my Country Guess App side project! With this machine learning applica
 pip install -r mlserver/requirements.txt
 pip install -r webapp/requirements.txt
 ```
-3. Set the model name:
-```export MODEL_NAME=triplet_model```
-4. Run the ML server:
-```python mlserver/serve.py```
-5. Set the ML server URL:
-```export MLSERVER_URL=http://127.0.0.1:5001/predict```
-6. Start the web app:
-```python webapp/app.py```
-7. Access the app at [http://localhost:5000](http://localhost:5000)
+3. Set the model name and run the ML server:
+```
+MODEL_NAME=triplet_model python mlserver/serve.py
+```
+5. Set the ML server URL and start the web app:
+```
+MLSERVER_URL=http://127.0.0.1:5001/predict python webapp/app.py
+```
+4. Access the app at [http://localhost:5000](http://localhost:5000)
 
 ### Docker Installation
 1. Navigate to the project directory.
