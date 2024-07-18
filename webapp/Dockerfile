@@ -9,7 +9,6 @@ RUN mkdir -p /data && echo '{"type": "FeatureCollection", "features": []}' > /da
 
 # Copy code
 COPY countryguess/utils.py countryguess/
-COPY webapp/templates webapp/templates
-COPY webapp/app.py webapp/
+COPY webapp webapp
 
 CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
