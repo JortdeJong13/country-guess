@@ -1,4 +1,4 @@
-# Country Guess App
+# <img src="webapp/static/favicon.ico" alt="favicon" width="28" height="28"> Country Guess App
 
 Welcome to my Country Guess App side project! With this machine learning application you can test your drawing skills. You can draw a country shape in the browser, a Convolutional Neural Network will then guess which country you have drawn.
 
