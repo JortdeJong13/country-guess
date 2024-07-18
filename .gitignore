@@ -1,5 +1,5 @@
 .DS_Store
 .ipynb_checkpoints
-env
+/env
 countryguess/__pycache__
 mlruns/.trash
