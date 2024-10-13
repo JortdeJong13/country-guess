@@ -7,7 +7,7 @@ from flask import Flask, jsonify, request
 from shapely import from_geojson
 
 # Add the top-level directory to the sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from countryguess.data import lines_to_img
 from countryguess.model import fetch_model
 from countryguess.utils import normalize_geom
@@ -15,10 +15,10 @@ from countryguess.utils import normalize_geom
 app = Flask(__name__)
 
 # Load model
-model = fetch_model(os.environ['MODEL_NAME'])
+model = fetch_model(os.getenv("MODEL_NAME", "default_model"))
 
 
-@app.route('/predict', methods=['POST'])
+@app.route("/predict", methods=["POST"])
 def predict():
     # Preproces input
     drawing = from_geojson(request.json)
@@ -35,5 +35,5 @@ def predict():
     return jsonify(countries)
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001)
