@@ -1,16 +1,16 @@
-from flask import Flask, request, jsonify
-import torch
-import numpy as np
-from shapely import from_geojson
 import os
 import sys
+
+import numpy as np
+import torch
+from flask import Flask, jsonify, request
+from shapely import from_geojson
 
 # Add the top-level directory to the sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from countryguess.data import lines_to_img
-from countryguess.utils import normalize_geom
 from countryguess.model import fetch_model
-
+from countryguess.utils import normalize_geom
 
 app = Flask(__name__)
 
