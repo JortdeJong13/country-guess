@@ -1,6 +1,7 @@
 import torch
 from torch import nn
-from torchvision.models import efficientnet_b0, EfficientNet_B0_Weights
+
+# from torchvision.models import efficientnet_b0, EfficientNet_B0_Weights
 import numpy as np
 from mlflow import MlflowClient
 from mlflow.pytorch import load_model
@@ -14,12 +15,16 @@ class TripletModel(nn.Module):
         self.embedding_model = embedding_model
         self._ref_countries = None
 
+    @property
+    def shape(self):
+        return self.embedding_model.shape
+
     def forward(self, x):
         return self.embedding_model(x)
 
     @torch.no_grad
     def load_reference(self, ref_data):
-        assert ref_data.shape == self.embedding_model.shape
+        assert ref_data.shape == self.shape
         self._ref_countries = {}
         for idx in range(len(ref_data)):
             img = poly_to_img(ref_data[idx], ref_data.shape)
