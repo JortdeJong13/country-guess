@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/e6d3f1f132af411996d00ab21a1132db/artifacts
+deleted_time: 1734182214683
+end_time: 1734182164262
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: e6d3f1f132af411996d00ab21a1132db
+run_name: angry-swan-434
+run_uuid: e6d3f1f132af411996d00ab21a1132db
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734182148148
+status: 4
+tags: []
+user_id: jortdejong

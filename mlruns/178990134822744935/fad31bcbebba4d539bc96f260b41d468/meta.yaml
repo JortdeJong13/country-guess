@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/fad31bcbebba4d539bc96f260b41d468/artifacts
+deleted_time: 1734185696623
+end_time: 1734185645001
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: fad31bcbebba4d539bc96f260b41d468
+run_name: inquisitive-frog-431
+run_uuid: fad31bcbebba4d539bc96f260b41d468
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734185629740
+status: 4
+tags: []
+user_id: jortdejong

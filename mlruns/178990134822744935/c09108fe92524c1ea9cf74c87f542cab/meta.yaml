@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/c09108fe92524c1ea9cf74c87f542cab/artifacts
+deleted_time: 1734184050980
+end_time: 1734184007247
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: c09108fe92524c1ea9cf74c87f542cab
+run_name: incongruous-ox-604
+run_uuid: c09108fe92524c1ea9cf74c87f542cab
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734183996912
+status: 4
+tags: []
+user_id: jortdejong

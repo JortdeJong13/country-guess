@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/427e76b057764a21881451c19cd3aae9/artifacts
+end_time: 1734178547239
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: 427e76b057764a21881451c19cd3aae9
+run_name: unleashed-mouse-434
+run_uuid: 427e76b057764a21881451c19cd3aae9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734177524573
+status: 3
+tags: []
+user_id: jortdejong

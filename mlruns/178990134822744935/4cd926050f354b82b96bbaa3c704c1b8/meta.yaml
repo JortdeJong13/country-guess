@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/4cd926050f354b82b96bbaa3c704c1b8/artifacts
+end_time: 1734179687068
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: 4cd926050f354b82b96bbaa3c704c1b8
+run_name: resilient-cub-310
+run_uuid: 4cd926050f354b82b96bbaa3c704c1b8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734178661487
+status: 3
+tags: []
+user_id: jortdejong

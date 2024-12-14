@@ -18,7 +18,7 @@ def rm_island(polygons, area):
 
 def generate_drawing(polygon, shape, temp=1.0):
     #Simplify Polygon
-    polygon = simplify(polygon, tolerance=random.uniform(0, 3*temp))
+    polygon = simplify(polygon, tolerance=random.uniform(0, 4*temp))
 
     #Decompose MultiPolygon
     polygon = decompose(polygon)
@@ -38,14 +38,18 @@ def generate_drawing(polygon, shape, temp=1.0):
     
     #Augment Polygon
     aug = iaa.Sequential([
-        iaa.ScaleX((1/(1+0.6*temp), 1+0.6*temp)),
-        iaa.ShearX((-19*temp, 19*temp)),
-        iaa.PerspectiveTransform(scale=(0, 0.13*temp)),
+        iaa.ScaleX((1/(1+0.3*temp), 1+0.3*temp)),
+        iaa.ShearX((-8*temp, 8*temp)),
+        iaa.PerspectiveTransform(scale=(0, 0.12*temp)),
         iaa.WithPolarWarping(
             iaa.Affine(translate_percent={
-                "x": (-0.06*temp, 0.06*temp), 
-                "y": (-0.06*temp, 0.06*temp)})
+                "x": (-0.05*temp, 0.05*temp), 
+                "y": (-0.05*temp, 0.05*temp)})    
             ),
+        iaa.WithPolarWarping(
+            iaa.ShearX((-2*temp, -2*temp)),
+        ),
+        iaa.Rotate((-5*temp, 5*temp)),
         ])
     polygon = aug(polygons=polygon)
 

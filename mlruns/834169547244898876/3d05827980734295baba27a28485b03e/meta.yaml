@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/834169547244898876/3d05827980734295baba27a28485b03e/artifacts
+deleted_time: 1734095243932
+end_time: 1734095104463
+entry_point_name: ''
+experiment_id: '834169547244898876'
+lifecycle_stage: deleted
+run_id: 3d05827980734295baba27a28485b03e
+run_name: whimsical-newt-744
+run_uuid: 3d05827980734295baba27a28485b03e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734095095517
+status: 4
+tags: []
+user_id: jortdejong
