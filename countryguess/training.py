@@ -30,7 +30,7 @@ def train(model, train_dl, triplet_loss, optimizer):
 
         # Mine triplets
         anc_emb, pos_emb, neg_emb = triplet_mining(
-            anc_emb, pos_emb, neg_emb, batch["pos_idx"], batch["neg_idx"], triplet_loss.margin
+            anc_emb, pos_emb, neg_emb, batch["pos_idx"], batch["neg_idx"]
         )
 
         # Compute loss
