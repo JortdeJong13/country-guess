@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/4bb930778b0f4195b517be97bfc39954/artifacts
+deleted_time: 1734182305904
+end_time: 1734182214548
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: 4bb930778b0f4195b517be97bfc39954
+run_name: capricious-lamb-918
+run_uuid: 4bb930778b0f4195b517be97bfc39954
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734182198163
+status: 4
+tags: []
+user_id: jortdejong

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/a263946208414a4f97b3ad3b0bf9db37/artifacts
+deleted_time: 1734184050980
+end_time: 1734183879618
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: deleted
+run_id: a263946208414a4f97b3ad3b0bf9db37
+run_name: clumsy-loon-330
+run_uuid: a263946208414a4f97b3ad3b0bf9db37
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734183869252
+status: 4
+tags: []
+user_id: jortdejong

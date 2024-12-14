@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/aa4d77c98aa74936818361e4c775f40a/artifacts
+end_time: 1734115461117
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: aa4d77c98aa74936818361e4c775f40a
+run_name: glamorous-wren-276
+run_uuid: aa4d77c98aa74936818361e4c775f40a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734114608210
+status: 3
+tags: []
+user_id: jortdejong

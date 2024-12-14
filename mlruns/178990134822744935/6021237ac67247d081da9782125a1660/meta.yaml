@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/6021237ac67247d081da9782125a1660/artifacts
+end_time: 1734114260777
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: 6021237ac67247d081da9782125a1660
+run_name: glamorous-ant-48
+run_uuid: 6021237ac67247d081da9782125a1660
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734113194143
+status: 3
+tags: []
+user_id: jortdejong

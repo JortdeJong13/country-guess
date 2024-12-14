@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/d6b0a9c163254a23958d81ed88d9c0e2/artifacts
+end_time: 1734119270392
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: d6b0a9c163254a23958d81ed88d9c0e2
+run_name: skittish-yak-170
+run_uuid: d6b0a9c163254a23958d81ed88d9c0e2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734118177830
+status: 3
+tags: []
+user_id: jortdejong

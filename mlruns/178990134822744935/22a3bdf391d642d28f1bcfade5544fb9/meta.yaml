@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/22a3bdf391d642d28f1bcfade5544fb9/artifacts
+end_time: 1734120552665
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: 22a3bdf391d642d28f1bcfade5544fb9
+run_name: sedate-conch-475
+run_uuid: 22a3bdf391d642d28f1bcfade5544fb9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734119565418
+status: 3
+tags: []
+user_id: jortdejong

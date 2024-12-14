@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/834169547244898876/8e90a57046244b8caaf9ac205a6e7db1/artifacts
+end_time: 1734109533959
+entry_point_name: ''
+experiment_id: '834169547244898876'
+lifecycle_stage: active
+run_id: 8e90a57046244b8caaf9ac205a6e7db1
+run_name: calm-shrike-452
+run_uuid: 8e90a57046244b8caaf9ac205a6e7db1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734106780873
+status: 3
+tags: []
+user_id: jortdejong

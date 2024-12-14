@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from torchvision.models import efficientnet_b0, EfficientNet_B0_Weights
 import numpy as np
 from mlflow import MlflowClient
 from mlflow.pytorch import load_model
@@ -15,14 +16,6 @@ class TripletModel(nn.Module):
 
     def forward(self, x):
         return self.embedding_model(x)
-
-    def __call__(self, x):
-        x = self.conv_blocks(x)
-        x = x.flatten(start_dim=1)
-        x = self.dropout(x)
-        x = self.linear(x)
-
-        return x
 
     @torch.no_grad
     def load_reference(self, ref_data):
@@ -102,6 +95,45 @@ class CustomEmbeddingModel(nn.Module):
         x = x.flatten(start_dim=1)
         x = self.dropout(x)
         x = self.linear(x)
+        return x
+
+
+class EfficientNetEmbedding(nn.Module):
+    def __init__(self, embedding_size=128, shape=64, pretrained=True, **kwargs):
+        super().__init__()
+        self.shape = (shape, shape)
+
+        # Load pretrained EfficientNet-B0
+        weights = EfficientNet_B0_Weights.DEFAULT if pretrained else None
+        efficientnet = efficientnet_b0(weights=weights)
+
+        # Modify first conv layer to accept single channel
+        original_conv = efficientnet.features[0][0]
+        efficientnet.features[0][0] = nn.Conv2d(
+            1,  # Change input channels to 1
+            original_conv.out_channels,
+            kernel_size=original_conv.kernel_size,
+            stride=original_conv.stride,
+            padding=original_conv.padding,
+            bias=original_conv.bias is not None,
+        )
+
+        # Compute weight for first conv
+        if pretrained:
+            new_conv_weights = original_conv.weight.mean(dim=1, keepdim=True)
+            efficientnet.features[0][0].weight.data = new_conv_weights
+
+        # Remove the classifier
+        self.features = efficientnet.features
+
+        # Add new embedding layer
+        self.embedding = nn.Sequential(
+            nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(1280, embedding_size)
+        )
+
+    def forward(self, x):
+        x = self.features(x)
+        x = self.embedding(x)
         return x
 
 

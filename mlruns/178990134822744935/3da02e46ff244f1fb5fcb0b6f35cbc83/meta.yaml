@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/178990134822744935/3da02e46ff244f1fb5fcb0b6f35cbc83/artifacts
+end_time: 1734127782253
+entry_point_name: ''
+experiment_id: '178990134822744935'
+lifecycle_stage: active
+run_id: 3da02e46ff244f1fb5fcb0b6f35cbc83
+run_name: agreeable-loon-428
+run_uuid: 3da02e46ff244f1fb5fcb0b6f35cbc83
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734126992772
+status: 3
+tags: []
+user_id: jortdejong
