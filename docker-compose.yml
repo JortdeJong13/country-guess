@@ -23,7 +23,3 @@ services:
       - FLASK_APP=/webapp/app.py
     volumes:
       - ./data/drawings.geojson:/data/drawings.geojson # Optional
-
-networks:
-  default:
-    name: country_guess_network
