@@ -1,3 +1,4 @@
+let scale = window.devicePixelRatio || 1;
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -6,9 +7,84 @@ var lastX, lastY;
 var lines = [];
 var currentLine = [];
 
+window.addEventListener("load", setupCanvas);
+window.addEventListener("resize", setupCanvas);
+
+// Add touch event listeners for mobile
+canvas.addEventListener("touchstart", handleTouchStart, false);
+canvas.addEventListener("touchmove", handleTouchMove, false);
+canvas.addEventListener("touchend", handleTouchEnd, false);
+
+// Add mouse event listeners for desktop
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
+
+function setupCanvas() {
+  let containerWidth = canvas.parentElement.clientWidth;
+  canvas.style.width = containerWidth + "px";
+  canvas.style.height = containerWidth + "px";
+  canvas.width = containerWidth * scale;
+  canvas.height = containerWidth * scale;
+  ctx.scale(scale, scale);
+
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+}
+
+updateDrawingContext();
+
+function handleTouchStart(event) {
+  event.preventDefault();
+  const touch = event.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+  const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+
+  isDrawing = true;
+  [lastX, lastY] = [x, y];
+  currentLine.push([x, y]);
+}
+
+function handleTouchMove(event) {
+  event.preventDefault();
+  if (!isDrawing) return;
+
+  const touch = event.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+  const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+
+  const distance = Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2));
+  if (distance > 6) {
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    [lastX, lastY] = [x, y];
+    currentLine.push([x, y]);
+  }
+}
+
+function handleTouchEnd(event) {
+  event.preventDefault();
+  isDrawing = false;
+  if (currentLine.length > 1) {
+    lines.push(currentLine);
+  }
+  currentLine = [];
+}
+
+// Update the drawing context setup
+function updateDrawingContext() {
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+}
 
 function startDrawing(event) {
   isDrawing = true;
