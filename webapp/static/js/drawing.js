@@ -202,12 +202,23 @@ function confirmCountry() {
       guessedCountry,
     );
     document.getElementById("guess-message").innerText = message;
-    // Add confetti here
+
+    setTimeout(() => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        zIndex: 1000,
+        disableForReducedMotion: true,
+        resize: true,
+        useWorker: true,
+      });
+    }, 100);
   } else {
     const message = getRandomMessage(
       incorrectMessages,
-      selectedCountry,
       guessedCountry,
+      selectedCountry,
     );
     document.getElementById("guess-message").innerText = message;
   }
