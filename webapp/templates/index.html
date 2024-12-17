@@ -111,9 +111,16 @@
         </style>
     </head>
     <body>
-        <a href="https://github.com/JortdeJong13/country-guess" id="source-link" target="_blank">
+        <a
+            href="https://github.com/JortdeJong13/country-guess"
+            id="source-link"
+            target="_blank"
+        >
             source
-            <img src="{{ url_for('static', filename='github.png') }}" alt="GitHub">
+            <img
+                src="{{ url_for('static', filename='github.png') }}"
+                alt="GitHub"
+            />
         </a>
 
         <h1>Draw a Country</h1>
@@ -124,7 +131,7 @@
 
         <div id="buttons-container">
             <button id="guess-btn">Guess Country</button>
-            <button id="refresh-btn">Clear Canvas</button>
+            <button id="refresh-btn">Clear Drawing</button>
         </div>
 
         <p id="guess-message"></p>
@@ -221,6 +228,7 @@
                             document.getElementById("guess-message").innerText =
                                 "It looks like you tried to draw " +
                                 data.ranking[0];
+                            window.currentDrawingId = data.drawing_id;
                             showConfirmation(data.ranking);
                         })
                         .catch((error) => {
@@ -310,7 +318,10 @@
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ country: selectedCountry }),
+                    body: JSON.stringify({
+                        country: selectedCountry,
+                        drawing_id: window.currentDrawingId,
+                    }),
                 })
                     .then((response) => response.json())
                     .then((data) => {

@@ -1,8 +1,9 @@
 import os
 import sys
+import uuid
 
 import requests
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, session
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 from shapely import to_geojson
 
@@ -10,11 +11,14 @@ from shapely import to_geojson
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from countryguess.utils import proces_lines, save_drawing
 
+drawing_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../data/drawings.geojson")
+)
+
 app = Flask(__name__)
 
-
-# Global variable to store drawing
-current_drawing = None
+# Set secret key for sessoin
+app.secret_key = os.urandom(24)
 
 
 @app.route("/")
@@ -24,23 +28,24 @@ def index():
 
 @app.route("/guess", methods=["POST"])
 def guess():
-    global current_drawing
-
     data = request.json
     lines = data["lines"]
     drawing = proces_lines(lines)
 
-    # Store the drawing in the global variable
-    current_drawing = drawing
+    # Store the drawing in the session
+    drawing_id = str(uuid.uuid4())
+    session[drawing_id] = drawing
 
     try:
         # Request prediction from ML server
-        response = requests.post(os.environ["MLSERVER_URL"], json=to_geojson(drawing))
+        response = requests.post(os.environ["MLSERVER_URL"], json=drawing)
 
         # Check if there is an error
         response.raise_for_status()
 
-        return jsonify({"message": "Success", "ranking": response.json()})
+        return jsonify(
+            {"message": "Success", "ranking": response.json(), "drawing_id": drawing_id}
+        )
 
     except (ConnectionError, Timeout) as conn_err:
         # Handle connection errors and timeouts
@@ -53,19 +58,19 @@ def guess():
 
 @app.route("/feedback", methods=["POST"])
 def feedback():
-    global current_drawing
-
     data = request.json
     country_name = data["country"]
-    drawing_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "../data/drawings.geojson")
-    )
-    save_drawing(country_name, current_drawing, path=drawing_path)
+    drawing_id = data.get("drawing_id")
 
-    # Clear the global variable after processing
-    current_drawing = None
+    # Retrieve the drawing from the session
+    if drawing_id and drawing_id in session:
+        drawing = session[drawing_id]
+        save_drawing(country_name, drawing, path=drawing_path)
+        del session[drawing_id]
 
-    return jsonify({"message": "Feedback received"})
+        return jsonify({"message": "Feedback received"})
+    else:
+        return jsonify({"message": "Drawing not found"}), 400
 
 
 if __name__ == "__main__":

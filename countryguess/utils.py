@@ -30,7 +30,7 @@ def proces_lines(lines):
     lines = affine_transform(lines, [1, 0, 0, -1, 0, 0])
     lines = normalize_geom(lines)
 
-    return lines
+    return to_geojson(lines)
 
 
 def decompose(polygon):
@@ -48,7 +48,7 @@ def save_drawing(country_name, drawing, path="./data/drawings.geojson"):
             "cntry_name": country_name,
             "timestamp": datetime.now().isoformat(),
         },
-        "geometry": json.loads(to_geojson(drawing)),
+        "geometry": json.loads(drawing),
     }
 
     # Open the GeoJSON file for appending

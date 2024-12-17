@@ -125,4 +125,4 @@ def fetch_model(model_name):
     ref_data = Dataset(shape=model.shape)
     model.load_reference(ref_data)
 
-    return model
+    return model, next(model.parameters()).device
