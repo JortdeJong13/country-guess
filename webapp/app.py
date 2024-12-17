@@ -5,7 +5,6 @@ import uuid
 import requests
 from flask import Flask, jsonify, render_template, request, session
 from requests.exceptions import ConnectionError, HTTPError, Timeout
-from shapely import to_geojson
 
 # Add the top-level directory to the sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -17,8 +16,8 @@ drawing_path = os.path.abspath(
 
 app = Flask(__name__)
 
-# Set secret key for sessoin
-app.secret_key = os.urandom(24)
+# Set secret key for session
+app.secret_key = os.environ.get("FLASK_SECRET_KEY") or os.urandom(24)
 
 
 @app.route("/")
@@ -59,7 +58,7 @@ def guess():
 @app.route("/feedback", methods=["POST"])
 def feedback():
     data = request.json
-    country_name = data["country"]
+    country_name = data.get("country")
     drawing_id = data.get("drawing_id")
 
     # Retrieve the drawing from the session
