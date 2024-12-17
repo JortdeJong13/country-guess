@@ -23,7 +23,7 @@ const initialGuessMessages = [
 
 const correctMessages = [
   "I know a {{selected}} when I see one!",
-  "You’ve got it! That’s clearly {{selected}}—nice work!",
+  "Phew! Wasn't sure about that one.",
   "No doubt about it, that’s {{selected}}. Good job!",
   "Ah, {{selected}}! I recognized that right away.",
   "Great drawing! I knew it was {{selected}} instantly.",
@@ -200,15 +200,16 @@ function confirmCountry() {
 
     setTimeout(() => {
       confetti({
-        particleCount: 100,
+        particleCount: 150,
         spread: 70,
-        origin: { y: 0.6 },
+        startVelocity: 70,
         zIndex: 1000,
-        disableForReducedMotion: true,
+        origin: { y: 1, x: 0.5 },
         resize: true,
         useWorker: true,
+        ticks: 280,
       });
-    }, 100);
+    }, 50);
   } else {
     const message = getRandomMessage(
       incorrectMessages,
