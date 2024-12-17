@@ -17,7 +17,7 @@ drawing_path = os.path.abspath(
 app = Flask(__name__)
 
 # Set secret key for session
-app.secret_key = os.environ.get("FLASK_SECRET_KEY") or os.urandom(24)
+app.secret_key = os.urandom(24)
 
 
 @app.route("/")
