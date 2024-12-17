@@ -15,12 +15,10 @@ const initialGuessMessages = [
   "I think this might be {{guessed}}. Am I right?",
   "Hmm, this looks like {{guessed}} to me.",
   "If I had to guess, I’d say this is {{guessed}}.",
-  "Is this supposed to be {{guessed}}? That’s my guess!",
   "This reminds me of {{guessed}}.",
   "Could it be {{guessed}}? That’s what I’m seeing.",
-  "I’m going with {{guessed}}...",
-  "It’s giving me {{guessed}} vibes. Am I close?",
-  "My best guess? Definitely {{guessed}}.",
+  "It’s giving me {{guessed}} vibes. Am I right?",
+  "My best guess? I'm going with {{guessed}}.",
 ];
 
 const correctMessages = [
@@ -29,22 +27,19 @@ const correctMessages = [
   "No doubt about it, that’s {{selected}}. Good job!",
   "Ah, {{selected}}! I recognized that right away.",
   "Great drawing! I knew it was {{selected}} instantly.",
-  "You and I are in sync—that’s {{selected}}!",
-  "I didn’t even have to think twice—it’s {{selected}}!",
   "That’s a perfect {{selected}}! You nailed it.",
   "Well done! I couldn’t miss {{selected}} if I tried.",
   "It’s {{selected}}! Excellent work from both of us!",
 ];
 
 const incorrectMessages = [
-  "Hmm, I guessed {{guessed}}, but it’s actually {{selected}}.",
-  "Oops, I thought it was {{guessed}}. It’s {{selected}}—my bad!",
+  "Congratulations! Your drawing of {{selected}} has been added to the test set!",
   "Not quite—I went with {{guessed}}, but it’s really {{selected}}.",
-  "Close one! I guessed {{guessed}}, but this is actually {{selected}}.",
   "Well, I gave it my best shot! I thought it was {{guessed}}, but it’s {{selected}}.",
   "Ah, I see it now—it’s {{selected}}, not {{guessed}}. Thanks for clarifying!",
+  "I’m not saying you can't draw, but {{guessed}} was way closer than {{selected}}.",
   "Interesting! I guessed {{guessed}}, but you drew {{selected}}.",
-  "My guess was {{guessed}}, but you were aiming for {{selected}}. Almost there!",
+  "{{selected}}... really? Might want to work on your drawing skills!",
   "I’ll admit it—I was wrong. This is {{selected}}, not {{guessed}}.",
   "Oops! I thought {{guessed}}, but you drew a great {{selected}}.",
 ];
