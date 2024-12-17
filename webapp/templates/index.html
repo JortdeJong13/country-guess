@@ -17,6 +17,7 @@
                 padding: 0;
                 background-color: #0d1117;
                 color: #d8737f;
+                position: relative;
             }
 
             #canvas-container {
@@ -29,7 +30,7 @@
                 border: 2px solid #30363d;
                 cursor: crosshair;
                 background-color: #161b22;
-                border-radius: 15px; /* Rounded corners */
+                border-radius: 15px;
             }
 
             #buttons-container {
@@ -58,7 +59,7 @@
             #guess-message {
                 margin-top: 20px;
                 font-size: 18px;
-                color: #d29922; /* Dark yellow color for the guess message */
+                color: #d29922;
             }
 
             #instruction-message {
@@ -86,9 +87,35 @@
                 background-color: #21262d;
                 color: #c9d1d9;
             }
+
+            #source-link {
+                position: absolute;
+                top: 10px;
+                right: 40px;
+                font-size: 16px;
+                color: #c9d1d9;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+            }
+
+            #source-link img {
+                width: 20px;
+                height: 20px;
+                margin-left: 10px;
+            }
+
+            #source-link:hover {
+                color: #8b949e;
+            }
         </style>
     </head>
     <body>
+        <a href="https://github.com/JortdeJong13/country-guess" id="source-link" target="_blank">
+            source
+            <img src="{{ url_for('static', filename='github.png') }}" alt="GitHub">
+        </a>
+
         <h1>Draw a Country</h1>
 
         <div id="canvas-container">
