@@ -73,7 +73,8 @@ The following diagram depicts the workflow that is used to construct the app:
 
 ![Workflow](images/Workflow.svg)
 
-The application consists of two independent services: the ML server and the web app backend. The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns directory is not mounted, the ML server will fall back on a default model within the image.
+The application consists of two independent services: the ML server and the web app backend.<br>
+The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns directory is not mounted, the ML server will fall back on a default model within the image.
 
 The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server responses with a ranking of all the countries in the reference country dataset. The user can confirm this guess or select the correct country from a dropdown list. The drawing will be saved along with the country name. To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made will not persist outside the Docker container.
 
