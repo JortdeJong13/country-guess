@@ -69,7 +69,7 @@ When training a model, you can start an MLflow Tracking server by running the ``
 
 ## Architecture and Design
 
-The following diagram depicts the workflow that is used to construct the app:
+The following diagram depicts the different components that make up the app:
 
 ![Workflow](images/Workflow.svg)
 
