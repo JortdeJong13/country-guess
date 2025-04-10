@@ -2,5 +2,5 @@
 .ipynb_checkpoints
 /venv
 __pycache__
-mlruns/.trash
+.trash
 .jupyter
