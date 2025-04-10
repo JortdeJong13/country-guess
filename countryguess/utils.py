@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from pathlib import Path
 
 from shapely import LineString, MultiLineString, MultiPolygon, Polygon, to_geojson
 from shapely.affinity import affine_transform, scale, translate
@@ -41,20 +42,30 @@ def decompose(polygon):
         return [poly for poly in polygon.geoms]
 
 
-def save_drawing(country_name, drawing, path="./data/drawings.geojson"):
-    feature = {
-        "type": "Feature",
-        "properties": {
-            "cntry_name": country_name,
-            "timestamp": datetime.now().isoformat(),
+def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
+    # Create directory if it doesn't exist
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().isoformat()
+
+    # Create filename for new drawing
+    filename = f"{country_name.lower().replace(' ', '_')}_{timestamp}.geojson"
+
+    # Create GeoJSON feature, including CRS information
+    geojson = {
+        "type": "FeatureCollection",
+        "crs": {
+            "type": "name",
+            "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"},
         },
-        "geometry": json.loads(drawing),
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {"country_name": country_name, "timestamp": timestamp},
+                "geometry": json.loads(drawing),
+            }
+        ],
     }
 
-    # Open the GeoJSON file for appending
-    with open(path, "r+") as f:
-        existing_data = json.load(f)
-        existing_data["features"].append(feature)
-        f.seek(0)
-        json.dump(existing_data, f)
-        f.truncate()
+    # Save to file
+    with open(Path(output_dir) / filename, "w") as f:
+        json.dump(geojson, f, indent=2)

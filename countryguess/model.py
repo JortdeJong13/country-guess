@@ -25,13 +25,15 @@ class TripletModel(nn.Module):
         assert ref_data.shape == self.shape
         self._ref_countries = {}
         for idx in range(len(ref_data)):
-            img = poly_to_img(ref_data[idx], ref_data.shape)
+            item = ref_data[idx]
+            country_name, geom = item["country_name"], item["geometry"]
+            img = poly_to_img(geom, ref_data.shape)
             embedding = self(
                 torch.tensor(img[None, None, :, :], dtype=torch.float32).to(
                     next(self.parameters()).device
                 )
             )
-            self._ref_countries[ref_data.country_name[idx]] = embedding
+            self._ref_countries[country_name] = embedding
 
     @torch.no_grad
     def rank_countries(self, drawings):
