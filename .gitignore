@@ -1,6 +1,6 @@
 .DS_Store
 .ipynb_checkpoints
 /venv
-countryguess/__pycache__
+__pycache__
 mlruns/.trash
 .jupyter

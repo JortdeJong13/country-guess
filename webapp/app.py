@@ -1,13 +1,10 @@
 import os
-import sys
 import uuid
 
 import requests
 from flask import Flask, jsonify, render_template, request, session
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
-# Add the top-level directory to the sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from countryguess.utils import proces_lines, save_drawing
 
 app = Flask(__name__)
