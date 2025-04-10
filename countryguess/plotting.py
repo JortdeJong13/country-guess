@@ -31,6 +31,7 @@ def plot_training_sample(train_data, ref_data, idx=None):
 
 
 def plot_sample(data, ref_data, idx=None):
+    """Plot sample from the test of validation set with drawing and reference shape."""
     sample = data[idx]
 
     fig, axs = _create_figure(2)
