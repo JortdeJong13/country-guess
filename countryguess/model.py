@@ -4,7 +4,7 @@ from mlflow import MlflowClient
 from mlflow.pytorch import load_model
 from torch import nn
 
-from .data import Dataset, poly_to_img
+from .data import Dataset, geom_to_img
 
 
 class TripletModel(nn.Module):
@@ -27,7 +27,7 @@ class TripletModel(nn.Module):
         for idx in range(len(ref_data)):
             item = ref_data[idx]
             country_name, geom = item["country_name"], item["geometry"]
-            img = poly_to_img(geom, ref_data.shape)
+            img = geom_to_img(geom, ref_data.shape)
             embedding = self(
                 torch.tensor(img[None, None, :, :], dtype=torch.float32).to(
                     next(self.parameters()).device

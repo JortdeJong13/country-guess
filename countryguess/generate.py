@@ -5,7 +5,7 @@ from imgaug.augmentables import polys
 from shapely import MultiPolygon, simplify
 from shapelysmooth import chaikin_smooth
 
-from .data import Dataset, poly_to_img
+from .data import Dataset, geom_to_img
 from .utils import decompose, normalize_geom
 
 
@@ -67,7 +67,7 @@ def generate_drawing(polygon, shape, temp=1.0):
     polygon = normalize_geom(polygon, shape)
 
     # Transform into img
-    img = poly_to_img(polygon, shape)
+    img = geom_to_img(polygon, shape)
 
     return img
 
@@ -100,8 +100,8 @@ class TripletDataset(Dataset):
         neg_poly = super().__getitem__(neg_idx)["geometry"]
 
         drawing = generate_drawing(pos_poly, self.shape, self.temp)
-        pos_img = poly_to_img(pos_poly, self.shape)
-        neg_img = poly_to_img(neg_poly, self.shape)
+        pos_img = geom_to_img(pos_poly, self.shape)
+        neg_img = geom_to_img(neg_poly, self.shape)
 
         return {
             "drawing": drawing,

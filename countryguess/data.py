@@ -4,32 +4,31 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+from shapely import LineString, MultiLineString, MultiPolygon, Polygon
 from skimage import draw
 
 from .utils import normalize_geom
 
 
-def lines_to_img(lines, shape):
+def geom_to_img(geometry, shape):
+    """Convert any geometry to binary image."""
     img = np.zeros(shape, dtype=np.uint8)
 
-    for line in lines.geoms:
-        points = np.array(line.coords).astype(int)
-        for r0, c0, r1, c1 in zip(
-            points[:-1, 0], points[:-1, 1], points[1:, 0], points[1:, 1]
-        ):
-            rr, cc = draw.line(r0, c0, r1, c1)
+    # Handle both single geometries and multi-geometries
+    geoms = getattr(geometry, "geoms", [geometry])
+
+    for geom in geoms:
+        if isinstance(geom, (LineString, MultiLineString)):
+            points = np.array(geom.coords).astype(int)
+            # Draw lines between consecutive points
+            for p1, p2 in zip(points[:-1], points[1:]):
+                rr, cc = draw.line(p1[0], p1[1], p2[0], p2[1])
+                img[rr, cc] = 1
+
+        elif isinstance(geom, (Polygon, MultiPolygon)):
+            points = np.array(geom.exterior.coords)
+            rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
             img[rr, cc] = 1
-
-    return np.swapaxes(img, 0, 1)
-
-
-def poly_to_img(polygon, shape):
-    img = np.zeros(shape, dtype=np.uint8)
-
-    for poly in polygon.geoms:
-        points = np.array(poly.exterior.coords)
-        rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
-        img[rr, cc] = 1
 
     return np.swapaxes(img, 0, 1)
 
@@ -97,6 +96,6 @@ class TestDataset(Dataset):
     def __getitem__(self, idx):
         item = super().__getitem__(idx)
         country_name, geom = item["country_name"], item["geometry"]
-        drawing = lines_to_img(geom, self.shape)
+        drawing = geom_to_img(geom, self.shape)
 
         return {"country_name": country_name, "drawing": drawing}

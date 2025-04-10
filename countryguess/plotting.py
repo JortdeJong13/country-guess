@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from .data import poly_to_img
+from .data import geom_to_img
 
 
 def _create_figure(n_subplots):
@@ -39,7 +39,7 @@ def plot_sample(data, ref_data, idx=None):
     _plot_image(axs[0], sample["drawing"], f"Drawing of {sample['country_name']}")
     _plot_image(
         axs[1],
-        poly_to_img(ref_data.from_country_name(sample["country_name"]), ref_data.shape),
+        geom_to_img(ref_data.from_country_name(sample["country_name"]), ref_data.shape),
         "Reference shape",
     )
 
