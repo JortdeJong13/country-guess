@@ -4,9 +4,6 @@ FROM python:3.9-slim
 COPY webapp/requirements.txt webapp/
 RUN pip install -r webapp/requirements.txt
 
-# Initialise an empty drawings file
-RUN mkdir -p /data && echo '{"type": "FeatureCollection", "features": []}' > /data/drawings.geojson
-
 # Copy code
 COPY countryguess/utils.py countryguess/
 COPY webapp webapp

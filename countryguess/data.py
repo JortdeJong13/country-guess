@@ -1,5 +1,8 @@
+from pathlib import Path
+
 import geopandas as gpd
 import numpy as np
+import pandas as pd
 from skimage import draw
 
 from .utils import normalize_geom
@@ -33,13 +36,20 @@ def poly_to_img(polygon, shape):
 class Dataset:
     """Base dataset for fetching reference country geometry"""
 
-    def __init__(self, path="./data/reference.geojson", shape=(64, 64)):
-        gdf = gpd.read_file(path)
-        gdf["normal_geom"] = gdf["geometry"].apply(normalize_geom, shape=shape)
-        self.gdf = gdf
+    def __init__(self, path="./data/reference/", shape=(64, 64)):
+        self.path = Path(path)
         self.shape = shape
-        self.country_name = gdf["cntry_name"].to_list()
         self._idx = 0
+
+        # Load all geojson files form directory
+        self.files = list(self.path.glob("*.geojson"))
+
+        # Create a GeoDataFrame
+        gdfs = [gpd.read_file(file) for file in self.files]
+        self.gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True))
+
+        # Normalize geometries
+        self.gdf["geometry"] = self.gdf["geometry"].apply(normalize_geom, shape=shape)
 
     def __len__(self):
         return len(self.gdf)
@@ -59,24 +69,29 @@ class Dataset:
         while idx < 0:
             idx += len(self)
 
-        geom = self.gdf.loc[idx, "normal_geom"]
+        geom = self.gdf.loc[idx, "geometry"]
+        country_name = self.gdf.loc[idx, "country_name"]
 
-        return geom
+        return {"country_name": country_name, "geometry": geom}
 
     def from_country_name(self, country_name):
-        idx = self.gdf.index[self.gdf["cntry_name"] == country_name]
+        idx = self.gdf.index[self.gdf["country_name"] == country_name]
 
-        return self[idx.item()]
+        return self[idx.item()]["geometry"]
 
 
 class TestDataset(Dataset):
     """For evaluating on user drawn countries"""
 
-    def __init__(self, path="./data/drawings.geojson", shape=(64, 64)):
+    def __init__(self, path="./data/drawings/", shape=(64, 64)):
         Dataset.__init__(self, path=path, shape=shape)
+        # Sort test data by timestamp
+        self.gdf.sort_values(by="timestamp", inplace=True)
+        self.gdf.reset_index(drop=True, inplace=True)
 
     def __getitem__(self, idx):
-        geom = super().__getitem__(idx)
+        item = super().__getitem__(idx)
+        country_name, geom = item["country_name"], item["geometry"]
         drawing = lines_to_img(geom, self.shape)
 
-        return {"country_name": self.country_name[idx], "drawing": drawing}
+        return {"country_name": country_name, "drawing": drawing}

@@ -75,28 +75,29 @@ def generate_drawing(polygon, shape, temp=1.0):
 class ValDataset(Dataset):
     """Extends the base dataset for evaluating on generated drawings"""
 
-    def __init__(self, temp=1.0, path="./data/reference.geojson", shape=(64, 64)):
+    def __init__(self, temp=1.0, path="./data/reference/", shape=(64, 64)):
         Dataset.__init__(self, path=path, shape=shape)
         self.temp = temp
 
     def __getitem__(self, idx):
-        geom = super().__getitem__(idx)
+        item = super().__getitem__(idx)
+        country_name, geom = item["country_name"], item["geometry"]
         drawing = generate_drawing(geom, self.shape, self.temp)
 
-        return {"country_name": self.country_name[idx], "drawing": drawing}
+        return {"country_name": country_name, "drawing": drawing}
 
 
 class TripletDataset(Dataset):
     """Extends the base dataset for fetching triplet samples"""
 
-    def __init__(self, temp=1.0, path="./data/reference.geojson", shape=(64, 64)):
+    def __init__(self, temp=1.0, path="./data/reference/", shape=(64, 64)):
         Dataset.__init__(self, path=path, shape=shape)
         self.temp = temp
 
     def __getitem__(self, idx):
-        pos_poly = super().__getitem__(idx)
+        pos_poly = super().__getitem__(idx)["geometry"]
         neg_idx = self.random_neg(idx)
-        neg_poly = super().__getitem__(neg_idx)
+        neg_poly = super().__getitem__(neg_idx)["geometry"]
 
         drawing = generate_drawing(pos_poly, self.shape, self.temp)
         pos_img = poly_to_img(pos_poly, self.shape)

@@ -10,10 +10,6 @@ from requests.exceptions import ConnectionError, HTTPError, Timeout
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from countryguess.utils import proces_lines, save_drawing
 
-drawing_path = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../data/drawings.geojson")
-)
-
 app = Flask(__name__)
 
 # Set secret key for session
@@ -64,7 +60,7 @@ def feedback():
     # Retrieve the drawing from the session
     if drawing_id and drawing_id in session:
         drawing = session[drawing_id]
-        save_drawing(country_name, drawing, path=drawing_path)
+        save_drawing(country_name, drawing)
         del session[drawing_id]
 
         return jsonify({"message": "Feedback received"})
