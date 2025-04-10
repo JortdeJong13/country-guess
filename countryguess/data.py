@@ -1,3 +1,4 @@
+import random
 from pathlib import Path
 
 import geopandas as gpd
@@ -66,6 +67,10 @@ class Dataset:
             raise StopIteration
 
     def __getitem__(self, idx):
+        if idx is None:
+            # Get a random sample
+            idx = random.randint(0, len(self) - 1)
+
         while idx < 0:
             idx += len(self)
 
