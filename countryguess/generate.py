@@ -17,6 +17,30 @@ def rm_island(polygons, area):
     return polygons
 
 
+def augment_polygon(polygon, temp):
+    # Augment Polygon
+    aug = iaa.Sequential(
+        [
+            iaa.ScaleX((1 / (1 + 0.3 * temp), 1 + 0.3 * temp)),
+            iaa.ShearX((-8 * temp, 8 * temp)),
+            iaa.PerspectiveTransform(scale=(0, 0.12 * temp)),
+            iaa.WithPolarWarping(
+                iaa.Affine(
+                    translate_percent={
+                        "x": (-0.05 * temp, 0.05 * temp),
+                        "y": (-0.05 * temp, 0.05 * temp),
+                    }
+                )
+            ),
+            iaa.WithPolarWarping(
+                iaa.ShearX((-2 * temp, -2 * temp)),
+            ),
+            iaa.Rotate((-5 * temp, 5 * temp)),
+        ]
+    )
+    return aug(polygons=polygon)
+
+
 def generate_drawing(polygon, shape, temp=1.0):
     # Simplify Polygon
     polygon = simplify(polygon, tolerance=random.uniform(0, 4 * temp))
@@ -38,27 +62,8 @@ def generate_drawing(polygon, shape, temp=1.0):
         [polys.Polygon.from_shapely(poly) for poly in polygon], shape
     )
 
-    # Augment Polygon
-    aug = iaa.Sequential(
-        [
-            iaa.ScaleX((1 / (1 + 0.3 * temp), 1 + 0.3 * temp)),
-            iaa.ShearX((-8 * temp, 8 * temp)),
-            iaa.PerspectiveTransform(scale=(0, 0.12 * temp)),
-            iaa.WithPolarWarping(
-                iaa.Affine(
-                    translate_percent={
-                        "x": (-0.05 * temp, 0.05 * temp),
-                        "y": (-0.05 * temp, 0.05 * temp),
-                    }
-                )
-            ),
-            iaa.WithPolarWarping(
-                iaa.ShearX((-2 * temp, -2 * temp)),
-            ),
-            iaa.Rotate((-5 * temp, 5 * temp)),
-        ]
-    )
-    polygon = aug(polygons=polygon)
+    # Apply augmentations
+    polygon = augment_polygon(polygon, temp)
 
     # Transform Polygon into Shapley MultiPolygon
     polygon = MultiPolygon([poly.to_shapely_polygon() for poly in polygon])
