@@ -36,7 +36,7 @@ jobs:
           context: .
           file: ./mlserver/Dockerfile
           push: true
-          tags: ghcr.io/country-guess-mlserver:latest
+          tags: ghcr.io/jortdejong13/country-guess-mlserver:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -46,6 +46,6 @@ jobs:
           context: .
           file: ./webapp/Dockerfile
           push: true
-          tags: ghcr.io/country-guess-webapp:latest
+          tags: ghcr.io/jortdejong13/country-guess-webapp:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
