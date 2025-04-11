@@ -6,8 +6,9 @@ Welcome to my Country Guess App side project! With this machine learning applica
 
 - [Screenshots](#screenshots)
 - [Getting Started](#getting-started)
-  - [Local Installation](#local-installation)
-  - [Docker Installation](#docker-installation)
+  - [Using Pre-built Docker Images](#1-using-pre-built-docker-images-recommended)
+  - [Building Docker Images Locally](#2-building-docker-images-locally)
+  - [Local Python Installation](#3-local-python-installation)
 - [Usage](#usage)
   - [Drawing](#drawing)
   - [Diving in](#diving-in)
@@ -26,29 +27,39 @@ Welcome to my Country Guess App side project! With this machine learning applica
 The Country Guess App is accessible at [country-guess.nl](https://country-guess.nl), feel free to try it out!
 <br>Alternatively, you can follow the instructions to run the app locally or with Docker.
 
-### Local Installation
-
-1. Navigate to the project directory.
-2. Install the required packages:
+### 1. Using Pre-built Docker Images (Recommended)
+1. Navigate to the project directory
+2. Pull and run the latest images:
+```bash
+docker compose pull
+docker compose up -d
 ```
+3. Access the app at [http://localhost:5000](http://localhost:5000)
+
+### 2. Building Docker Images Locally
+1. Navigate to the project directory
+2. Build and run the containers:
+```bash
+docker compose up -d --build
+```
+3. Access the app at [http://localhost:5000](http://localhost:5000)
+
+### 3. Local Python Installation
+1. Navigate to the project directory
+2. Install the required packages:
+```bash
 pip install -r mlserver/requirements.txt
 pip install -r webapp/requirements.txt
 ```
 3. Set the model name and run the ML server:
-```
+```bash
 MODEL_NAME=triplet_model python mlserver/serve.py
 ```
-5. Set the ML server URL and start the web app:
-```
+4. Set the ML server URL and start the web app:
+```bash
 MLSERVER_URL=http://127.0.0.1:5001/predict python -m webapp.app
 ```
-4. Access the app at [http://localhost:5000](http://localhost:5000)
-
-### Docker Installation
-1. Navigate to the project directory.
-2. Run the app using Docker Compose:
-```docker compose up -d --build```
-3. Access app at [http://localhost:5000](http://localhost:5000)
+5. Access the app at [http://localhost:5000](http://localhost:5000)
 
 ## Usage
 

@@ -3,7 +3,7 @@ services:
     build:
       context: ./
       dockerfile: ./mlserver/Dockerfile
-    image: mlserver
+    image: ghcr.io/JortdeJong13/country-guess-mlserver:latest
     expose:
       - 5001
     environment:
@@ -15,7 +15,7 @@ services:
     build:
       context: ./
       dockerfile: ./webapp/Dockerfile
-    image: webapp
+    image: ghcr.io/JortdeJong13/country-guess-webapp:latest
     ports:
       - "5000:5000"
     environment:
