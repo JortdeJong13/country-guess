@@ -35,5 +35,14 @@ def predict():
     return jsonify(countries)
 
 
+@app.route("/health")
+def health():
+    # Check if model is loaded
+    if model is None:
+        return jsonify({"status": "unhealthy", "error": "Model not loaded"}), 500
+
+    return jsonify({"status": "healthy"}), 200
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)

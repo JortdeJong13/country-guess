@@ -1,0 +1,41 @@
+name: Build, Test, and Push Docker Images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "countryguess/**"
+      - "mlserver/**"
+      - "webapp/**"
+      - "data/reference/**"
+      - "mlruns/0/**"
+      - "mlruns/models/default/**"
+      - "docker-compose.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build images, run containers and wait for health checks
+        run: docker compose up -d --build --wait
+
+      - name: Push images
+        run: docker compose push
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down --remove-orphans
