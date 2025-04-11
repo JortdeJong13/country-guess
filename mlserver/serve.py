@@ -17,7 +17,7 @@ model, device = fetch_model(os.getenv("MODEL_NAME", "default"))
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    # Preproces input
+    # Preprocess input
     drawing = from_geojson(request.json)
     drawing = normalize_geom(drawing, model.shape)
     drawing = geom_to_img(drawing, model.shape)[None, None, :, :]
