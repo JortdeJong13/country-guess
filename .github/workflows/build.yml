@@ -31,11 +31,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull existing images
-        run: |
-          docker pull ghcr.io/jortdejong13/country-guess-mlserver:latest || true
-          docker pull ghcr.io/jortdejong13/country-guess-webapp:latest || true
-
       - name: Build images, run containers and wait for health status
         run: docker compose up -d --build --wait
 
