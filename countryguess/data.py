@@ -48,24 +48,41 @@ def geom_to_img(geometry, shape):
     return img
 
 
-class Dataset:
-    """Base dataset for fetching country geometries"""
+class BaseDataset:
+    """Base class that loads and stores geometry data"""
+
+    # Dictionary to store different GeoDataFrames
+    _loaded_gdfs = {}
+
+    @classmethod
+    def load_gdf(cls, path, shape):
+        """Load and cache GeoDataFrame from path"""
+        if path not in cls._loaded_gdfs:
+            files = list(Path(path).glob("*.geojson"))
+            gdfs = [gpd.read_file(file) for file in files]
+            gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True))
+
+            cls._loaded_gdfs[path] = gdf
+            logger.info("Loaded %d samples from %s", len(gdf), path)
+
+        return cls._loaded_gdfs[path]
+
+
+class Dataset(BaseDataset):
+    """Dataset for fetching country geometries"""
 
     def __init__(self, path="./data/reference/", shape=(64, 64)):
-        self.path = Path(path)
+        self.path = path
         self.shape = shape
         self._idx = 0
-
-        # Load all geojson files form directory
-        self.files = list(self.path.glob("*.geojson"))
-
-        # Create a GeoDataFrame
-        gdfs = [gpd.read_file(file) for file in self.files]
-        self.gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True))
-        logger.info("Loaded %d countries", len(self.gdf))
+        self.gdf = self.load_gdf(path, shape)
 
         # Normalize geometries
-        self.gdf["geometry"] = self.gdf["geometry"].apply(normalize_geom, shape=shape)
+        self.geom_col = "geom_{}_{}".format(*shape)
+        if self.geom_col not in self.gdf.columns:
+            self.gdf[self.geom_col] = self.gdf["geometry"].apply(
+                normalize_geom, shape=shape
+            )
 
     def __len__(self):
         return len(self.gdf)
@@ -88,7 +105,7 @@ class Dataset:
         while idx < 0:
             idx += len(self)
 
-        geom = self.gdf.loc[idx, "geometry"]
+        geom = self.gdf.loc[idx, self.geom_col]
         country_name = self.gdf.loc[idx, "country_name"]
 
         return {"country_name": country_name, "geometry": geom}
