@@ -1,0 +1,22 @@
+{
+  "target": {
+    "mlserver": {
+      "cache-from": [
+        "type=registry,ref=ghcr.io/jortdejong13/country-guess-mlserver:cache"
+      ],
+      "cache-to": [
+        "type=registry,ref=ghcr.io/jortdejong13/country-guess-mlserver:cache"
+      ],
+      "output": ["type=docker"]
+    },
+    "webapp": {
+      "cache-from": [
+        "type=registry,ref=ghcr.io/jortdejong13/country-guess-webapp:cache"
+      ],
+      "cache-to": [
+        "type=registry,ref=ghcr.io/jortdejong13/country-guess-webapp:cache"
+      ],
+      "output": ["type=docker"]
+    }
+  }
+}

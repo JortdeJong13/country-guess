@@ -33,8 +33,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build images, run containers and wait for health checks
-        run: docker compose up -d --build --wait --cache-from type=gha --cache-to type=gha,mode=max
+      - name: Build images with cache
+        run: |
+          docker buildx bake \
+          --file docker-compose.yml \
+          --file .github/docker-compose-cache.json
+
+      - name: Run containers and wait for health checks
+        run: docker compose up -d --wait
 
       - name: Push images
         run: docker compose push
