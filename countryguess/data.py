@@ -4,7 +4,7 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-from shapely import LineString, MultiLineString, MultiPolygon, Polygon
+from shapely import LineString, Polygon
 from skimage import draw
 
 from .utils import normalize_geom
@@ -14,23 +14,34 @@ def geom_to_img(geometry, shape):
     """Convert any geometry to binary image."""
     img = np.zeros(shape, dtype=np.uint8)
 
-    # Handle both single geometries and multi-geometries
-    geoms = getattr(geometry, "geoms", [geometry])
+    # Handle single geometries and multi-geometries
+    if isinstance(geometry, (Polygon, LineString)):
+        geoms = [geometry]
+    else:
+        geoms = geometry.geoms
 
     for geom in geoms:
-        if isinstance(geom, (LineString, MultiLineString)):
+        if isinstance(geom, LineString):
             points = np.array(geom.coords).astype(int)
             # Draw lines between consecutive points
             for p1, p2 in zip(points[:-1], points[1:]):
-                rr, cc = draw.line(p1[0], p1[1], p2[0], p2[1])
+                rr, cc = draw.line(p1[1], p1[0], p2[1], p2[0])
                 img[rr, cc] = 1
 
-        elif isinstance(geom, (Polygon, MultiPolygon)):
+        elif isinstance(geom, Polygon):
             points = np.array(geom.exterior.coords)
-            rr, cc = draw.polygon_perimeter(points[:, 0], points[:, 1], shape=img.shape)
+            rr, cc = draw.polygon_perimeter(points[:, 1], points[:, 0], shape=img.shape)
             img[rr, cc] = 1
 
-    return np.swapaxes(img, 0, 1)
+            # Draw interior borders
+            for interior in geom.interiors:
+                interior_coords = np.array(interior.coords).astype(int)
+                rr, cc = draw.polygon_perimeter(
+                    interior_coords[:, 1], interior_coords[:, 0], shape=img.shape
+                )
+                img[rr, cc] = 1
+
+    return img
 
 
 class Dataset:
