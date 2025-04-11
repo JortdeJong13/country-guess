@@ -13,7 +13,7 @@ from countryguess.utils import normalize_geom
 app = Flask(__name__)
 
 # Load model
-model, device = fetch_model(os.environ["MODEL_NAME"])
+model, device = fetch_model(os.getenv("MODEL_NAME", "default"))
 
 
 @app.route("/predict", methods=["POST"])
