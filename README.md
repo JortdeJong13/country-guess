@@ -57,7 +57,7 @@ MODEL_NAME=triplet_model python mlserver/serve.py
 MLSERVER_URL=http://127.0.0.1:5001/predict python -m webapp.app
 ```
 
-<br>After installation, access the app at [http://localhost:5000](http://localhost:5000)
+<br>After setting up, you can access the app at [http://localhost:5000](http://localhost:5000)
 
 ## Usage
 
