@@ -43,8 +43,7 @@ class TripletModel(nn.Module):
     @torch.no_grad
     def rank_countries(self, drawings):
         embedding = self(drawings)
-        countries = []
-        distances = []
+        countries, distances = [], []
 
         if not self._ref_countries:
             raise Exception("First the reference dataset needs to be loaded!")
