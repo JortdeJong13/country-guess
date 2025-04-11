@@ -14,4 +14,4 @@ COPY countryguess/data.py countryguess/
 COPY countryguess/model.py countryguess/
 COPY mlserver/serve.py mlserver/
 
-CMD ["python", "mlserver/serve.py"]
+CMD ["python", "-m", "mlserver.serve", "--host=0.0.0.0"]

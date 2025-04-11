@@ -1,3 +1,4 @@
+import logging
 import random
 from pathlib import Path
 
@@ -8,6 +9,9 @@ from shapely import LineString, Polygon
 from skimage import draw
 
 from .utils import normalize_geom
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def geom_to_img(geometry, shape):
@@ -45,7 +49,7 @@ def geom_to_img(geometry, shape):
 
 
 class Dataset:
-    """Base dataset for fetching reference country geometry"""
+    """Base dataset for fetching country geometries"""
 
     def __init__(self, path="./data/reference/", shape=(64, 64)):
         self.path = Path(path)
@@ -58,6 +62,7 @@ class Dataset:
         # Create a GeoDataFrame
         gdfs = [gpd.read_file(file) for file in self.files]
         self.gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True))
+        logger.info(f"Loaded {len(self.gdf)} countries")
 
         # Normalize geometries
         self.gdf["geometry"] = self.gdf["geometry"].apply(normalize_geom, shape=shape)

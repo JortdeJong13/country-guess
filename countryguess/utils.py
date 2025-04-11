@@ -1,9 +1,13 @@
 import json
+import logging
 from datetime import datetime
 from pathlib import Path
 
 from shapely import LineString, MultiLineString, MultiPolygon, Polygon, to_geojson
 from shapely.affinity import affine_transform, scale, translate
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def normalize_geom(geom, shape=(64, 64), pad=2, eps=0.0001):
@@ -43,8 +47,11 @@ def decompose(polygon):
 
 
 def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
-    # Create directory if it doesn't exist
-    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    output_dir = Path(output_dir)
+    logger.info(f"Saving drawing of {country_name} to {output_dir}")
+
+    # Create output directory if it doesn't exist
+    output_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().isoformat()
 
     # Create filename for new drawing
@@ -67,5 +74,5 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
     }
 
     # Save to file
-    with open(Path(output_dir) / filename, "w") as f:
+    with open(output_dir / filename, "w") as f:
         json.dump(geojson, f, indent=2)

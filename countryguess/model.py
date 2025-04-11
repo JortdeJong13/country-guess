@@ -1,3 +1,5 @@
+import logging
+
 import numpy as np
 import torch
 from mlflow import MlflowClient
@@ -5,6 +7,9 @@ from mlflow.pytorch import load_model
 from torch import nn
 
 from .data import Dataset, geom_to_img
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class TripletModel(nn.Module):
@@ -106,25 +111,33 @@ class CustomEmbeddingModel(nn.Module):
 def fetch_model(model_name):
     # Get model version
     client = MlflowClient()
+    logger.info(f"Fetching model: {model_name}...")
     try:
         model_version = client.get_model_version_by_alias(model_name, "champion")
 
-    except Exception as e:
+    except Exception:
         # Fallback to default model
+        logger.warning(f"Unable to fetch {model_name}, falling back to default model")
         model_version = client.get_model_version_by_alias("default", "champion")
 
     model_path = "/".join(model_version.source.split("/")[-5:])
 
     # Load the model
+    logger.info("Loading model...")
     try:
         model = load_model(model_path)
+        device = next(model.parameters()).device
+        logger.info("Successfully loaded model")
 
-    except RuntimeError as e:
+    except RuntimeError:
         # Fallback to CPU
-        model = load_model(model_path, map_location=torch.device("cpu"))
+        logger.warning("Falling back to CPU")
+        device = torch.device("cpu")
+        model = load_model(model_path, map_location=device)
+        logger.info("Successfully loaded model on CPU")
 
     # Load reference data
     ref_data = Dataset(shape=model.shape)
     model.load_reference(ref_data)
 
-    return model, next(model.parameters()).device
+    return model, device
