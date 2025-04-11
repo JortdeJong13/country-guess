@@ -61,8 +61,8 @@ def feedback():
         del session[drawing_id]
 
         return jsonify({"message": "Feedback received"})
-    else:
-        return jsonify({"message": "Drawing not found"}), 400
+
+    return jsonify({"message": "Drawing not found"}), 400
 
 
 @app.route("/health")
