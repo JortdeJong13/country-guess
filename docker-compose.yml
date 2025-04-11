@@ -8,6 +8,8 @@ services:
       - 5001
     environment:
       - MODEL_NAME=triplet_model
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
     volumes:
       - ./mlruns:/mlruns # Optional
 
@@ -21,5 +23,7 @@ services:
     environment:
       - MLSERVER_URL=http://mlserver:5001/predict
       - FLASK_APP=/webapp/app.py
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
     volumes:
       - ./data/drawings:/data/drawings # Optional
