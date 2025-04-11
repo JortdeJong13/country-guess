@@ -1,6 +1,7 @@
 name: build, test and push images
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -23,6 +24,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Check initial disk space
+        run: |
+          echo "Initial disk space:"
+          df -h
+          echo "\nInitial Docker space:"
+          docker system df -v
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -33,13 +41,31 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Inspect cache
+        run: |
+          echo "Trying to pull cache images..."
+          docker pull ghcr.io/jortdejong13/country-guess-mlserver:cache || true
+          docker pull ghcr.io/jortdejong13/country-guess-webapp:cache || true
+          echo "\nCache images details:"
+          docker images
+
       - name: Build images with cache
         run: |
           docker buildx bake \
           --file docker-compose.yml \
           --file .github/docker-compose-cache.json
 
-      - name: Run containers and wait for health checks
+      - name: Check disk space after build
+        if: always()
+        run: |
+          echo "Disk space after build:"
+          df -h
+          echo "\nDocker space after build:"
+          docker system df -v
+          echo "\nDetailed images info:"
+          docker images --format "{{.Repository}}:{{.Tag}} - {{.Size}}"
+
+      - name: Run containers and wait for health status
         run: docker compose up -d --wait
 
       - name: Push images
