@@ -36,7 +36,7 @@ pip install -r webapp/requirements.txt
 ```
 3. Set the model name and run the ML server:
 ```
-MODEL_NAME=triplet_model python mlserver/serve.py
+MODEL_NAME=triplet_model python -m mlserver.serve
 ```
 5. Set the ML server URL and start the web app:
 ```
