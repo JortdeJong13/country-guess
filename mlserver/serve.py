@@ -1,13 +1,10 @@
 import os
-import sys
 
 import numpy as np
 import torch
 from flask import Flask, jsonify, request
 from shapely import from_geojson
 
-# Add the top-level directory to the sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from countryguess.data import geom_to_img
 from countryguess.model import fetch_model
 from countryguess.utils import normalize_geom
@@ -15,7 +12,7 @@ from countryguess.utils import normalize_geom
 app = Flask(__name__)
 
 # Load model
-model, device = fetch_model(os.environ["MODEL_NAME"])
+model, device = fetch_model(os.getenv("MODEL_NAME", "default"))
 
 
 @app.route("/predict", methods=["POST"])

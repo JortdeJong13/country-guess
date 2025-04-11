@@ -50,7 +50,7 @@ pip install -r webapp/requirements.txt
 ```
 2. Set the model name and run the ML server:
 ```bash
-MODEL_NAME=triplet_model python mlserver/serve.py
+MODEL_NAME=triplet_model python -m mlserver.serve
 ```
 3. Set the ML server URL and start the web app:
 ```bash
