@@ -3,6 +3,7 @@ import logging
 import numpy as np
 import torch
 from mlflow import MlflowClient
+from mlflow.exceptions import MlflowException
 from mlflow.pytorch import load_model
 from torch import nn
 
@@ -29,8 +30,7 @@ class TripletModel(nn.Module):
     def load_reference(self, ref_data):
         assert ref_data.shape == self.shape
         self._ref_countries = {}
-        for idx in range(len(ref_data)):
-            item = ref_data[idx]
+        for idx, item in enumerate(ref_data):
             country_name, geom = item["country_name"], item["geometry"]
             img = geom_to_img(geom, ref_data.shape)
             embedding = self(
@@ -111,13 +111,13 @@ class CustomEmbeddingModel(nn.Module):
 def fetch_model(model_name):
     # Get model version
     client = MlflowClient()
-    logger.info(f"Fetching model: {model_name}...")
+    logger.info("Fetching model: %s...", model_name)
     try:
         model_version = client.get_model_version_by_alias(model_name, "champion")
 
-    except Exception:
+    except MlflowException:
         # Fallback to default model
-        logger.warning(f"Unable to fetch {model_name}, falling back to default model")
+        logger.warning("Unable to fetch %s, falling back to default model", model_name)
         model_version = client.get_model_version_by_alias("default", "champion")
 
     model_path = "/".join(model_version.source.split("/")[-5:])

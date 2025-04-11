@@ -11,7 +11,7 @@ from .utils import decompose, normalize_geom
 
 def rm_island(polygons, area):
     "Randomly removes the smaller polygons"
-    max_area = max([poly.area for poly in polygons])
+    max_area = max(poly.area for poly in polygons)
     polygons = [poly for poly in polygons if poly.area / max_area > area]
 
     return polygons

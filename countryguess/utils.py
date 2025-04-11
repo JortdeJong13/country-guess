@@ -43,12 +43,12 @@ def decompose(polygon):
         return [polygon]
 
     if isinstance(polygon, MultiPolygon):
-        return [poly for poly in polygon.geoms]
+        return list(polygon.geoms)
 
 
 def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
     output_dir = Path(output_dir)
-    logger.info(f"Saving drawing of {country_name} to {output_dir}")
+    logger.info("Saving drawing of %s to %s", country_name, output_dir)
 
     # Create output directory if it doesn't exist
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -74,5 +74,5 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
     }
 
     # Save to file
-    with open(output_dir / filename, "w") as f:
+    with open(output_dir / filename, "w", encoding="utf-8") as f:
         json.dump(geojson, f, indent=2)

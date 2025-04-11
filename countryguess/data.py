@@ -62,7 +62,7 @@ class Dataset:
         # Create a GeoDataFrame
         gdfs = [gpd.read_file(file) for file in self.files]
         self.gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True))
-        logger.info(f"Loaded {len(self.gdf)} countries")
+        logger.info("Loaded %d countries", len(self.gdf))
 
         # Normalize geometries
         self.gdf["geometry"] = self.gdf["geometry"].apply(normalize_geom, shape=shape)
@@ -77,9 +77,8 @@ class Dataset:
         if self._idx < len(self):
             self._idx += 1
             return self[self._idx - 1]
-        else:
-            self._idx = 0
-            raise StopIteration
+        self._idx = 0
+        raise StopIteration
 
     def __getitem__(self, idx):
         if idx is None:
