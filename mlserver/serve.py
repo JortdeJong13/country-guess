@@ -9,7 +9,6 @@ from countryguess.data import geom_to_img
 from countryguess.model import fetch_model
 from countryguess.utils import normalize_geom
 
-# logging.getLogger()
 app = Flask(__name__)
 
 # Load model
