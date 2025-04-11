@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: Build, Test, and Push Docker Images
 
 on:
   push:
@@ -30,22 +30,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push mlserver
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./mlserver/Dockerfile
-          push: true
-          tags: ghcr.io/jortdejong13/country-guess-mlserver:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Build images, run containers and wait for health checks
+        run: docker compose up -d --build --wait
 
-      - name: Build and push webapp
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./webapp/Dockerfile
-          push: true
-          tags: ghcr.io/jortdejong13/country-guess-webapp:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Push images
+        run: docker compose push
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down --remove-orphans
