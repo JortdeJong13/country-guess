@@ -109,7 +109,7 @@ class CustomEmbeddingModel(nn.Module):
 
 
 def fetch_model(model_name):
-    # Get model version
+    """Fetch and load model and load reference countries"""
     client = MlflowClient()
     logger.info("Fetching model: %s...", model_name)
     try:
