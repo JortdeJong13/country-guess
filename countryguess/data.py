@@ -102,7 +102,7 @@ class Dataset:
         while idx < 0:
             idx += len(self)
 
-        geom = self.gdf.loc[idx, "geometry"]
+        geom = self.gdf.loc[idx, self.geom_col]
         country_name = self.gdf.loc[idx, "country_name"]
 
         return {"country_name": country_name, "geometry": geom}
