@@ -1,6 +1,7 @@
 FROM python:3.9-slim
 
 # Install dependencies
+RUN apt-get update && apt-get install -y curl
 COPY webapp/requirements.txt webapp/
 RUN pip install -r webapp/requirements.txt
 

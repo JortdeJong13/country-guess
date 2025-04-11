@@ -65,5 +65,10 @@ def feedback():
         return jsonify({"message": "Drawing not found"}), 400
 
 
+@app.route("/health")
+def health():
+    return jsonify({"status": "healthy"}), 200
+
+
 if __name__ == "__main__":
     app.run(debug=True)

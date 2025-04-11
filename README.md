@@ -1,13 +1,16 @@
 # <img src="webapp/static/favicon.ico" alt="favicon" width="28" height="28"> Country Guess App
 
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcountry-guess.nl&label=country-guess.nl)](https://country-guess.nl) [![Build Status](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml) 
+
 Welcome to my Country Guess App side project! With this machine learning application you can test your drawing skills. You can draw a country shape in the browser, a Convolutional Neural Network will then guess which country you have drawn.
 
 ## Table of Contents
 
 - [Screenshots](#screenshots)
 - [Getting Started](#getting-started)
-  - [Local Installation](#local-installation)
-  - [Docker Installation](#docker-installation)
+  - [Using Pre-built Docker Images](#1-using-pre-built-docker-images-recommended)
+  - [Building Docker Images Locally](#2-building-docker-images-locally)
+  - [Local Python Installation](#3-local-python-installation)
 - [Usage](#usage)
   - [Drawing](#drawing)
   - [Diving in](#diving-in)
@@ -24,31 +27,37 @@ Welcome to my Country Guess App side project! With this machine learning applica
 ## Getting Started
 
 The Country Guess App is accessible at [country-guess.nl](https://country-guess.nl), feel free to try it out!
-<br>Alternatively, you can follow the instructions to run the app locally or with Docker.
+<br>Alternatively, you can follow the instructions to run the app locally:
 
-### Local Installation
-
-1. Navigate to the project directory.
-2. Install the required packages:
+### 1. Using Pre-built Docker Images (Recommended)
+Pull and run the latest images:
+```bash
+docker compose pull
+docker compose up -d
 ```
+
+### 2. Building Docker Images Locally
+Build and run the containers:
+```bash
+docker compose up -d --build
+```
+
+### 3. Local Python Installation
+1. Install the required packages:
+```bash
 pip install -r mlserver/requirements.txt
 pip install -r webapp/requirements.txt
 ```
-3. Set the model name and run the ML server:
-```
+2. Set the model name and run the ML server:
+```bash
 MODEL_NAME=triplet_model python -m mlserver.serve
 ```
-5. Set the ML server URL and start the web app:
-```
+3. Set the ML server URL and start the web app:
+```bash
 MLSERVER_URL=http://127.0.0.1:5001/predict python -m webapp.app
 ```
-4. Access the app at [http://localhost:5000](http://localhost:5000)
 
-### Docker Installation
-1. Navigate to the project directory.
-2. Run the app using Docker Compose:
-```docker compose up -d --build```
-3. Access app at [http://localhost:5000](http://localhost:5000)
+<br>After setting up, you can access the app at [http://localhost:5000](http://localhost:5000)
 
 ## Usage
 
