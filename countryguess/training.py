@@ -55,13 +55,12 @@ def evaluate(model, dl, ref_data):
 
     for batch in dl:
         drawings = batch["drawing"][:, None, :, :].float().to(device)
-        countries, distances = model.rank_countries(drawings)
+        countries, _ = model.rank_countries(drawings)
 
-        all_rank = np.argsort(distances, axis=0)
-        index = [countries.index(country) for country in batch["country_name"]]
-        rank = np.argmax(all_rank == index, axis=0)
+        true_countries = np.array(batch["country_name"])
+        ranks = np.where(countries == true_countries[:, None])[1]
 
-        ranking = np.append(ranking, rank)
+        ranking = np.append(ranking, ranks)
         country_names.extend(batch["country_name"])
 
     return country_names, ranking

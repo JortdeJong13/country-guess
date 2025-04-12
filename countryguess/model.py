@@ -53,7 +53,22 @@ class TripletModel(nn.Module):
             distance = torch.linalg.norm(embedding - ref_emb, axis=-1)
             distances.append(distance.cpu())
 
-        return countries, np.array(distances)
+        countries = np.array(countries)
+        distances = np.array(distances).T
+
+        # Calculate confidence scores
+        similarities = -distances
+        exp_similarities = np.exp(
+            similarities - np.max(similarities, axis=1, keepdims=True)
+        )
+        confidences = exp_similarities / np.sum(exp_similarities, axis=1, keepdims=True)
+
+        # Sort by distances (ascending order)
+        idx = np.argsort(distances, axis=1)
+        countries = countries[idx]
+        confidences = np.take_along_axis(confidences, idx, axis=1)
+
+        return countries, confidences
 
 
 class CustomEmbeddingModel(nn.Module):
