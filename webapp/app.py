@@ -2,16 +2,14 @@ import os
 import uuid
 
 import requests
-from flask import Flask, jsonify, render_template, request, session
+from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines, save_drawing
+from webapp.store import drawing_store
 
 MLSERVER_URL = os.environ["MLSERVER_URL"]
 app = Flask(__name__)
-
-# Set secret key for session
-app.secret_key = os.urandom(24)
 
 
 @app.route("/")
@@ -27,7 +25,7 @@ def guess():
 
     # Store the drawing in the session
     drawing_id = str(uuid.uuid4())
-    session[drawing_id] = drawing
+    drawing_store.store(drawing_id, drawing)
 
     try:
         # Request prediction from ML server
@@ -55,18 +53,15 @@ def feedback():
     country_name = data.get("country")
     drawing_id = data.get("drawing_id")
 
-    # Retrieve the drawing from the session
-    if drawing_id and drawing_id in session:
-        if country_name:
-            # Save drawing
-            drawing = session[drawing_id]
-            save_drawing(country_name, drawing)
+    if not drawing_store.contains(drawing_id):
+        return jsonify({"message": "Drawing not found"}), 400
 
-        del session[drawing_id]
+    if country_name:
+        drawing = drawing_store.get(drawing_id)
+        save_drawing(country_name, drawing)
 
-        return jsonify({"message": "Feedback received"})
-
-    return jsonify({"message": "Drawing not found"}), 400
+    drawing_store.remove(drawing_id)
+    return jsonify({"message": "Feedback received"})
 
 
 @app.route("/health")
