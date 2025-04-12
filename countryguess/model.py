@@ -13,17 +13,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def get_confidence(distances):
-    """Convert distances to confidence scores using softmax"""
-    similarities = -distances
-    exp_similarities = np.exp(
-        similarities - np.max(similarities)
-    )  # Subtract max for numerical stability
-    confidences = exp_similarities / np.sum(exp_similarities)
-
-    return confidences
-
-
 class TripletModel(nn.Module):
     def __init__(self, embedding_model):
         super().__init__()
