@@ -55,7 +55,8 @@ function refreshDrawing() {
   hideConfirmation();
 }
 
-document.getElementById("guess-btn").addEventListener("click", guess);
+const guessButton = document.getElementById("guess-btn");
+guessButton.addEventListener("click", handleButtonClick);
 
 function guess() {
   if (lines.length > 0) {
@@ -108,9 +109,26 @@ function guess() {
   }
 }
 
+let isInConfirmMode = false;
+
+function handleButtonClick() {
+  if (isInConfirmMode) {
+    confirmCountry();
+  } else {
+    guess();
+  }
+}
+
 function showConfirmation(ranking) {
-  var confirmationContainer = document.getElementById("confirmation-container");
-  confirmationContainer.style.display = "block"; // Show the confirmation container
+  const confirmationContainer = document.getElementById(
+    "confirmation-container",
+  );
+  const guessBtn = document.getElementById("guess-btn");
+  confirmationContainer.style.display = "block";
+
+  // Update button text and function
+  guessBtn.textContent = "Confirm";
+  isInConfirmMode = true;
 
   var dropdown = document.getElementById("country-dropdown");
   dropdown.innerHTML = ""; // Clear previous options
@@ -122,21 +140,21 @@ function showConfirmation(ranking) {
     dropdown.add(option);
   });
 
-  // Show the confirm button
-  document.getElementById("confirm-btn").style.display = "inline-block";
   // Show the instruction message
   document.getElementById("instruction-message").style.display = "block";
 }
 
 function hideConfirmation() {
-  document.getElementById("confirmation-container").style.display = "none"; // Hide the confirmation container
-  document.getElementById("confirm-btn").style.display = "none"; // Hide the confirm button
-  document.getElementById("instruction-message").style.display = "none"; // Hide the instruction message
-}
+  const confirmationContainer = document.getElementById(
+    "confirmation-container",
+  );
+  const guessBtn = document.getElementById("guess-btn");
+  confirmationContainer.style.display = "none";
 
-document
-  .getElementById("confirm-btn")
-  .addEventListener("click", confirmCountry);
+  // Reset button text and function
+  guessBtn.textContent = "Guess Country";
+  isInConfirmMode = false;
+}
 
 function confirmCountry() {
   var selectedCountry = document.getElementById("country-dropdown").value;
