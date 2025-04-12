@@ -51,35 +51,48 @@ def geom_to_img(geometry, shape):
 class Dataset:
     """Dataset for fetching country geometries"""
 
-    # Class variable for storing data
-    _loaded_gdfs = {}
+    # Class variable for sharing reference data
+    _ref_gdf = None
 
-    def __init__(self, path="./data/reference/", shape=(64, 64)):
-        self.path = path
+    def __init__(self, shape=(64, 64)):
         self.shape = shape
-        self._idx = 0
-        self.gdf = self.load_gdf(path, shape)
-
-        # Normalize geometries
         self.geom_col = "geom_{}_{}".format(*shape)
-        self.add_normal_geom(self.geom_col, self.shape)
+        self._idx = 0
+
+        # Load reference data and normalize geometries
+        self.ref_gdf = self.get_ref_gdf()
+        self.ref_gdf = self.add_normal_geom(self.ref_gdf)
+
+        # Set working dataset
+        self.gdf = self.set_gdf()
 
     @classmethod
-    def load_gdf(cls, path, shape):
-        """Load and cache GeoDataFrame from path"""
-        if path not in cls._loaded_gdfs:
-            files = list(Path(path).glob("*.geojson"))
-            gdfs = [gpd.read_file(file) for file in files]
-            gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True))
+    def get_ref_gdf(cls):
+        """Get and cache reference data"""
+        if Dataset._ref_gdf is None:
+            # Load reference data
+            Dataset._ref_gdf = cls.load_gdf("./data/reference/")
+        return Dataset._ref_gdf
 
-            cls._loaded_gdfs[path] = gdf
-            logger.info("Loaded %d samples from %s", len(gdf), path)
+    def set_gdf(self):
+        """Set the reference countries as the main GeoDataFrame"""
+        return self.ref_gdf
 
-        return cls._loaded_gdfs[path]
+    @classmethod
+    def load_gdf(cls, path):
+        """Load GeoDataFrame from path"""
+        files = list(Path(path).glob("*.geojson"))
+        gdfs = [gpd.read_file(file) for file in files]
+        gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True))
+        logger.info("Loaded %d samples from %s", len(gdf), path)
 
-    def add_normal_geom(self, geom_col, shape):
-        if geom_col not in self.gdf.columns:
-            self.gdf[geom_col] = self.gdf["geometry"].apply(normalize_geom, shape=shape)
+        return gdf
+
+    def add_normal_geom(self, gdf):
+        """Add normalized geometry column to GeoDataFrame"""
+        if self.geom_col not in gdf:
+            gdf[self.geom_col] = gdf["geometry"].apply(normalize_geom, shape=self.shape)
+        return gdf
 
     def __len__(self):
         return len(self.gdf)
@@ -108,19 +121,29 @@ class Dataset:
         return {"country_name": country_name, "geometry": geom}
 
     def from_country_name(self, country_name):
-        idx = self.gdf.index[self.gdf["country_name"] == country_name]
+        """Get the reference image for a country"""
+        idx = self.ref_gdf.index[self.ref_gdf["country_name"] == country_name]
+        geom = self.ref_gdf.loc[idx.item(), self.geom_col]
+        ref_img = geom_to_img(geom, self.shape)
 
-        return self[idx.item()]["geometry"]
+        return ref_img
 
 
 class TestDataset(Dataset):
-    """For evaluating on user drawn countries"""
+    """For accessing user drawn countries"""
 
-    def __init__(self, path="./data/drawings/", shape=(64, 64)):
-        Dataset.__init__(self, path=path, shape=shape)
+    def __init__(self, shape=(64, 64)):
+        Dataset.__init__(self, shape=shape)
+        # Normalize test data
+        self.gdf = self.add_normal_geom(self.gdf)
+
         # Sort test data by timestamp
         self.gdf.sort_values(by="timestamp", inplace=True)
         self.gdf.reset_index(drop=True, inplace=True)
+
+    def set_gdf(self):
+        """Override method to set user drawings as the test data"""
+        return self.load_gdf("./data/drawings/")
 
     def __getitem__(self, idx):
         item = super().__getitem__(idx)

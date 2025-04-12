@@ -80,8 +80,8 @@ def generate_drawing(polygon, shape, temp=1.0):
 class ValDataset(Dataset):
     """Extends the base dataset for evaluating on generated drawings"""
 
-    def __init__(self, temp=1.0, path="./data/reference/", shape=(64, 64)):
-        Dataset.__init__(self, path=path, shape=shape)
+    def __init__(self, shape=(64, 64), temp=1.0):
+        Dataset.__init__(self, shape=shape)
         self.temp = temp
 
     def __getitem__(self, idx):
@@ -95,8 +95,8 @@ class ValDataset(Dataset):
 class TripletDataset(Dataset):
     """Extends the base dataset for fetching triplet samples"""
 
-    def __init__(self, temp=1.0, path="./data/reference/", shape=(64, 64)):
-        Dataset.__init__(self, path=path, shape=shape)
+    def __init__(self, shape=(64, 64), temp=1.0):
+        Dataset.__init__(self, shape=shape)
         self.temp = temp
 
     def __getitem__(self, idx):

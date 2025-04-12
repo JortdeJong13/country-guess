@@ -30,11 +30,10 @@ def plot_training_sample(train_data, idx=None):
     plt.show()
 
 
-def plot_sample(data, ref_data, idx=None):
+def plot_sample(data, idx=None):
     """Plot sample from the test of validation set with drawing and reference shape."""
     sample = data[idx]
-    ref_geom = ref_data.from_country_name(sample["country_name"])
-    ref_img = geom_to_img(ref_geom, ref_data.shape)
+    ref_img = data.from_country_name(sample["country_name"])
 
     _, axs = _create_figure(2)
 
