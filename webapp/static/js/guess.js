@@ -53,19 +53,32 @@ function refreshDrawing() {
   clearCanvas();
   document.getElementById("guess-message").innerText = "";
 
-  //
   if (isInConfirmMode) {
     hideConfirmation();
-    // Send feedback with null to cleanup without saving
     if (window.currentDrawingId) {
+      // Send feedback with null to cleanup without saving
       sendFeedback(null);
       window.currentDrawingId = null;
     }
   }
+
+  // Unlock guess button
+  const guessBtn = document.getElementById("guess-btn");
+  guessBtn.style = "";
 }
 
 const guessButton = document.getElementById("guess-btn");
 guessButton.addEventListener("click", handleButtonClick);
+
+let isInConfirmMode = false;
+
+function handleButtonClick() {
+  if (isInConfirmMode) {
+    confirmCountry();
+  } else {
+    guess();
+  }
+}
 
 function guess() {
   if (lines.length > 0) {
@@ -115,16 +128,6 @@ function guess() {
     );
     document.getElementById("guess-message").innerText =
       "You first need to draw a country";
-  }
-}
-
-let isInConfirmMode = false;
-
-function handleButtonClick() {
-  if (isInConfirmMode) {
-    confirmCountry();
-  } else {
-    guess();
   }
 }
 
@@ -205,6 +208,13 @@ function confirmCountry() {
   if (window.currentDrawingId) {
     sendFeedback(selectedCountry);
     window.currentDrawingId = null;
+
+    // Lock guess button after confirmation
+    const guessBtn = document.getElementById("guess-btn");
+    guessBtn.style.opacity = "0.5";
+    guessBtn.style.backgroundColor = "#3f3f46";
+    guessBtn.style.cursor = "not-allowed";
+    guessBtn.style.pointerEvents = "none";
   }
 }
 
