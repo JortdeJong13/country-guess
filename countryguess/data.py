@@ -49,7 +49,7 @@ def geom_to_img(geometry, shape):
 
 
 class Dataset:
-    """Dataset for fetching country geometries"""
+    """Base dataset for fetching country geometries"""
 
     # Class variable for sharing reference data
     _ref_gdf = None
@@ -64,7 +64,11 @@ class Dataset:
         self.ref_gdf = self.add_normal_geom(self.ref_gdf)
 
         # Set working dataset
-        self.gdf = self.set_gdf()
+        self.gdf = self.set_working_gdf()
+
+    def set_working_gdf(self):
+        """Set the reference countries as the working GeoDataFrame"""
+        return self.ref_gdf
 
     @classmethod
     def get_ref_gdf(cls):
@@ -74,12 +78,8 @@ class Dataset:
             Dataset._ref_gdf = cls.load_gdf("./data/reference/")
         return Dataset._ref_gdf
 
-    def set_gdf(self):
-        """Set the reference countries as the main GeoDataFrame"""
-        return self.ref_gdf
-
-    @classmethod
-    def load_gdf(cls, path):
+    @staticmethod
+    def load_gdf(path):
         """Load GeoDataFrame from path"""
         files = list(Path(path).glob("*.geojson"))
         gdfs = [gpd.read_file(file) for file in files]
@@ -93,6 +93,14 @@ class Dataset:
         if self.geom_col not in gdf:
             gdf[self.geom_col] = gdf["geometry"].apply(normalize_geom, shape=self.shape)
         return gdf
+
+    def from_country_name(self, country_name):
+        """Get the reference image for a country"""
+        idx = self.ref_gdf.index[self.ref_gdf["country_name"] == country_name]
+        geom = self.ref_gdf.loc[idx.item(), self.geom_col]
+        ref_img = geom_to_img(geom, self.shape)
+
+        return ref_img
 
     def __len__(self):
         return len(self.gdf)
@@ -120,14 +128,6 @@ class Dataset:
 
         return {"country_name": country_name, "geometry": geom}
 
-    def from_country_name(self, country_name):
-        """Get the reference image for a country"""
-        idx = self.ref_gdf.index[self.ref_gdf["country_name"] == country_name]
-        geom = self.ref_gdf.loc[idx.item(), self.geom_col]
-        ref_img = geom_to_img(geom, self.shape)
-
-        return ref_img
-
 
 class TestDataset(Dataset):
     """For accessing user drawn countries"""
@@ -141,8 +141,8 @@ class TestDataset(Dataset):
         self.gdf.sort_values(by="timestamp", inplace=True)
         self.gdf.reset_index(drop=True, inplace=True)
 
-    def set_gdf(self):
-        """Override method to set user drawings as the test data"""
+    def set_working_gdf(self):
+        """Set user drawings as the working GeoDataFrame"""
         return self.load_gdf("./data/drawings/")
 
     def __getitem__(self, idx):

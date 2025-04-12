@@ -9,51 +9,101 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Draw Country</title>
-        <link
-            rel="stylesheet"
-            href="{{ url_for('static', filename='css/styles.css') }}"
-        />
+        <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
     </head>
-    <body>
-        <a
-            href="https://github.com/JortdeJong13/country-guess"
-            id="source-link"
-            target="_blank"
+    <body
+        class="min-h-screen bg-neutral-900 text-rose-400 relative m-0 p-0 font-sans text-center"
+    >
+        <div
+            class="relative flex flex-col md:flex-row items-center justify-center px-10 mt-4"
         >
-            source
-            <img
-                src="{{ url_for('static', filename='github.png') }}"
-                alt="GitHub"
-            />
-        </a>
-
-        <h1>Draw a Country</h1>
-
-        <div id="canvas-container">
-            <canvas id="canvas" width="500" height="500"></canvas>
+            <h1 class="text-4xl font-bold mb-4 md:mb-0">Draw a Country</h1>
+            <a
+                href="https://github.com/JortdeJong13/country-guess"
+                class="hidden sm:flex absolute right-10 text-gray-300 no-underline items-center hover:text-gray-400 z-10 transform hover:scale-110 active:scale-100"
+                target="_blank"
+            >
+                source
+                <img
+                    src="{{ url_for('static', filename='github.png') }}"
+                    alt="GitHub"
+                    class="w-5 h-5 ml-2"
+                />
+            </a>
         </div>
 
-        <div id="buttons-container">
-            <button id="guess-btn">Guess Country</button>
-            <button id="refresh-btn">Clear Drawing</button>
+        <div id="canvas-container" class="relative inline-block mx-auto my-4">
+            <canvas
+                id="canvas"
+                class="absolute top-0 left-1/2 transform -translate-x-1/2 border-2 border-neutral-600 cursor-crosshair bg-zinc-800 rounded-xl"
+            >
+            </canvas>
         </div>
 
-        <p id="guess-message"></p>
-
-        <div id="instruction-message">
-            Select the country you tried to draw:
+        <div
+            class="relative z-10 my-0 flex justify-center"
+            style="gap: clamp(1rem, 5vw, 3rem)"
+        >
+            <button
+                id="guess-btn"
+                class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
+            >
+                Guess Country
+            </button>
+            <button
+                id="refresh-btn"
+                class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
+            >
+                Clear Drawing
+            </button>
         </div>
 
-        <div id="confirmation-container">
-            <select id="country-dropdown">
-                {% for country in countries %}
-                <option value="{{ country }}">{{ country }}</option>
-                {% endfor %}
-            </select>
-            <button id="confirm-btn">Confirm</button>
+        <p
+            id="guess-message"
+            class="mt-5 text-lg text-amber-500 relative z-10"
+        ></p>
+
+        <div id="confirmation-container" class="hidden mt-5 relative z-10">
+            <div class="flex items-center justify-center gap-3">
+                <div>
+                    <div
+                        id="instruction-message"
+                        class="italic text-gray-400 mb-2"
+                    >
+                        Select the country you tried to draw:
+                    </div>
+                    <select
+                        id="country-dropdown"
+                        class="px-4 py-1.5 text-base bg-gray-800 text-gray-300 border border-gray-700 rounded-full"
+                    >
+                        {% for country in countries %}
+                        <option
+                            value="{{ country }}"
+                            class="bg-gray-800 text-gray-300"
+                        >
+                            {{ country }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
 
-        <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
+        <div
+            id="tsparticles-confetti-container"
+            class="fixed inset-0 w-full h-full pointer-events-none z-50"
+        ></div>
+        <script>
+            document.addEventListener("touchstart", function () {}, true);
+        </script>
+        <script
+            type="module"
+            src="{{ url_for('static', filename='js/drawing.js') }}"
+        ></script>
+        <script
+            type="module"
+            src="{{ url_for('static', filename='js/guess.js') }}"
+        ></script>
     </body>
 </html>

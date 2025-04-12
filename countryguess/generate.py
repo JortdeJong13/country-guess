@@ -101,7 +101,7 @@ class TripletDataset(Dataset):
 
     def __getitem__(self, idx):
         pos_poly = super().__getitem__(idx)["geometry"]
-        neg_idx = self.random_neg(idx)
+        neg_idx = self.get_random_neg(idx)
         neg_poly = super().__getitem__(neg_idx)["geometry"]
 
         drawing = generate_drawing(pos_poly, self.shape, self.temp)
@@ -116,7 +116,7 @@ class TripletDataset(Dataset):
             "neg_idx": neg_idx,
         }
 
-    def random_neg(self, ref_idx):
+    def get_random_neg(self, ref_idx):
         idx = random.randint(0, len(self.gdf) - 1)
         while idx == ref_idx:
             idx = random.randint(0, len(self.gdf) - 1)
