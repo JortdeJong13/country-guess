@@ -24,12 +24,9 @@ def predict():
     drawing = torch.tensor(drawing, dtype=torch.float32).to(device)
 
     # Get ranking of countries
-    countries, distances = model.rank_countries(drawing)
-    ranking = zip(countries, np.squeeze(distances))
-    ranking = sorted(ranking, key=lambda t: t[1])
-    countries = [country for country, rank in ranking]
+    countries, scores = model.rank_countries(drawing)
 
-    return jsonify(countries)
+    return jsonify(list(countries[0]))
 
 
 @app.route("/health")

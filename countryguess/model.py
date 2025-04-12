@@ -13,6 +13,17 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+def get_confidence(distances):
+    """Convert distances to confidence scores using softmax"""
+    similarities = -distances
+    exp_similarities = np.exp(
+        similarities - np.max(similarities)
+    )  # Subtract max for numerical stability
+    confidences = exp_similarities / np.sum(exp_similarities)
+
+    return confidences
+
+
 class TripletModel(nn.Module):
     def __init__(self, embedding_model):
         super().__init__()
@@ -41,19 +52,34 @@ class TripletModel(nn.Module):
             self._ref_countries[country_name] = embedding
 
     @torch.no_grad
-    def rank_countries(self, drawings):
-        embedding = self(drawings)
+    def rank_countries(model, drawings):
+        embedding = model(drawings)
         countries, distances = [], []
 
-        if not self._ref_countries:
+        if not model._ref_countries:
             raise Exception("First the reference dataset needs to be loaded!")
 
-        for country, ref_emb in self._ref_countries.items():
+        for country, ref_emb in model._ref_countries.items():
             countries.append(country)
             distance = torch.linalg.norm(embedding - ref_emb, axis=-1)
             distances.append(distance.cpu())
 
-        return countries, np.array(distances)
+        countries = np.array(countries)
+        distances = np.array(distances).T
+
+        # Calculate confidence scores
+        similarities = -distances
+        exp_similarities = np.exp(
+            similarities - np.max(similarities, axis=1, keepdims=True)
+        )
+        confidences = exp_similarities / np.sum(exp_similarities, axis=1, keepdims=True)
+
+        # Sort by distances (ascending order)
+        idx = np.argsort(distances, axis=1)
+        countries = countries[idx]
+        confidences = np.take_along_axis(confidences, idx, axis=1)
+
+        return countries, confidences
 
 
 class CustomEmbeddingModel(nn.Module):
