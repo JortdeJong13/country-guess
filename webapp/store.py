@@ -12,13 +12,13 @@ class DrawingStore:
 
         self.drawings[drawing_id] = drawing
 
-    def get(self, drawing_id: str) -> str | None:
+    def get(self, drawing_id: str):
         return self.drawings.get(drawing_id)
 
     def remove(self, drawing_id: str):
         self.drawings.pop(drawing_id, None)
 
-    def contains(self, drawing_id: str) -> bool:
+    def contains(self, drawing_id: str):
         return drawing_id in self.drawings
 
 

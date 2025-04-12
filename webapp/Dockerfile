@@ -9,4 +9,4 @@ RUN pip install -r webapp/requirements.txt
 COPY countryguess/utils.py countryguess/
 COPY webapp webapp
 
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
+CMD ["python", "-m", "webapp.app", "--host=0.0.0.0"]
