@@ -54,6 +54,13 @@
             <button id="confirm-btn">Confirm</button>
         </div>
 
-        <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
+        <script
+            type="module"
+            src="{{ url_for('static', filename='js/drawing.js') }}"
+        ></script>
+        <script
+            type="module"
+            src="{{ url_for('static', filename='js/guess.js') }}"
+        ></script>
     </body>
 </html>
