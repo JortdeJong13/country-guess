@@ -30,7 +30,7 @@ class TripletModel(nn.Module):
     def load_reference(self, ref_data):
         assert ref_data.shape == self.shape
         self._ref_countries = {}
-        for idx, item in enumerate(ref_data):
+        for item in ref_data:
             country_name, geom = item["country_name"], item["geometry"]
             img = geom_to_img(geom, ref_data.shape)
             embedding = self(

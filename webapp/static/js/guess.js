@@ -52,11 +52,33 @@ document
 function refreshDrawing() {
   clearCanvas();
   document.getElementById("guess-message").innerText = "";
-  hideConfirmation();
+
+  if (isInConfirmMode) {
+    hideConfirmation();
+    if (window.currentDrawingId) {
+      // Send feedback with null to cleanup without saving
+      sendFeedback(null);
+      window.currentDrawingId = null;
+    }
+  }
+
+  // Unlock guess button
+  const guessBtn = document.getElementById("guess-btn");
+  guessBtn.style = "";
 }
 
 const guessButton = document.getElementById("guess-btn");
 guessButton.addEventListener("click", handleButtonClick);
+
+let isInConfirmMode = false;
+
+function handleButtonClick() {
+  if (isInConfirmMode) {
+    confirmCountry();
+  } else {
+    guess();
+  }
+}
 
 function guess() {
   if (lines.length > 0) {
@@ -106,16 +128,6 @@ function guess() {
     );
     document.getElementById("guess-message").innerText =
       "You first need to draw a country";
-  }
-}
-
-let isInConfirmMode = false;
-
-function handleButtonClick() {
-  if (isInConfirmMode) {
-    confirmCountry();
-  } else {
-    guess();
   }
 }
 
@@ -192,24 +204,37 @@ function confirmCountry() {
 
   hideConfirmation();
 
-  // Send POST request to feedback route
-  fetch("/feedback", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      country: selectedCountry,
-      drawing_id: window.currentDrawingId,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data.message);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
+  // Send feedback with country name
+  if (window.currentDrawingId) {
+    sendFeedback(selectedCountry);
+    window.currentDrawingId = null;
+
+    // Lock guess button after confirmation
+    const guessBtn = document.getElementById("guess-btn");
+    guessBtn.style.opacity = "0.5";
+    guessBtn.style.backgroundColor = "#3f3f46";
+    guessBtn.style.cursor = "not-allowed";
+    guessBtn.style.pointerEvents = "none";
+  }
+}
+
+async function sendFeedback(countryName) {
+  try {
+    const response = await fetch("/feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        country: countryName,
+        drawing_id: window.currentDrawingId,
+      }),
     });
+    const data = await response.json();
+    console.log(data.message);
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 export { hideConfirmation };

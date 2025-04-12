@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 
-from .data import geom_to_img
-
 
 def _create_figure(n_subplots):
     """Create a figure with black background and specified number of subplots."""

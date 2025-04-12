@@ -7,6 +7,7 @@ from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines, save_drawing
 
+MLSERVER_URL = os.environ["MLSERVER_URL"]
 app = Flask(__name__)
 
 # Set secret key for session
@@ -30,7 +31,7 @@ def guess():
 
     try:
         # Request prediction from ML server
-        response = requests.post(os.environ["MLSERVER_URL"], json=drawing)
+        response = requests.post(MLSERVER_URL, json=drawing, timeout=10)
 
         # Check if there is an error
         response.raise_for_status()
@@ -56,8 +57,11 @@ def feedback():
 
     # Retrieve the drawing from the session
     if drawing_id and drawing_id in session:
-        drawing = session[drawing_id]
-        save_drawing(country_name, drawing)
+        if country_name:
+            # Save drawing
+            drawing = session[drawing_id]
+            save_drawing(country_name, drawing)
+
         del session[drawing_id]
 
         return jsonify({"message": "Feedback received"})
@@ -71,4 +75,4 @@ def health():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
