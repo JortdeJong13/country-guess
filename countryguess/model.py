@@ -41,14 +41,14 @@ class TripletModel(nn.Module):
             self._ref_countries[country_name] = embedding
 
     @torch.no_grad
-    def rank_countries(model, drawings):
-        embedding = model(drawings)
+    def rank_countries(self, drawings):
+        embedding = self(drawings)
         countries, distances = [], []
 
-        if not model._ref_countries:
+        if not self._ref_countries:
             raise Exception("First the reference dataset needs to be loaded!")
 
-        for country, ref_emb in model._ref_countries.items():
+        for country, ref_emb in self._ref_countries.items():
             countries.append(country)
             distance = torch.linalg.norm(embedding - ref_emb, axis=-1)
             distances.append(distance.cpu())
