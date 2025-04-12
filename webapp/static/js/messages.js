@@ -37,12 +37,11 @@ export const lowConfidenceMessages = [
   "Best guess: {{guessed}} — though I'm not confident.",
   "I’m unsure, but it slightly resembles {{guessed}}.",
   "Could be {{guessed}}, but that's a stretch.",
-  "With low confidence, I'd go with {{guessed}}.",
 ];
 
 // Messages for correct predictions
 export const correctMessages = [
-  "Yes — that’s {{selected}}!",
+  "Yep — that’s {{selected}}!",
   "You drew {{selected}} perfectly!",
   "Spot on! That's {{selected}}!",
   "Exactly right — this is {{selected}}.",
@@ -51,7 +50,6 @@ export const correctMessages = [
   "This is a great depiction of {{selected}}!",
   "Nice work — clearly {{selected}}!",
   "That’s a textbook {{selected}}!",
-  "{{selected}} it is — well done!",
 ];
 
 // Messages for incorrect predictions
