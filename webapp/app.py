@@ -56,8 +56,11 @@ def feedback():
 
     # Retrieve the drawing from the session
     if drawing_id and drawing_id in session:
-        drawing = session[drawing_id]
-        save_drawing(country_name, drawing)
+        if country_name:
+            # Save drawing
+            drawing = session[drawing_id]
+            save_drawing(country_name, drawing)
+
         del session[drawing_id]
 
         return jsonify({"message": "Feedback received"})
@@ -71,4 +74,4 @@ def health():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

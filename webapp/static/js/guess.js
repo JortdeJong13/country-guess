@@ -52,7 +52,16 @@ document
 function refreshDrawing() {
   clearCanvas();
   document.getElementById("guess-message").innerText = "";
-  hideConfirmation();
+
+  //
+  if (isInConfirmMode) {
+    hideConfirmation();
+    // Send feedback with null to cleanup without saving
+    if (window.currentDrawingId) {
+      sendFeedback(null);
+      window.currentDrawingId = null;
+    }
+  }
 }
 
 const guessButton = document.getElementById("guess-btn");
@@ -192,24 +201,30 @@ function confirmCountry() {
 
   hideConfirmation();
 
-  // Send POST request to feedback route
-  fetch("/feedback", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      country: selectedCountry,
-      drawing_id: window.currentDrawingId,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data.message);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
+  // Send feedback with country name
+  if (window.currentDrawingId) {
+    sendFeedback(selectedCountry);
+    window.currentDrawingId = null;
+  }
+}
+
+async function sendFeedback(countryName) {
+  try {
+    const response = await fetch("/feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        country: countryName,
+        drawing_id: window.currentDrawingId,
+      }),
     });
+    const data = await response.json();
+    console.log(data.message);
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 export { hideConfirmation };
