@@ -7,6 +7,7 @@ from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines, save_drawing
 
+MLSERVER_URL = os.environ["MLSERVER_URL"]
 app = Flask(__name__)
 
 # Set secret key for session
@@ -30,7 +31,7 @@ def guess():
 
     try:
         # Request prediction from ML server
-        response = requests.post(os.environ["MLSERVER_URL"], json=drawing)
+        response = requests.post(MLSERVER_URL, json=drawing, timeout=10)
 
         # Check if there is an error
         response.raise_for_status()
