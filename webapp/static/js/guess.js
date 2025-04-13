@@ -105,7 +105,7 @@ function showConfirmation(ranking) {
   ranking.countries.forEach((country, index) => {
     var option = document.createElement("option");
     option.value = country;
-    option.text = `${country}${"\u00A0".repeat(4)}${msg.formatConfidence(ranking.scores[index])}`;
+    option.text = `${country}${"\u00A0".repeat(4)}${(ranking.scores[index] * 100).toFixed(1)}%`;
     dropdown.add(option);
   });
 
@@ -131,11 +131,12 @@ function confirmCountry() {
   const guessedCountry = dropdown.options[0].value;
 
   if (selectedCountry === guessedCountry) {
-    const message = msg.getRandomMessage(
-      msg.correctMessages,
-      selectedCountry,
-      guessedCountry,
-    );
+    const message =
+      msg.getRandomMessage(
+        msg.correctMessages,
+        selectedCountry,
+        guessedCountry,
+      ) + msg.getCountryFacts(selectedCountry);
     document.getElementById("guess-message").innerText = message;
 
     setTimeout(() => {
