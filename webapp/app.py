@@ -5,10 +5,10 @@ import requests
 from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
-from countryguess.utils import proces_lines, save_drawing
-from webapp.store import drawing_store
+from countryguess.utils import proces_lines, save_drawing, DrawingStore
 
 MLSERVER_URL = os.environ["MLSERVER_URL"]
+drawing_store = DrawingStore()
 app = Flask(__name__)
 
 
@@ -70,4 +70,4 @@ def health():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")

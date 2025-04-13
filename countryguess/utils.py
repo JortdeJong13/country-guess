@@ -76,3 +76,25 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
     # Save to file
     with open(output_dir / filename, "w", encoding="utf-8") as f:
         json.dump(geojson, f, indent=2)
+
+
+class DrawingStore:
+    def __init__(self, max_drawings: int = 10):
+        self.drawings = {}
+        self.max_drawings = max_drawings
+
+    def store(self, drawing_id: str, drawing: str):
+        if len(self.drawings) >= self.max_drawings:
+            first_key = next(iter(self.drawings))
+            self.drawings.pop(first_key)
+
+        self.drawings[drawing_id] = drawing
+
+    def get(self, drawing_id: str):
+        return self.drawings.get(drawing_id)
+
+    def remove(self, drawing_id: str):
+        self.drawings.pop(drawing_id, None)
+
+    def contains(self, drawing_id: str):
+        return drawing_id in self.drawings
