@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 
 
 def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
@@ -44,6 +45,7 @@ def train(model, train_dl, triplet_loss, optimizer):
     return np.mean(losses)
 
 
+@torch.no_grad
 def evaluate(model, dl, ref_data):
     device = next(model.parameters()).device
 
@@ -51,18 +53,20 @@ def evaluate(model, dl, ref_data):
     model.load_reference(ref_data)
 
     country_names = []
+    conf_scores = []
     ranking = np.array([])
 
     for batch in dl:
         drawings = batch["drawing"][:, None, :, :].float().to(device)
-        countries, _ = model.rank_countries(drawings)
+        countries, scores = model.rank_countries(drawings)
 
         true_countries = np.array(batch["country_name"])
-        ranks = np.full(len(true_countries), np.nan)
-        found_indices = np.where(countries == true_countries[:, None])
-        ranks[found_indices[0]] = found_indices[1]
+        ranks = np.where(countries == true_countries[:, None])[1].astype(int)
+        batch_indices = np.arange(len(ranks))
+        scores = scores[batch_indices, ranks]
 
         ranking = np.append(ranking, ranks)
         country_names.extend(batch["country_name"])
+        conf_scores.extend(scores)
 
-    return country_names, ranking
+    return country_names, ranking, conf_scores
