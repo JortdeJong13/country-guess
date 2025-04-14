@@ -98,7 +98,7 @@ class Dataset:
         """Get the reference image for a country"""
         idx = self.ref_gdf.index[self.ref_gdf["country_name"] == country_name]
         if idx.empty:
-            logger.warning(f"Country '{country_name}' not found")
+            logger.warning("Country %s not found", country_name)
             return np.zeros(self.shape, dtype=np.uint8)
 
         geom = self.ref_gdf.loc[idx.item(), self.geom_col]

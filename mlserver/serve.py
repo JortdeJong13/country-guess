@@ -1,6 +1,5 @@
 import os
 
-import numpy as np
 import torch
 from flask import Flask, jsonify, request
 from shapely import from_geojson
