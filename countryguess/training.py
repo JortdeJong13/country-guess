@@ -58,7 +58,9 @@ def evaluate(model, dl, ref_data):
         countries, _ = model.rank_countries(drawings)
 
         true_countries = np.array(batch["country_name"])
-        ranks = np.where(countries == true_countries[:, None])[1]
+        ranks = np.full(len(true_countries), np.nan)
+        found_indices = np.where(countries == true_countries[:, None])
+        ranks[found_indices[0]] = found_indices[1]
 
         ranking = np.append(ranking, ranks)
         country_names.extend(batch["country_name"])
