@@ -8,6 +8,8 @@ import requests
 
 
 class TestEndToEnd(unittest.TestCase):
+    """Test the Country Guess App end-to-end."""
+
     def setUp(self):
         self.webapp_url = "http://localhost:5002"
         self.drawing_dir = Path("data/drawings")
@@ -17,14 +19,16 @@ class TestEndToEnd(unittest.TestCase):
 
         # Load test drawing
         test_data_path = Path(__file__).parent / "data" / f"{self.file_name}.json"
-        with open(test_data_path) as f:
+        with open(test_data_path, encoding="utf-8") as f:
             self.test_drawing = json.load(f)
 
     def test_country_guess_app(self):
         """Test the Country Guess App end-to-end."""
 
         # Step 1: Send drawing and get prediction
-        response = requests.post(f"{self.webapp_url}/guess", json=self.test_drawing)
+        response = requests.post(
+            f"{self.webapp_url}/guess", json=self.test_drawing, timeout=10
+        )
         self.assertEqual(response.status_code, 200)
 
         result = response.json()
@@ -42,7 +46,9 @@ class TestEndToEnd(unittest.TestCase):
         # Step 2: Submit feedback
         feedback_data = {"country": self.country_name, "drawing_id": drawing_id}
 
-        response = requests.post(f"{self.webapp_url}/feedback", json=feedback_data)
+        response = requests.post(
+            f"{self.webapp_url}/feedback", json=feedback, timeout=10
+        )
         self.assertEqual(response.status_code, 200)
 
         # Step 3: Verify drawing was saved
