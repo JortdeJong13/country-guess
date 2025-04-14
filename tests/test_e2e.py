@@ -45,9 +45,8 @@ class TestEndToEnd(unittest.TestCase):
 
         # Step 2: Submit feedback
         feedback_data = {"country": self.country_name, "drawing_id": drawing_id}
-
         response = requests.post(
-            f"{self.webapp_url}/feedback", json=feedback, timeout=10
+            f"{self.webapp_url}/feedback", json=feedback_data, timeout=10
         )
         self.assertEqual(response.status_code, 200)
 
