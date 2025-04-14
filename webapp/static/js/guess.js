@@ -109,6 +109,12 @@ function showConfirmation(ranking) {
     dropdown.add(option);
   });
 
+  // Add "Other country" option
+  var otherOption = document.createElement("option");
+  otherOption.value = "Other";
+  otherOption.text = "Other country";
+  dropdown.add(otherOption);
+
   // Show the instruction message
   document.getElementById("instruction-message").style.display = "block";
 }
@@ -130,14 +136,17 @@ function confirmCountry() {
   var selectedCountry = dropdown.value;
   const guessedCountry = dropdown.options[0].value;
 
-  if (selectedCountry === guessedCountry) {
-    const message =
+  let message;
+
+  if (selectedCountry === "Other") {
+    message = "I thought I knew all the countries... I guess not!";
+  } else if (selectedCountry === guessedCountry) {
+    message =
       msg.getRandomMessage(
         msg.correctMessages,
         selectedCountry,
         guessedCountry,
       ) + msg.getCountryFacts(selectedCountry);
-    document.getElementById("guess-message").innerText = message;
 
     setTimeout(() => {
       confetti({
@@ -152,13 +161,14 @@ function confirmCountry() {
       });
     }, 50);
   } else {
-    const message = msg.getRandomMessage(
+    message = msg.getRandomMessage(
       msg.incorrectMessages,
       guessedCountry,
       selectedCountry,
     );
-    document.getElementById("guess-message").innerText = message;
   }
+
+  document.getElementById("guess-message").innerText = message;
 
   hideConfirmation();
 

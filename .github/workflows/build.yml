@@ -1,4 +1,4 @@
-name: build and test images
+name: build and deploy images
 
 on:
   push:
@@ -23,15 +23,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Build images, run containers and wait for health status
+        run: docker compose up -d --build --wait
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build images, run containers and wait for health status
-        run: docker compose up -d --build --wait
 
       - name: Push images
         run: docker compose push

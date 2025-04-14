@@ -1,7 +1,11 @@
+"""Training and evaluation functions for the country guess model."""
+
 import numpy as np
+import torch
 
 
 def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
+    """Combine embeddings to form valid triplets."""
     # All combinations
     anc_emb = anc_emb.tile((anc_emb.shape[0], 1))
     pos_emb = pos_emb.tile((pos_emb.shape[0], 1))
@@ -16,6 +20,7 @@ def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
 
 
 def train(model, train_dl, triplet_loss, optimizer):
+    """Train the model for a single epoch."""
     device = next(model.parameters()).device
     model.train()
     losses = []
@@ -44,23 +49,29 @@ def train(model, train_dl, triplet_loss, optimizer):
     return np.mean(losses)
 
 
+@torch.no_grad
 def evaluate(model, dl, ref_data):
+    """Evaluate the model and return the ranking and confidence scores."""
     device = next(model.parameters()).device
 
     model.eval()
     model.load_reference(ref_data)
 
     country_names = []
+    conf_scores = []
     ranking = np.array([])
 
     for batch in dl:
         drawings = batch["drawing"][:, None, :, :].float().to(device)
-        countries, _ = model.rank_countries(drawings)
+        countries, scores = model.rank_countries(drawings)
 
         true_countries = np.array(batch["country_name"])
-        ranks = np.where(countries == true_countries[:, None])[1]
+        ranks = np.where(countries == true_countries[:, None])[1].astype(int)
+        batch_indices = np.arange(len(ranks))
+        scores = scores[batch_indices, ranks]
 
         ranking = np.append(ranking, ranks)
         country_names.extend(batch["country_name"])
+        conf_scores.extend(scores)
 
-    return country_names, ranking
+    return country_names, ranking, conf_scores

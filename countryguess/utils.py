@@ -1,3 +1,5 @@
+"""Utility functions for processing and storing geographic drawings and shapes."""
+
 import json
 import logging
 from datetime import datetime
@@ -10,13 +12,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def normalize_geom(geom, shape=(64, 64), pad=2, eps=0.0001):
-    """Scale and move the Shapely geom to within a box"""
+def normalize_geom(geom, shape=(64, 64), pad=2):
+    """Scales and moves the Shapely geom to fit within the shape."""
     # Scale polygon
     minx, miny, maxx, maxy = geom.bounds
     scale_factor = min(
-        (shape[0] - 2 * pad) / max((maxx - minx), eps),
-        (shape[1] - 2 * pad) / max((maxy - miny), eps),
+        (shape[0] - 2 * pad) / max((maxx - minx), 0.0001),
+        (shape[1] - 2 * pad) / max((maxy - miny), 0.0001),
     )
     geom = scale(geom, xfact=scale_factor, yfact=scale_factor)
 
@@ -30,6 +32,7 @@ def normalize_geom(geom, shape=(64, 64), pad=2, eps=0.0001):
 
 
 def proces_lines(lines):
+    """Converts a list of lines into a normalized GeoJSON MultiLineString."""
     lines = [LineString(line) for line in lines]
     lines = MultiLineString(lines)
     lines = affine_transform(lines, [1, 0, 0, -1, 0, 0])
@@ -39,14 +42,18 @@ def proces_lines(lines):
 
 
 def decompose(polygon):
+    """Decomposes a Polygon or MultiPolygon into a list of polygons."""
     if isinstance(polygon, Polygon):
         return [polygon]
 
     if isinstance(polygon, MultiPolygon):
         return list(polygon.geoms)
 
+    raise ValueError(f"Expected Polygon or MultiPolygon, received {type(polygon)}")
+
 
 def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
+    """Saves a country drawing as a GeoJSON file with metadata."""
     output_dir = Path(output_dir)
     logger.info("Saving drawing of %s to %s", country_name, output_dir)
 
@@ -79,11 +86,14 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
 
 
 class DrawingStore:
+    """Stores and manages user drawings."""
+
     def __init__(self, max_drawings: int = 10):
         self.drawings = {}
         self.max_drawings = max_drawings
 
     def store(self, drawing_id: str, drawing: str):
+        """Stores a drawing with the given ID, removing oldest if at capacity."""
         if len(self.drawings) >= self.max_drawings:
             first_key = next(iter(self.drawings))
             self.drawings.pop(first_key)
@@ -91,10 +101,13 @@ class DrawingStore:
         self.drawings[drawing_id] = drawing
 
     def get(self, drawing_id: str):
+        """Retrieves a drawing by its ID."""
         return self.drawings.get(drawing_id)
 
     def remove(self, drawing_id: str):
+        """Removes a drawing with the given ID if it exists."""
         self.drawings.pop(drawing_id, None)
 
     def contains(self, drawing_id: str):
+        """Checks if a drawing with the given ID exists in the store."""
         return drawing_id in self.drawings

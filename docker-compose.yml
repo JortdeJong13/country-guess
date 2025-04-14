@@ -19,10 +19,10 @@ services:
       dockerfile: ./webapp/Dockerfile
     image: ghcr.io/jortdejong13/country-guess-webapp:latest
     ports:
-      - "5000:5000"
+      - "5002:5002"
     environment:
       - MLSERVER_URL=http://mlserver:5001/predict
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
     volumes:
       - ./data/drawings:/data/drawings # Optional

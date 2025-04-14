@@ -1,3 +1,5 @@
+"""Load and preprocess country geometries."""
+
 import logging
 import random
 from pathlib import Path
@@ -56,7 +58,7 @@ class Dataset:
 
     def __init__(self, shape=(64, 64)):
         self.shape = shape
-        self.geom_col = "geom_{}_{}".format(*shape)
+        self.geom_col = f"geom_{shape[0]}_{shape[1]}"
         self._idx = 0
 
         # Load reference data and normalize geometries
@@ -97,6 +99,10 @@ class Dataset:
     def from_country_name(self, country_name):
         """Get the reference image for a country"""
         idx = self.ref_gdf.index[self.ref_gdf["country_name"] == country_name]
+        if idx.empty:
+            logger.warning("Country %s not found", country_name)
+            return np.zeros(self.shape, dtype=np.uint8)
+
         geom = self.ref_gdf.loc[idx.item(), self.geom_col]
         ref_img = geom_to_img(geom, self.shape)
 
@@ -134,6 +140,9 @@ class TestDataset(Dataset):
 
     def __init__(self, shape=(64, 64)):
         Dataset.__init__(self, shape=shape)
+        # Drop countries without a reference
+        self.gdf = self.gdf[self.gdf["country_name"].isin(self.ref_gdf["country_name"])]
+
         # Normalize test data
         self.gdf = self.add_normal_geom(self.gdf)
 

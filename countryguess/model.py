@@ -1,3 +1,5 @@
+"""Model functions for matching country shapes."""
+
 import logging
 
 import numpy as np
@@ -14,6 +16,8 @@ logger.setLevel(logging.INFO)
 
 
 class TripletModel(nn.Module):
+    """Triplet model for embedding country drawings and reference shapes."""
+
     def __init__(self, embedding_model):
         super().__init__()
         self.embedding_model = embedding_model
@@ -21,13 +25,16 @@ class TripletModel(nn.Module):
 
     @property
     def shape(self):
+        """Return the shape of the embedding model."""
         return self.embedding_model.shape
 
     def forward(self, x):
+        """Forward pass through the model."""
         return self.embedding_model(x)
 
     @torch.no_grad
     def load_reference(self, ref_data):
+        """Embed reference countries."""
         assert ref_data.shape == self.shape
         self._ref_countries = {}
         for item in ref_data:
@@ -42,11 +49,12 @@ class TripletModel(nn.Module):
 
     @torch.no_grad
     def rank_countries(self, drawings):
+        """Rank countries based on their similarity to the given drawings."""
         embedding = self(drawings)
         countries, distances = [], []
 
         if not self._ref_countries:
-            raise Exception("First the reference dataset needs to be loaded!")
+            raise RuntimeError("First the reference dataset needs to be loaded!")
 
         for country, ref_emb in self._ref_countries.items():
             countries.append(country)
@@ -72,17 +80,15 @@ class TripletModel(nn.Module):
 
 
 class CustomEmbeddingModel(nn.Module):
-    def __init__(
-        self,
-        nr_conv_blocks=4,
-        channels=16,
-        embedding_size=128,
-        dropout=0.2,
-        shape=64,
-        **kwargs,
-    ):
+    """Custom embedding model for embedding country shapes."""
+
+    def __init__(self, **kwargs):
         super().__init__()
-        self.shape = (shape, shape)
+        self.shape = (kwargs.get("shape", 64), kwargs.get("shape", 64))
+        channels = kwargs.get("channels", 16)
+        nr_conv_blocks = kwargs.get("nr_conv_blocks", 4)
+        embedding_size = kwargs.get("embedding_size", 128)
+        dropout = kwargs.get("dropout", 0.2)
 
         conv_blocks = [self.conv_block(1, channels)]
         for idx in range(nr_conv_blocks - 1):
@@ -95,12 +101,13 @@ class CustomEmbeddingModel(nn.Module):
             int(
                 channels
                 * 2 ** (nr_conv_blocks - 1)
-                * (shape / (2**nr_conv_blocks)) ** 2
+                * (self.shape[0] / (2**nr_conv_blocks)) ** 2
             ),
             embedding_size,
         )
 
     def conv_block(self, in_dim, out_dim):
+        """Convolutional block with batch normalization and ReLU activation."""
         return nn.Sequential(
             nn.Conv2d(in_dim, out_dim, 3, padding=1, bias=False),
             nn.BatchNorm2d(out_dim),
@@ -115,6 +122,7 @@ class CustomEmbeddingModel(nn.Module):
         )
 
     def forward(self, x):
+        """Forward pass through the model."""
         x = self.conv_blocks(x)
         x = x.flatten(start_dim=1)
         x = self.dropout(x)
