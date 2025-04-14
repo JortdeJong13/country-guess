@@ -1,3 +1,5 @@
+"""Load and preprocess country geometries."""
+
 import logging
 import random
 from pathlib import Path
@@ -56,7 +58,7 @@ class Dataset:
 
     def __init__(self, shape=(64, 64)):
         self.shape = shape
-        self.geom_col = "geom_{}_{}".format(*shape)
+        self.geom_col = f"geom_{shape[0]}_{shape[1]}"
         self._idx = 0
 
         # Load reference data and normalize geometries

@@ -1,3 +1,5 @@
+"""Country drawing generation for model training."""
+
 import random
 
 import imgaug.augmenters as iaa
@@ -18,6 +20,7 @@ def rm_island(polygons, area):
 
 
 def augment_polygon(polygon, temp):
+    """Augment polygon with linear transformations."""
     # Augment Polygon
     aug = iaa.Sequential(
         [
@@ -42,6 +45,7 @@ def augment_polygon(polygon, temp):
 
 
 def generate_drawing(polygon, shape, temp=1.0):
+    """Generate a drawing from a reference country polygon."""
     # Simplify Polygon
     polygon = simplify(polygon, tolerance=random.uniform(0, 4 * temp))
 
@@ -117,6 +121,7 @@ class TripletDataset(Dataset):
         }
 
     def get_random_neg(self, ref_idx):
+        """Get a random other index."""
         idx = random.randint(0, len(self.gdf) - 1)
         while idx == ref_idx:
             idx = random.randint(0, len(self.gdf) - 1)

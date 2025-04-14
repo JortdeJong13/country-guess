@@ -1,3 +1,5 @@
+"""Plotting functions for the country guess app."""
+
 import matplotlib.pyplot as plt
 
 
@@ -42,6 +44,7 @@ def plot_sample(data, idx=None):
 
 
 def plot_evaluation(country_names, ranking, conf_scores):
+    """Plot the ranking and the confidence score for each country."""
     plt.figure(figsize=(8, 4 + len(country_names) / 5))
 
     # Group rankings by country

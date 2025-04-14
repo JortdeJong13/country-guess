@@ -1,8 +1,11 @@
+"""Training and evaluation functions for the country guess model."""
+
 import numpy as np
 import torch
 
 
 def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
+    """Combine embeddings to form valid triplets."""
     # All combinations
     anc_emb = anc_emb.tile((anc_emb.shape[0], 1))
     pos_emb = pos_emb.tile((pos_emb.shape[0], 1))
@@ -17,6 +20,7 @@ def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
 
 
 def train(model, train_dl, triplet_loss, optimizer):
+    """Train the model for a single epoch."""
     device = next(model.parameters()).device
     model.train()
     losses = []
@@ -47,6 +51,7 @@ def train(model, train_dl, triplet_loss, optimizer):
 
 @torch.no_grad
 def evaluate(model, dl, ref_data):
+    """Evaluate the model and return the ranking and confidence scores."""
     device = next(model.parameters()).device
 
     model.eval()
