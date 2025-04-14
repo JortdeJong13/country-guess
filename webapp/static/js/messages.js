@@ -48,16 +48,16 @@ export const correctMessages = [
   "Awesome job on {{selected}}!",
   "You nailed it — {{selected}} all the way!",
   "This is a great depiction of {{selected}}!",
-  "Nice work — clearly {{selected}}!",
+  "Nice work — I added your {{selected}} to the test set!",
   "That’s a textbook {{selected}}!",
 ];
 
 // Messages for incorrect predictions
 export const incorrectMessages = [
   "Oh! It’s actually {{selected}} — I see why I thought it was {{guessed}}.",
-  "Ah, {{selected}}! That does look a lot like {{guessed}}.",
+  "Ah, {{selected}}! That does look a lot like {{guessed}} though.",
   "Now I see — it’s {{selected}}, not {{guessed}}.",
-  "Thanks for helping me learn the difference between {{selected}} and {{guessed}}!",
+  "Oh... Okay, I guess the test set could use a tricky {{selected}}!",
   "I confused {{selected}} with {{guessed}} — good to know for next time!",
   "{{selected}}! That one tripped me up.",
   "Looks like I mistook {{selected}} for {{guessed}}. I'm learning!",
