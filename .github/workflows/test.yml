@@ -34,7 +34,7 @@ jobs:
         run: |
           python -m mlserver.serve &
           # Wait for server to start
-          timeout 30 bash -c 'until curl -s http://localhost:5001/health; do sleep 1; done'
+          timeout 20 bash -c 'until curl -s http://localhost:5001/health; do sleep 1; done'
 
       - name: Start webapp
         env:
@@ -42,7 +42,7 @@ jobs:
         run: |
           python -m webapp.app &
           # Wait for webapp to start
-          timeout 30 bash -c 'until curl -s http://localhost:5002/health; do sleep 1; done'
+          timeout 20 bash -c 'until curl -s http://localhost:5002/health; do sleep 1; done'
 
       - name: Run end-to-end tests
         run: python -m unittest tests/test_e2e.py -v
