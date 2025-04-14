@@ -20,8 +20,8 @@ Welcome to my Country Guess App side project! With this machine learning applica
 ## Screenshots
 
 <div style="display: flex; justify-content: space-around;">
-  <img src="images/Drawing.png" alt="Drawing" style="width: 45%;">
-  <img src="images/Prediction.png" alt="Prediction" style="width: 45%;">
+  <img src="images/Drawing.png" alt="Drawing" style="width: 48%;">
+  <img src="images/Prediction.png" alt="Prediction" style="width: 48%;">
 </div>
 
 ## Getting Started
