@@ -2,6 +2,9 @@
 
 import numpy as np
 import torch
+from torch.nn.functional import cross_entropy
+
+from countryguess.generate import generate_scribbles
 
 
 def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
@@ -19,11 +22,11 @@ def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
     return anc_emb[valid], pos_emb[valid], neg_emb[valid]
 
 
-def train(model, train_dl, triplet_loss, optimizer):
+def train(model, train_dl, triplet_loss, optimizer, lmbda=0.1, train_emb=True):
     """Train the model for a single epoch."""
     device = next(model.parameters()).device
     model.train()
-    losses = []
+    losses, scribble_losses = [], []
 
     for batch in train_dl:
         optimizer.zero_grad(set_to_none=True)
@@ -33,6 +36,14 @@ def train(model, train_dl, triplet_loss, optimizer):
         pos_emb = model(batch["pos_img"][:, None, :, :].float().to(device))
         neg_emb = model(batch["neg_img"][:, None, :, :].float().to(device))
 
+        # Scribble detection
+        scribbles = generate_scribbles(len(batch["drawing"]))
+        scribble_emb = model(scribbles[:, None, :, :].float().to(device))
+        pred = model.scribble_detection(torch.cat([anc_emb, scribble_emb], dim=0))
+        scribble = torch.tensor([False] * len(anc_emb) + [True] * len(scribble_emb)).to(
+            device
+        )
+
         # Mine triplets
         anc_emb, pos_emb, neg_emb = triplet_mining(
             anc_emb, pos_emb, neg_emb, batch["pos_idx"], batch["neg_idx"]
@@ -40,13 +51,24 @@ def train(model, train_dl, triplet_loss, optimizer):
 
         # Compute loss
         loss = triplet_loss(anc_emb, pos_emb, neg_emb)
+        scribble_loss = cross_entropy(pred, scribble)
+
         losses.append(loss.item())
+        scribble_losses.append(scribble_loss.item())
 
         # Backpropagation
-        loss.backward()
+        if train_emb:
+            loss += lmbda * scribble_loss
+            loss.backward()
+        else:
+            loss.backward(retain_graph=True)
+            model.embedding_model.zero_grad()
+            scribble_loss.backward()
+
+        # Optimize step
         optimizer.step()
 
-    return np.mean(losses)
+    return np.mean(losses), np.mean(scribble_losses)
 
 
 @torch.no_grad

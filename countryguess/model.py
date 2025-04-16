@@ -15,12 +15,30 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+def rank_countries(countries, distances):
+    """Rank countries based on their similarity to the given drawings."""
+    # Calculate confidence scores
+    similarities = -distances
+    exp_similarities = np.exp(
+        similarities - np.max(similarities, axis=1, keepdims=True)
+    )
+    confidences = exp_similarities / np.sum(exp_similarities, axis=1, keepdims=True)
+
+    # Sort by distances (ascending order)
+    idx = np.argsort(distances, axis=1)
+    countries = countries[idx]
+    confidences = np.take_along_axis(confidences, idx, axis=1)
+
+    return countries, confidences
+
+
 class TripletModel(nn.Module):
     """Triplet model for embedding country drawings and reference shapes."""
 
     def __init__(self, embedding_model):
         super().__init__()
         self.embedding_model = embedding_model
+        self.classifier = nn.Linear(embedding_model.embedding_size, 1)
         self._ref_countries = None
 
     @property
@@ -31,6 +49,10 @@ class TripletModel(nn.Module):
     def forward(self, x):
         """Forward pass through the model."""
         return self.embedding_model(x)
+
+    def scribble_detection(self, embedding):
+        """Forward pass through the classifier."""
+        return self.classifier(embedding)
 
     @torch.no_grad
     def load_reference(self, ref_data):
@@ -48,8 +70,8 @@ class TripletModel(nn.Module):
             self._ref_countries[country_name] = embedding
 
     @torch.no_grad
-    def rank_countries(self, drawings):
-        """Rank countries based on their similarity to the given drawings."""
+    def get_distance(self, drawings):
+        """Calculate the distance between the given drawings and the reference countries."""
         embedding = self(drawings)
         countries, distances = [], []
 
@@ -64,19 +86,7 @@ class TripletModel(nn.Module):
         countries = np.array(countries)
         distances = np.array(distances).T
 
-        # Calculate confidence scores
-        similarities = -distances
-        exp_similarities = np.exp(
-            similarities - np.max(similarities, axis=1, keepdims=True)
-        )
-        confidences = exp_similarities / np.sum(exp_similarities, axis=1, keepdims=True)
-
-        # Sort by distances (ascending order)
-        idx = np.argsort(distances, axis=1)
-        countries = countries[idx]
-        confidences = np.take_along_axis(confidences, idx, axis=1)
-
-        return countries, confidences
+        return countries, distances
 
 
 class CustomEmbeddingModel(nn.Module):
@@ -85,9 +95,10 @@ class CustomEmbeddingModel(nn.Module):
     def __init__(self, **kwargs):
         super().__init__()
         self.shape = (kwargs.get("shape", 64), kwargs.get("shape", 64))
+        self.embedding_size = kwargs.get("embedding_size", 128)
         channels = kwargs.get("channels", 16)
         nr_conv_blocks = kwargs.get("nr_conv_blocks", 4)
-        embedding_size = kwargs.get("embedding_size", 128)
+
         dropout = kwargs.get("dropout", 0.2)
 
         conv_blocks = [self.conv_block(1, channels)]
@@ -103,7 +114,7 @@ class CustomEmbeddingModel(nn.Module):
                 * 2 ** (nr_conv_blocks - 1)
                 * (self.shape[0] / (2**nr_conv_blocks)) ** 2
             ),
-            embedding_size,
+            self.embedding_size,
         )
 
     def conv_block(self, in_dim, out_dim):
