@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Man, Isle of"
+        "country_name": "Isle of Man"
       },
       "geometry": {
         "type": "MultiPolygon",

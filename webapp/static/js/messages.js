@@ -152,8 +152,7 @@ const countryFacts = {
     "South Georgia is home to vast penguin colonies and has no permanent residents.",
   Slovenia:
     "Slovenia has over 60% of its land covered by forest, making it one of Europe's greenest countries.",
-  "Falkland Islands (Islas Malvinas)":
-    "The Falkland Islands have more sheep than people.",
+  "Falkland Islands": "The Falkland Islands have more sheep than people.",
   Angola: "Angola's Kalandula Falls are among Africa's largest waterfalls.",
   Mauritius:
     "Mauritius was the only known habitat of the now-extinct dodo bird.",
@@ -181,7 +180,7 @@ const countryFacts = {
   Nigeria: "Nigeria has the largest population in Africa.",
   Japan: "Japan consists of over 6,800 islands.",
   Ukraine: "Ukraine is the largest country entirely within Europe.",
-  "Gambia, The": "The Gambia is the smallest country on mainland Africa.",
+  "The Gambia": "The Gambia is the smallest country on mainland Africa.",
   Zambia:
     "Zambia shares Victoria Falls, one of the world's largest waterfalls, with Zimbabwe.",
   Gabon: "Gabon has nearly 90% of its land covered by rainforest.",
@@ -198,7 +197,8 @@ const countryFacts = {
   Turkmenistan:
     "Turkmenistan's Darvaza gas crater is known as the 'Door to Hell'.",
   Georgia: "Georgia's Mount Shkhara reaches a height of 5,193 meters.",
-  Zaire: "Zaire, now called DR Congo, contains half of Africa's rainforest.",
+  "Democratic Republic of the Congo":
+    "The Democratic Republic of the Congo, contains half of Africa's rainforest.",
   Bhutan:
     "Bhutan measures its progress by Gross National Happiness instead of GDP.",
   "United States of America":
@@ -240,15 +240,14 @@ const countryFacts = {
   Nicaragua:
     "Nicaragua's Lake Nicaragua is the only freshwater lake containing sharks.",
   Russia: "Russia spans 11 time zones, more than any other country.",
-  Swaziland:
-    "Swaziland, now called Eswatini, is one of Africa's last absolute monarchies.",
+  Eswatini: "Eswatini is one of Africa's last absolute monarchies.",
   Brunei:
     "Brunei hosts one of the world's largest water villages, Kampong Ayer.",
   Belgium: "Belgium has three official languages: Dutch, French, and German.",
   Austria: "Austria's Alps cover over 60% of the country.",
   Dominica:
     "Dominica contains the world's second-largest hot spring, Boiling Lake.",
-  "Bahamas, The":
+  "The Bahamas":
     "The Bahamas comprises around 700 islands and over 2,000 cays.",
   Ghana: "Ghana's Lake Volta is one of the world's largest man-made lakes.",
   Jordan:
@@ -291,11 +290,9 @@ const countryFacts = {
   Tajikistan: "Tajikistan has over 90% of its territory covered by mountains.",
   Liberia: "Liberia is Africa's oldest republic, founded in 1847.",
   Kiribati: "Kiribati is the only country situated in all four hemispheres.",
-  "Tanzania, United Republic of":
-    "Tanzania's Mount Kilimanjaro is Africa's highest peak.",
+  Tanzania: "Tanzania's Mount Kilimanjaro is Africa's highest peak.",
   Niger: "Niger has over 80% of its territory covered by the Sahara Desert.",
-  Byelarus:
-    "Belarus (Byelarus) has Europe's largest remaining primeval forest.",
+  Belarus: "Belarus has Europe's largest remaining primeval forest.",
   Libya: "Libya recorded the hottest temperature ever measured on Earth.",
   "Jan Mayen":
     "Jan Mayen is an Arctic island dominated by the Beerenberg volcano.",
@@ -311,7 +308,7 @@ const countryFacts = {
     "Guinea-Bissau features a complex system of islands and mangroves in the Bijagós Archipelago.",
   Lesotho:
     "Lesotho is the only country entirely above 1,000 meters in elevation.",
-  "Man, Isle of":
+  "Isle of Man":
     "The Isle of Man is located in the Irish Sea and is not part of the UK or EU.",
   "Saudi Arabia":
     "Saudi Arabia contains the world's largest sand desert, the Rub' al Khali.",
@@ -373,14 +370,14 @@ const countryFacts = {
     "Moldova's landscape is characterized by gently rolling hills and numerous vineyards.",
   Benin:
     "Benin has a narrow Atlantic coastline stretching just 121 kilometers.",
-  "Myanmar (Burma)":
+  Myanmar:
     "Myanmar's Irrawaddy River is crucial for transportation and agriculture.",
   Namibia:
     "Namibia contains the Namib Desert, one of the oldest deserts in the world.",
   Paraguay:
     "Paraguay is one of only two landlocked countries in South America.",
-  "Western Samoa":
-    "Western Samoa is one of the first countries to see each new day due to its location.",
+  Samoa:
+    "Samoa is one of the first countries to see each new day due to its location.",
   Guinea: "Guinea's highlands are the source of the Niger River.",
   Latvia: "Latvia has over half of its territory covered by forest.",
 };

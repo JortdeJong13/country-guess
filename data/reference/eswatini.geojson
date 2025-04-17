@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Swaziland"
+        "country_name": "Eswatini"
       },
       "geometry": {
         "type": "MultiPolygon",

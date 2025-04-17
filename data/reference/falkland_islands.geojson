@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Falkland Islands (Islas Malvinas)"
+        "country_name": "Falkland Islands"
       },
       "geometry": {
         "type": "MultiPolygon",

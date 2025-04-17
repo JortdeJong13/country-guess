@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Zaire"
+        "country_name": "Democratic Republic of the Congo"
       },
       "geometry": {
         "type": "MultiPolygon",
