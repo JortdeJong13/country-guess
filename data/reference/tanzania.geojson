@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Tanzania, United Republic of"
+        "country_name": "Tanzania"
       },
       "geometry": {
         "type": "MultiPolygon",

@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Western Samoa"
+        "country_name": "Samoa"
       },
       "geometry": {
         "type": "MultiPolygon",

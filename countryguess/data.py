@@ -124,10 +124,10 @@ class Dataset:
     def __getitem__(self, idx):
         if idx is None:
             # Get a random sample
-            idx = random.randint(0, len(self) - 1)
+            idx = random.randrange(len(self))
 
-        while idx < 0:
-            idx += len(self)
+        # Handle negative indices
+        idx %= len(self)
 
         geom = self.gdf.loc[idx, self.geom_col]
         country_name = self.gdf.loc[idx, "country_name"]

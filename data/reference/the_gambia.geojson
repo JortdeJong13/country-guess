@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Gambia, The"
+        "country_name": "The Gambia"
       },
       "geometry": {
         "type": "MultiPolygon",

@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Bahamas, The"
+        "country_name": "The Bahamas"
       },
       "geometry": {
         "type": "MultiPolygon",

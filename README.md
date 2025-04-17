@@ -1,4 +1,4 @@
-# <img src="webapp/static/favicon.ico" alt="favicon" width="28" height="28"> Country Guess App
+# Country Guess App
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fcountry-guess.nl&label=country-guess.nl)](https://country-guess.nl) [![Build Status](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml) [![Test Status](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml) 
 

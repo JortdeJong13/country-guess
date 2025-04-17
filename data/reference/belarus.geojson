@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Byelarus"
+        "country_name": "Belarus"
       },
       "geometry": {
         "type": "MultiPolygon",

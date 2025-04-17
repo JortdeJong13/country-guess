@@ -10,7 +10,7 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Myanmar (Burma)"
+        "country_name": "Myanmar"
       },
       "geometry": {
         "type": "MultiPolygon",
