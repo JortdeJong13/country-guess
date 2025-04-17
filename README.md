@@ -1,6 +1,6 @@
 # Country Guess App
 
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcountry-guess.nl&label=country-guess.nl)](https://country-guess.nl) [![Build Status](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcountry-guess.nl&label=country-guess.nl)](https://country-guess.nl) [![Build Status](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml) [![Test Status](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml) 
 
 Welcome to my Country Guess App side project! With this machine learning application you can test your drawing skills. You can draw a country shape in the browser, a Convolutional Neural Network will then guess which country you have drawn.
 
@@ -20,8 +20,8 @@ Welcome to my Country Guess App side project! With this machine learning applica
 ## Screenshots
 
 <div style="display: flex; justify-content: space-around;">
-  <img src="images/Drawing.png" alt="Drawing" style="width: 45%;">
-  <img src="images/Prediction.png" alt="Prediction" style="width: 45%;">
+  <img src="images/Drawing.png" alt="Drawing" style="width: 48%;">
+  <img src="images/Prediction.png" alt="Prediction" style="width: 48%;">
 </div>
 
 ## Getting Started
