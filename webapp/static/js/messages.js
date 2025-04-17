@@ -2,7 +2,7 @@
 const highConfidenceMessages = [
   "I'm absolutely sure this is {{guessed}}!",
   "No doubt about it — this is {{guessed}}.",
-  "This is definitely {{guessed}} — 100% certain.",
+  "This is definitely {{guessed}} — I'm certain.",
   "I'd bet anything this is {{guessed}}.",
   "{{guessed}} for sure! It’s unmistakable.",
   "This is classic {{guessed}} — crystal clear.",
