@@ -21,6 +21,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: |
+            mlserver/requirements.txt
+            webapp/requirements.txt
 
       - name: Install dependencies
         run: |
