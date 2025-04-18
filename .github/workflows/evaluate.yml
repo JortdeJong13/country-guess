@@ -7,7 +7,6 @@ on:
       - "tests/evaluation.py"
 
 permissions:
-  contents: read
   pull-requests: write
 
 jobs:
@@ -32,7 +31,9 @@ jobs:
         id: eval
         run: |
           report=$(python -m tests.evaluation --model_name triplet_model)
-          echo "report=$report" >> $GITHUB_OUTPUT
+          echo "report<<EOF" >> $GITHUB_OUTPUT
+          echo "$report" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Comment results on PR
         uses: marocchino/sticky-pull-request-comment@v2
