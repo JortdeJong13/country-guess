@@ -30,8 +30,8 @@ def parse_args():
     return parser.parse_args()
 
 
-def generate_report(model_name, nr_test_samples, avg_rank, top_10_acc, top_1_acc):
-    """Generate a formatted table of evaluation results."""
+def print_report(model_name, nr_test_samples, avg_rank, top_10_acc, top_1_acc):
+    """Print a formatted table of evaluation results."""
     # Define column widths
     metric_width, value_width = 25, 15
 
@@ -57,7 +57,7 @@ def generate_report(model_name, nr_test_samples, avg_rank, top_10_acc, top_1_acc
     # Combine header, separator, and rows into a single table
     table = "\n".join([header, separator] + rows)
 
-    return f"### Evaluation Results\n\n{table}\n"
+    print(f"### Evaluation Results\n\n{table}\n")
 
 
 def main():
@@ -82,15 +82,7 @@ def main():
     top_1_acc = 100 * np.mean(ranking < 1)
 
     # Generate report
-    report = generate_report(
-        model_name, nr_test_samples, avg_rank, top_10_acc, top_1_acc
-    )
-
-    # Log the report
-    logger.info(report)
-
-    # Return results for CI/CD
-    return report
+    print_report(model_name, nr_test_samples, avg_rank, top_10_acc, top_1_acc)
 
 
 if __name__ == "__main__":
