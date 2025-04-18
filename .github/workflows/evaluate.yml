@@ -25,10 +25,11 @@ jobs:
           pip install -r webapp/requirements.txt
 
       - name: Run evaluation
+        id: eval
         run: |
-          python -m tests.evaluation --model_name triplet_model > evaluation_results.txt
+          report=$(python -m tests.evaluation --model_name triplet_model)
 
       - name: Comment results on PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          path: evaluation_results.txt
+          message: ${{ steps.eval.outputs.report }}
