@@ -6,7 +6,6 @@ Usage:
 """
 
 import argparse
-import logging
 
 import numpy as np
 from torch.utils.data import DataLoader
@@ -14,9 +13,6 @@ from torch.utils.data import DataLoader
 from countryguess.data import Dataset, TestDataset
 from countryguess.model import fetch_model
 from countryguess.training import evaluate
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 
 def parse_args():
