@@ -1,14 +1,58 @@
 """Test the Country Guess App end-to-end."""
 
 import json
+import os
+import subprocess
+import time
 import unittest
 from pathlib import Path
-import time
+
 import requests
 
 
 class TestEndToEnd(unittest.TestCase):
     """Test the Country Guess App end-to-end."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Start the ML server and webapp before running tests."""
+        cls.mlserver_process = subprocess.Popen(
+            ["python", "-m", "mlserver.serve"],
+            env={**os.environ, "MODEL_NAME": "triplet_model"},
+        )
+        cls.webapp_process = subprocess.Popen(
+            ["python", "-m", "webapp.app"],
+            env={**os.environ, "MLSERVER_URL": "http://localhost:5001/predict"},
+        )
+
+        # Wait for ML server and webapp to be healthy
+        cls._wait_for_service("http://localhost:5001/health", timeout=20)
+        cls._wait_for_service("http://localhost:5002/health", timeout=20)
+
+    @classmethod
+    def tearDownClass(cls):
+        """Stop the ML server and webapp after tests are done."""
+        if cls.mlserver_process:
+            cls.mlserver_process.terminate()
+            cls.mlserver_process.wait()
+        if cls.webapp_process:
+            cls.webapp_process.terminate()
+            cls.webapp_process.wait()
+
+    @staticmethod
+    def _wait_for_service(url, timeout=10):
+        """Wait for a service to become healthy."""
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            try:
+                if requests.get(url, timeout=1).status_code == 200:
+                    return  # Service is healthy
+            except requests.exceptions.RequestException:
+                pass
+            time.sleep(1)
+        raise RuntimeError(
+            f"Service at {url} did not become healthy within {timeout} seconds"
+        )
 
     def setUp(self):
         self.webapp_url = "http://localhost:5002"

@@ -1,0 +1,41 @@
+name: evaluate Model
+
+on:
+  pull_request:
+    paths:
+      - "data/**"
+      - "tests/evaluation.py"
+
+permissions:
+  pull-requests: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r mlserver/requirements.txt
+          pip install -r webapp/requirements.txt
+
+      - name: Run evaluation
+        id: eval
+        run: |
+          report=$(python -m tests.evaluation --model_name triplet_model)
+          echo "report<<EOF" >> $GITHUB_OUTPUT
+          echo "$report" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Comment results on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: ${{ steps.eval.outputs.report }}
