@@ -1,4 +1,4 @@
-name: Evaluate Model
+name: evaluate Model
 
 on:
   pull_request:
