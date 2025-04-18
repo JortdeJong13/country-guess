@@ -90,7 +90,7 @@ def main():
     logger.info(report)
 
     # Return results for CI/CD
-    return report, nr_test_samples, avg_rank, top_10_acc, top_1_acc
+    return report
 
 
 if __name__ == "__main__":
