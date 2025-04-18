@@ -6,6 +6,10 @@ on:
       - "data/**"
       - "tests/evaluation.py"
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   evaluate:
     runs-on: ubuntu-latest
@@ -28,6 +32,7 @@ jobs:
         id: eval
         run: |
           report=$(python -m tests.evaluation --model_name triplet_model)
+          echo "report=$report" >> $GITHUB_OUTPUT
 
       - name: Comment results on PR
         uses: marocchino/sticky-pull-request-comment@v2
