@@ -3,6 +3,7 @@ name: evaluate Model
 on:
   pull_request:
     paths:
+      - "mlruns/models/**"
       - "data/**"
       - "tests/evaluation.py"
 
