@@ -22,6 +22,9 @@ jobs:
         with:
           python-version: "3.12"
           cache: "pip"
+          cache-dependency-path: |
+            mlserver/requirements.txt
+            webapp/requirements.txt
 
       - name: Install dependencies
         run: |
@@ -32,7 +35,9 @@ jobs:
         id: eval
         run: |
           report=$(python -m tests.evaluation --model_name triplet_model)
+          echo "report<<EOF" >> $GITHUB_OUTPUT
           echo "$report" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Comment results on PR
         uses: marocchino/sticky-pull-request-comment@v2
