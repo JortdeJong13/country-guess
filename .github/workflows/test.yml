@@ -27,21 +27,5 @@ jobs:
           pip install -r mlserver/requirements.txt
           pip install -r webapp/requirements.txt
 
-      - name: Start ML server
-        env:
-          MODEL_NAME: triplet_model
-        run: |
-          python -m mlserver.serve &
-          # Wait for server to start
-          timeout 20 bash -c 'until curl -s http://localhost:5001/health; do sleep 1; done'
-
-      - name: Start webapp
-        env:
-          MLSERVER_URL: http://localhost:5001/predict
-        run: |
-          python -m webapp.app &
-          # Wait for webapp to start
-          timeout 20 bash -c 'until curl -s http://localhost:5002/health; do sleep 1; done'
-
       - name: Run end-to-end tests
         run: python -m unittest tests/test_e2e.py -v
