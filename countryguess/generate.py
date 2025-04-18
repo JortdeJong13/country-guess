@@ -53,7 +53,7 @@ def generate_drawing(polygon, shape, temp=1.0):
     polygon = decompose(polygon)
 
     # Forget island
-    polygon = rm_island(polygon, area=random.triangular(0, 0.08 * temp, 0))
+    polygon = rm_island(polygon, area=random.triangular(0, 0.12 * temp, 0))
 
     # Smooth Polygon
     polygon = [
