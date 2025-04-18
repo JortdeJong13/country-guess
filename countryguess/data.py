@@ -141,7 +141,8 @@ class TestDataset(Dataset):
     def __init__(self, shape=(64, 64)):
         Dataset.__init__(self, shape=shape)
         # Drop countries without a reference
-        self.gdf = self.gdf[self.gdf["country_name"].isin(self.ref_gdf["country_name"])]
+        reference_countries = set(self.ref_gdf["country_name"])
+        self.gdf = self.gdf[self.gdf["country_name"].isin(reference_countries)]
 
         # Normalize test data
         self.gdf = self.add_normal_geom(self.gdf)
