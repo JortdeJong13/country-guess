@@ -1,0 +1,34 @@
+name: Evaluate Model
+
+on:
+  pull_request:
+    paths:
+      - "data/**"
+      - "tests/evaluation.py"
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r mlserver/requirements.txt
+          pip install -r webapp/requirements.txt
+
+      - name: Run evaluation
+        run: |
+          python -m tests.evaluation --model_name triplet_model > evaluation_results.txt
+
+      - name: Comment results on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: evaluation_results.txt
