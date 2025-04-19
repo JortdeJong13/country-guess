@@ -28,4 +28,4 @@ jobs:
           pip install -r webapp/requirements.txt
 
       - name: Run end-to-end tests
-        run: python -m unittest tests/test_e2e.py -v
+        run: make test-e2e
