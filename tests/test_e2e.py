@@ -17,12 +17,10 @@ class TestEndToEnd(unittest.TestCase):
     def setUpClass(cls):
         """Start the ML server and webapp before running tests."""
         cls.mlserver_process = subprocess.Popen(
-            ["python", "-m", "mlserver.serve"],
-            env={**os.environ, "MODEL_NAME": "triplet_model"},
+            ["make", "run-mlserver"],
         )
         cls.webapp_process = subprocess.Popen(
-            ["python", "-m", "webapp.app"],
-            env={**os.environ, "MLSERVER_URL": "http://localhost:5001/predict"},
+            ["make", "run-webapp"],
         )
 
         # Wait for ML server and webapp to be healthy
@@ -32,12 +30,10 @@ class TestEndToEnd(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         """Stop the ML server and webapp after tests are done."""
-        if cls.mlserver_process:
-            cls.mlserver_process.terminate()
-            cls.mlserver_process.wait()
-        if cls.webapp_process:
-            cls.webapp_process.terminate()
-            cls.webapp_process.wait()
+        cls.mlserver_process.terminate()
+        cls.mlserver_process.wait()
+        cls.webapp_process.terminate()
+        cls.webapp_process.wait()
 
     @staticmethod
     def _wait_for_service(url, timeout=10):
