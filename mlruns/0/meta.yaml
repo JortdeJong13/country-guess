@@ -1,7 +1,6 @@
 artifact_location: file:///Users/jortdejong/GitHub/country-guess/mlruns/0
-creation_time: 1714741043098
+creation_time: 1745051281784
 experiment_id: '0'
-last_update_time: 1718534620822
+last_update_time: 1745051281784
 lifecycle_stage: active
-name: default
-tags: {}
+name: Default

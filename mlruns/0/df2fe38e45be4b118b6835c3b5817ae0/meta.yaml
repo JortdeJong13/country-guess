@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/df2fe38e45be4b118b6835c3b5817ae0/artifacts
+deleted_time: 1745053650145
+end_time: 1745053272194
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: df2fe38e45be4b118b6835c3b5817ae0
+run_name: gifted-cow-433
+run_uuid: df2fe38e45be4b118b6835c3b5817ae0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745053021825
+status: 3
+tags: []
+user_id: jortdejong
