@@ -2,7 +2,6 @@
 MODEL_NAME=triplet_model
 MLSERVER_URL=http://127.0.0.1:5001/predict
 
-# Default target
 .PHONY: help
 help:
 	@echo "Available commands:"
@@ -32,17 +31,11 @@ evaluate-model:
 	@echo "Evaluating the model..."
 	python -m tests.evaluation --model_name $(MODEL_NAME)
 
-# Run end-to-end tests
+# Run end-to-end test
 .PHONY: test-e2e
 test-e2e:
 	@echo "Running end-to-end tests..."
 	python -m unittest tests/test_e2e.py -v
-
-# Start the MLflow UI
-.PHONY: run-mlflow
-run-mlflow:
-	@echo "Starting MLflow UI on port 5002..."
-	mlflow ui --port 5002
 
 # Start the ML server
 .PHONY: run-mlserver
