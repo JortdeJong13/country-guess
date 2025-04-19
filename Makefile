@@ -18,7 +18,6 @@ help:
 .PHONY: push-drawings
 push-drawings:
 	@echo "Pushing new drawings to GitHub..."
-	@cd ~/GitHub/country-guess || exit
 	@if git status --porcelain | grep -q "data/drawings/"; then \
 	  git add data/drawings/*; \
 	  git commit -m "New drawings"; \
