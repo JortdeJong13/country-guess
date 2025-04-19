@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ~/GitHub/country-guess || exit
+
 if git status --porcelain | grep -q "data/drawings/"; then
   git add data/drawings/*
   git commit -m "New drawings"
