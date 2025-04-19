@@ -3,6 +3,9 @@ var ctx = canvas.getContext("2d");
 ctx.lineWidth = 2;
 ctx.lineCap = "round";
 
+let originalWidth = canvas.width;
+let originalHeight = canvas.height;
+
 var isDrawing = false;
 var lastX, lastY;
 var lines = [];
@@ -30,9 +33,20 @@ function resizeCanvas() {
     window.innerHeight - BottomMargin,
   );
 
+  // Calculate scale factors
+  const scaleX = maxSize / originalWidth;
+  const scaleY = maxSize / originalHeight;
+
+  // Scale the lines
+  scaleLines(scaleX, scaleY);
+
   // Set canvas size
   canvas.width = maxSize;
   canvas.height = maxSize;
+
+  // Update original dimensions
+  originalWidth = canvas.width;
+  originalHeight = canvas.height;
 
   // Update container size
   const container = document.getElementById("canvas-container");
@@ -41,6 +55,11 @@ function resizeCanvas() {
 
   // Redraw any existing lines
   redrawCanvas();
+}
+
+// Function to scale the lines
+function scaleLines(scaleX, scaleY) {
+  lines = lines.map((line) => line.map(([x, y]) => [x * scaleX, y * scaleY]));
 }
 
 // Function to redraw canvas after resize
