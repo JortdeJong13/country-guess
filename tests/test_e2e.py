@@ -1,7 +1,6 @@
 """Test the Country Guess App end-to-end."""
 
 import json
-import os
 import subprocess
 import time
 import unittest
