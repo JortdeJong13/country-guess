@@ -143,17 +143,17 @@ def fetch_model(model_name):
         model_version = client.get_model_version_by_alias("default", "champion")
 
     # Load the model
-    model_uri = f"runs:/{model_version.run_id}/model"
-    logger.info("Loading model from: %s", model_uri)
+    model_path = "/".join(model_version.source.split("/")[-5:])
+    logger.info("Loading model from path: %s", model_path)
     try:
-        model = load_model(model_uri)
+        model = load_model(model_path)
         device = next(model.parameters()).device
 
     except RuntimeError:
         # Fallback to CPU
         logger.warning("Failed to load model, falling back to CPU")
         device = torch.device("cpu")
-        model = load_model(model_uri, map_location=device)
+        model = load_model(model_path, map_location=device)
 
     # Load reference data
     ref_data = Dataset(shape=model.shape)
