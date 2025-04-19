@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/jortdejong/GitHub/country-guess/mlruns/0/73a1c9a8038c4ad8bb32cf6ddfa937e7/artifacts
+end_time: 1745052790183
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 73a1c9a8038c4ad8bb32cf6ddfa937e7
+run_name: entertaining-owl-269
+run_uuid: 73a1c9a8038c4ad8bb32cf6ddfa937e7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745052528171
+status: 3
+tags: []
+user_id: jortdejong

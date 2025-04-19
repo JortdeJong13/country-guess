@@ -142,9 +142,8 @@ def fetch_model(model_name):
         logger.warning("Unable to fetch %s, falling back to default model", model_name)
         model_version = client.get_model_version_by_alias("default", "champion")
 
-    model_path = "/".join(model_version.source.split("/")[-5:])
-
     # Load the model
+    model_path = "/".join(model_version.source.split("/")[-5:])
     logger.info("Loading model from path: %s", model_path)
     try:
         model = load_model(model_path)
