@@ -130,6 +130,16 @@ class CustomEmbeddingModel(nn.Module):
         return x
 
 
+def get_device():
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cpu")
+    return device
+
+
 def fetch_model(model_name):
     """Fetch and load model and load reference countries"""
     client = MlflowClient()
@@ -144,21 +154,14 @@ def fetch_model(model_name):
 
     # Load the model
     model_path = "/".join(model_version.source.split("/")[-5:])
-    logger.info("Loading model from path: %s", model_path)
-    try:
-        model = load_model(model_path)
-        device = next(model.parameters()).device
-
-    except RuntimeError:
-        # Fallback to CPU
-        logger.warning("Failed to load model, falling back to CPU")
-        device = torch.device("cpu")
-        model = load_model(model_path, map_location=device)
+    device = get_device()
+    logger.info("Loading model from path: %s on device: %s...", model_path, device)
+    model = load_model(model_path, map_location=device)
 
     # Load reference data
     ref_data = Dataset(shape=model.shape)
     model.load_reference(ref_data)
 
-    logger.info("Successfully loaded model on: %s", device)
+    logger.info("Successfully loaded model and reference data")
 
     return model, device
