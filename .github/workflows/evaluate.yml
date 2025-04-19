@@ -31,7 +31,7 @@ jobs:
       - name: Run evaluation
         id: eval
         run: |
-          report=$(python -m tests.evaluation --model_name triplet_model)
+          report=$(make evaluate-model)
           echo "report<<EOF" >> $GITHUB_OUTPUT
           echo "$report" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
