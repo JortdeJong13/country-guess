@@ -1,6 +1,9 @@
 """Plotting functions for the country guess app."""
 
 import matplotlib.pyplot as plt
+from shapely.plotting import plot_polygon
+
+from countryguess.data import geom_to_img
 
 
 def _create_figure(n_subplots):
@@ -18,7 +21,7 @@ def _plot_image(ax, image, title):
 
 
 def plot_training_sample(train_data, idx=None):
-    """Plot training sample with drawing, positive and negative examples."""
+    """Plot training sample with drawing, positive and negative samples."""
     sample = train_data[idx]
 
     _, axs = _create_figure(3)
@@ -30,8 +33,26 @@ def plot_training_sample(train_data, idx=None):
     plt.show()
 
 
+def plot_ref_sample(ref_data, idx=None):
+    """Plot a sample from the reference set."""
+    sample = ref_data[idx]
+
+    _, ax = _create_figure(1)
+    plot_polygon(
+        sample["geometry"],
+        add_points=False,
+        facecolor="none",
+        edgecolor="burlywood",
+        linewidth=2,
+    )
+    ax.set_title(sample["country_name"], color="white")
+    ax.axis("off")
+
+    plt.show()
+
+
 def plot_sample(data, idx=None):
-    """Plot sample from the test of validation set with drawing and reference shape."""
+    """Plot sample from the test or validation set with drawing and reference shape."""
     sample = data[idx]
     ref_img = data.from_country_name(sample["country_name"])
 

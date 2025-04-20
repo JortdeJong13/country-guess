@@ -21,10 +21,12 @@
     <body
         class="min-h-screen bg-neutral-900 text-rose-400 relative m-0 p-0 font-sans text-center"
     >
-        <div
-            class="relative flex flex-col md:flex-row items-center justify-center px-10 mt-4"
-        >
-            <h1 class="text-4xl font-bold mb-4 md:mb-0">Draw a Country</h1>
+        <!-- Title Container -->
+        <div class="relative flex items-center justify-center px-10 mt-4">
+            <!-- Title -->
+            <h1 class="text-4xl font-bold">Draw a Country</h1>
+
+            <!-- GitHub Link -->
             <a
                 href="https://github.com/JortdeJong13/country-guess"
                 class="hidden sm:flex absolute right-10 text-gray-300 no-underline items-center hover:text-gray-400 z-10 transform hover:scale-110 active:scale-100"
@@ -39,6 +41,7 @@
             </a>
         </div>
 
+        <!-- Canvas -->
         <div id="canvas-container" class="relative inline-block mx-auto my-4">
             <canvas
                 id="canvas"
@@ -47,6 +50,7 @@
             </canvas>
         </div>
 
+        <!-- Buttons -->
         <div
             class="relative z-10 my-0 flex justify-center"
             style="gap: clamp(1rem, 5vw, 3rem)"
@@ -65,11 +69,13 @@
             </button>
         </div>
 
+        <!-- Guess Message -->
         <p
             id="guess-message"
             class="mt-5 text-lg text-amber-500 relative z-10 max-w-sm mx-auto"
         ></p>
 
+        <!-- Confirmation Container -->
         <div id="confirmation-container" class="hidden mt-5 relative z-10">
             <div class="flex items-center justify-center gap-3">
                 <div>
@@ -96,10 +102,12 @@
             </div>
         </div>
 
+        <!-- Confetti -->
         <div
             id="tsparticles-confetti-container"
             class="fixed inset-0 w-full h-full pointer-events-none z-50"
         ></div>
+
         <script>
             document.addEventListener("touchstart", function () {}, true);
         </script>
