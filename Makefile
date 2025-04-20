@@ -19,7 +19,7 @@ push-drawings:
 	@if git status --porcelain | grep -q "data/drawings/"; then \
 	  git add data/drawings/*; \
 	  git commit -m "New drawings"; \
-	  git push origin main:$(DRAWINGS_BRANCH); \
+	  git push origin HEAD:drawings; \
 	else \
 	  echo "No new drawings to push."; \
 	fi
