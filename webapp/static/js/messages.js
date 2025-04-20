@@ -326,7 +326,8 @@ const countryFacts = {
   Suriname: "Suriname has over 90% of its land covered by tropical rainforest.",
   Svalbard:
     "Svalbard hosts the Global Seed Vault, preserving seeds from around the world.",
-  Swaziland: "Swaziland is now officially known as Eswatini.",
+  Eswatini:
+    "Eswatini is one of the world’s last remaining absolute monarchies.",
   Sweden:
     "Sweden's Icehotel in Jukkasjärvi is rebuilt every year from ice and snow.",
   Switzerland:
