@@ -37,6 +37,7 @@ class MiniGame {
       clickRadius: 30,
       vx: 0,
       vy: 0,
+      rotation: 0,
       emoji: "🌍",
       gravity: 0.3,
       bounce: 0.9,
@@ -133,6 +134,11 @@ class MiniGame {
     // Apply air resistance to both axes
     this.globe.vx *= this.globe.friction;
     this.globe.vy *= this.globe.friction;
+
+    // Calculate rotation based on horizontal movement (rolling effect)
+    if (Math.abs(this.globe.vx) > 0.1) {
+      this.globe.rotation += this.globe.vx * 0.05; // Scale factor for natural rolling speed
+    }
 
     // Update position (round to prevent sub-pixel vibration)
     this.globe.x = Math.round(this.globe.x + this.globe.vx);
@@ -258,11 +264,15 @@ class MiniGame {
     // Configure emoji rendering settings
     this.animCtx.save();
 
-    // Render Earth emoji at globe position
+    // Move to globe position and apply rotation
+    this.animCtx.translate(this.globe.x, this.globe.y);
+    this.animCtx.rotate(this.globe.rotation);
+
+    // Render Earth emoji at rotated position
     this.animCtx.font = `${this.globe.radius * 2}px Arial`;
     this.animCtx.textAlign = "center";
     this.animCtx.textBaseline = "middle";
-    this.animCtx.fillText(this.globe.emoji, this.globe.x, this.globe.y);
+    this.animCtx.fillText(this.globe.emoji, 0, 0);
 
     // Clean up rendering context
     this.animCtx.restore();
@@ -324,6 +334,9 @@ class MiniGame {
   reset() {
     this.isActive = false;
     this.titleClickCount = 0;
+
+    // Reset globe rotation
+    this.globe.rotation = 0;
 
     // Stop animation loop
     if (this.animationId) {
