@@ -20,6 +20,8 @@ def index():
 @app.route("/guess", methods=["POST"])
 def guess():
     data = request.json
+    if not data or "lines" not in data:
+        return jsonify({"message": "Invalid input"}), 400
     lines = data["lines"]
     drawing = proces_lines(lines)
 
@@ -50,10 +52,12 @@ def guess():
 @app.route("/feedback", methods=["POST"])
 def feedback():
     data = request.json
+    if not data:
+        return jsonify({"message": "Invalid input"}), 400
     country_name = data.get("country")
     drawing_id = data.get("drawing_id")
 
-    if not drawing_store.contains(drawing_id):
+    if not drawing_id or not drawing_store.contains(drawing_id):
         return jsonify({"message": "Drawing not found"}), 400
 
     if country_name:

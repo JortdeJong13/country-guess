@@ -3,13 +3,11 @@
 import matplotlib.pyplot as plt
 from shapely.plotting import plot_polygon
 
-from countryguess.data import geom_to_img
-
 
 def _create_figure(n_subplots):
     """Create a figure with black background and specified number of subplots."""
     fig, axs = plt.subplots(1, n_subplots, figsize=(10, 5))
-    fig.patch.set_facecolor("black")
+    fig.patch.set_facecolor("black")  # type: ignore
     return fig, axs
 
 
@@ -45,8 +43,8 @@ def plot_ref_sample(ref_data, idx=None):
         edgecolor="burlywood",
         linewidth=2,
     )
-    ax.set_title(sample["country_name"], color="white")
-    ax.axis("off")
+    ax.set_title(sample["country_name"], color="white")  # type: ignore
+    ax.axis("off")  # type: ignore
 
     plt.show()
 

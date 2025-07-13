@@ -68,12 +68,12 @@ class Dataset:
         # Set working dataset
         self.gdf = self.set_working_gdf()
 
-    def set_working_gdf(self):
+    def set_working_gdf(self) -> gpd.GeoDataFrame:
         """Set the reference countries as the working GeoDataFrame"""
         return self.ref_gdf
 
     @classmethod
-    def get_ref_gdf(cls):
+    def get_ref_gdf(cls) -> gpd.GeoDataFrame:
         """Get and cache reference data"""
         if Dataset._ref_gdf is None:
             # Load reference data
@@ -142,14 +142,14 @@ class TestDataset(Dataset):
         Dataset.__init__(self, shape=shape)
         # Drop countries without a reference
         reference_countries = set(self.ref_gdf["country_name"])
-        self.gdf = self.gdf[self.gdf["country_name"].isin(reference_countries)]
+        self.gdf = self.gdf[self.gdf["country_name"].isin(reference_countries)].copy()  # type: ignore
 
         # Normalize test data
         self.gdf = self.add_normal_geom(self.gdf)
 
         # Sort test data by timestamp
-        self.gdf.sort_values(by="timestamp", inplace=True)
-        self.gdf.reset_index(drop=True, inplace=True)
+        self.gdf = self.gdf.sort_values(by="timestamp")  # type: ignore
+        self.gdf = self.gdf.reset_index(drop=True)
 
     def set_working_gdf(self):
         """Set user drawings as the working GeoDataFrame"""

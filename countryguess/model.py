@@ -152,6 +152,9 @@ def fetch_model(model_name):
         logger.warning("Unable to fetch %s, falling back to default model", model_name)
         model_version = client.get_model_version_by_alias("default", "champion")
 
+    if not model_version or not model_version.source:
+        raise RuntimeError(f"Failed to fetch model version or source for {model_name}")
+
     # Load the model
     model_path = "/".join(model_version.source.split("/")[-5:])
     device = get_device()
