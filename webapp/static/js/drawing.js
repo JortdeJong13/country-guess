@@ -136,6 +136,7 @@ function stopDrawing() {
   isDrawing = false;
   if (currentLine.length > 1) {
     lines.push(currentLine);
+    window.lines = lines;
   }
   currentLine = [];
 }
@@ -156,6 +157,10 @@ function handleTouchEnd(event) {
 function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   lines = [];
+  window.lines = lines;
 }
+
+// Make lines globally accessible for minigame
+window.lines = lines;
 
 export { lines, clearCanvas };
