@@ -46,21 +46,23 @@ class MiniGame {
 
     // Easter egg activation tracking
     this.titleClickCount = 0;
-    this.titleElement = document.querySelector("h1");
-    this.originalTitleCursor = this.titleElement.style.cursor;
+    this.globeElement = document.querySelector("#globe-emoji");
+    this.originalGlobeCursor = this.globeElement.style.cursor;
 
     this.init();
   }
 
   init() {
-    // Setup event listeners and prevent text selection on title
-    this.titleElement.addEventListener("click", (e) =>
-      this.handleTitleClick(e),
+    // Setup event listeners and prevent text selection on globe emoji
+    this.globeElement.addEventListener("click", (e) =>
+      this.handleGlobeClick(e),
     );
-    this.titleElement.style.userSelect = "none";
-    this.titleElement.style.webkitUserSelect = "none";
-    this.titleElement.style.mozUserSelect = "none";
-    this.titleElement.style.msUserSelect = "none";
+    this.globeElement.style.userSelect = "none";
+    this.globeElement.style.webkitUserSelect = "none";
+    this.globeElement.style.mozUserSelect = "none";
+    this.globeElement.style.msUserSelect = "none";
+    this.globeElement.style.display = "inline-block"; // Ensure transforms work
+    this.globeElement.style.transformOrigin = "center center";
 
     // Add click listener to canvas for globe interaction
     this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e));
@@ -74,20 +76,40 @@ class MiniGame {
       .addEventListener("click", () => this.reset());
   }
 
-  handleTitleClick(event) {
+  handleGlobeClick(event) {
     event.preventDefault();
     event.stopPropagation();
     this.titleClickCount++;
 
     // Provide visual feedback that click was registered
-    this.titleElement.style.cursor = "pointer";
-    this.titleElement.style.transform = "scale(0.95)";
-    setTimeout(() => {
-      this.titleElement.style.transform = "scale(1)";
-    }, 100);
+    this.globeElement.style.setProperty("transform", "scale(0.9)", "important");
+    this.globeElement.style.setProperty(
+      "transition",
+      "transform 0.15s ease-out",
+      "important",
+    );
 
-    // Activate minigame after 5 clicks
-    if (this.titleClickCount >= 5) {
+    setTimeout(() => {
+      this.globeElement.style.setProperty(
+        "transform",
+        "scale(1.05)",
+        "important",
+      );
+      setTimeout(() => {
+        this.globeElement.style.setProperty(
+          "transform",
+          "scale(1)",
+          "important",
+        );
+        setTimeout(() => {
+          this.globeElement.style.removeProperty("transition");
+          this.globeElement.style.removeProperty("transform");
+        }, 150);
+      }, 150);
+    }, 150);
+
+    // Activate minigame after 9 clicks
+    if (this.titleClickCount >= 9) {
       this.startGame();
       this.titleClickCount = 0; // Reset counter
     }
@@ -104,12 +126,24 @@ class MiniGame {
     this.animCanvas.style.width = this.canvas.style.width;
     this.animCanvas.style.height = this.canvas.style.height;
 
-    // Start globe above canvas for dramatic falling entrance
-    const canvasRect = this.canvas.getBoundingClientRect();
-    this.globe.x = this.canvas.width / 2;
-    this.globe.y = -this.globe.radius; // Start above canvas
-    this.globe.vx = (Math.random() - 0.5) * 4; // Random horizontal velocity
-    this.globe.vy = 0;
+    // Calculate position of globe emoji in title relative to animation canvas
+    const globeRect = this.globeElement.getBoundingClientRect();
+    const animCanvasRect = this.animCanvas.getBoundingClientRect();
+
+    // Convert title globe position to animation canvas coordinates
+    const titleGlobeX =
+      globeRect.left + globeRect.width / 2 - animCanvasRect.left;
+    const titleGlobeY =
+      globeRect.top + globeRect.height / 2 - animCanvasRect.top;
+
+    // Start globe at title position for smooth transition
+    this.globe.x = titleGlobeX;
+    this.globe.y = titleGlobeY;
+    this.globe.vx = (Math.random() - 0.5) * 0.5; // Very small horizontal velocity
+    this.globe.vy = 0; // Start with no vertical velocity, let gravity take over
+
+    // Hide the title emoji
+    this.globeElement.style.visibility = "hidden";
 
     // Start animation loop
     this.gameLoop();
@@ -144,7 +178,7 @@ class MiniGame {
     this.globe.x = Math.round(this.globe.x + this.globe.vx);
     this.globe.y = Math.round(this.globe.y + this.globe.vy);
 
-    // Handle canvas boundary collisions
+    // Handle canvas boundary collisions smoothly
     if (this.globe.x + this.globe.radius > this.canvas.width) {
       this.globe.x = this.canvas.width - this.globe.radius;
       this.globe.vx *= -this.globe.bounce;
@@ -154,13 +188,15 @@ class MiniGame {
       this.globe.vx *= -this.globe.bounce;
     }
 
-    // Handle top and bottom boundary collisions
-    if (this.globe.y + this.globe.radius > this.canvas.height) {
-      this.globe.y = this.canvas.height - this.globe.radius;
-      this.globe.vy *= -this.globe.bounce;
-    }
+    // Handle top boundary collision - only if globe is moving up
     if (this.globe.y - this.globe.radius < 0) {
       this.globe.y = this.globe.radius;
+      this.globe.vy *= -this.globe.bounce;
+    }
+
+    // Handle bottom boundary collision - only if globe is within canvas
+    if (this.globe.y + this.globe.radius > this.canvas.height) {
+      this.globe.y = this.canvas.height - this.globe.radius;
       this.globe.vy *= -this.globe.bounce;
     }
 
@@ -354,8 +390,11 @@ class MiniGame {
       );
     }
 
+    // Restore the title emoji
+    this.globeElement.style.visibility = "visible";
+
     // Restore original cursor states
-    this.titleElement.style.cursor = this.originalTitleCursor;
+    this.globeElement.style.cursor = this.originalGlobeCursor;
     this.canvas.style.cursor = "crosshair";
   }
 }
