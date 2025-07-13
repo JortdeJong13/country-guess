@@ -15,13 +15,13 @@ class MiniGame {
     // Create separate animation layer to avoid interfering with drawing
     this.animCanvas = document.createElement("canvas");
     this.animCtx = this.animCanvas.getContext("2d");
-    this.animCanvas.style.position = "absolute";
+    this.animCanvas.style.position = "fixed";
     this.animCanvas.style.pointerEvents = "none";
     this.animCanvas.style.zIndex = "1";
-    this.animCanvas.style.top = this.canvas.style.top;
-    this.animCanvas.style.left = this.canvas.style.left;
-    this.animCanvas.style.transform = this.canvas.style.transform;
-    this.animCanvas.style.borderRadius = this.canvas.style.borderRadius;
+    this.animCanvas.style.top = "0";
+    this.animCanvas.style.left = "0";
+    this.animCanvas.style.width = "100vw";
+    this.animCanvas.style.height = "100vh";
 
     // Insert animation layer after main canvas
     this.canvas.parentNode.insertBefore(
@@ -74,6 +74,9 @@ class MiniGame {
     document
       .getElementById("refresh-btn")
       .addEventListener("click", () => this.reset());
+
+    // Handle window resize
+    window.addEventListener("resize", () => this.handleResize());
   }
 
   handleGlobeClick(event) {
@@ -108,8 +111,8 @@ class MiniGame {
       }, 150);
     }, 150);
 
-    // Activate minigame after 9 clicks
-    if (this.titleClickCount >= 9) {
+    // Activate minigame after 6 clicks
+    if (this.titleClickCount >= 6) {
       this.startGame();
       this.titleClickCount = 0; // Reset counter
     }
@@ -120,25 +123,27 @@ class MiniGame {
 
     this.isActive = true;
 
-    // Configure animation layer to perfectly overlay main canvas
-    this.animCanvas.width = this.canvas.width;
-    this.animCanvas.height = this.canvas.height;
-    this.animCanvas.style.width = this.canvas.style.width;
-    this.animCanvas.style.height = this.canvas.style.height;
+    // Configure animation layer to cover full viewport
+    this.animCanvas.width = window.innerWidth;
+    this.animCanvas.height = window.innerHeight;
 
-    // Calculate position of globe emoji in title relative to animation canvas
+    // Calculate position of globe emoji in title (absolute screen position)
     const globeRect = this.globeElement.getBoundingClientRect();
-    const animCanvasRect = this.animCanvas.getBoundingClientRect();
 
-    // Convert title globe position to animation canvas coordinates
-    const titleGlobeX =
-      globeRect.left + globeRect.width / 2 - animCanvasRect.left;
-    const titleGlobeY =
-      globeRect.top + globeRect.height / 2 - animCanvasRect.top;
+    // Start globe at actual title position in viewport coordinates
+    this.globe.x = globeRect.left + globeRect.width / 2;
+    this.globe.y = globeRect.top + globeRect.height / 2;
 
-    // Start globe at title position for smooth transition
-    this.globe.x = titleGlobeX;
-    this.globe.y = titleGlobeY;
+    // Store canvas boundaries for collision detection
+    const canvasRect = this.canvas.getBoundingClientRect();
+    this.canvasBounds = {
+      left: canvasRect.left,
+      top: canvasRect.top,
+      right: canvasRect.right,
+      bottom: canvasRect.bottom,
+      width: canvasRect.width,
+      height: canvasRect.height,
+    };
     this.globe.vx = (Math.random() - 0.5) * 0.5; // Very small horizontal velocity
     this.globe.vy = 0; // Start with no vertical velocity, let gravity take over
 
@@ -147,6 +152,33 @@ class MiniGame {
 
     // Start animation loop
     this.gameLoop();
+  }
+
+  handleResize() {
+    if (!this.isActive) return;
+
+    // Update animation canvas size
+    this.animCanvas.width = window.innerWidth;
+    this.animCanvas.height = window.innerHeight;
+
+    // Recalculate canvas boundaries
+    const canvasRect = this.canvas.getBoundingClientRect();
+    this.canvasBounds = {
+      left: canvasRect.left,
+      top: canvasRect.top,
+      right: canvasRect.right,
+      bottom: canvasRect.bottom,
+      width: canvasRect.width,
+      height: canvasRect.height,
+    };
+
+    // Keep globe within reasonable bounds if it's outside the viewport
+    if (this.globe.x < 0) this.globe.x = this.globe.radius;
+    if (this.globe.x > window.innerWidth)
+      this.globe.x = window.innerWidth - this.globe.radius;
+    if (this.globe.y < 0) this.globe.y = this.globe.radius;
+    if (this.globe.y > window.innerHeight)
+      this.globe.y = window.innerHeight - this.globe.radius;
   }
 
   gameLoop() {
@@ -178,26 +210,31 @@ class MiniGame {
     this.globe.x = Math.round(this.globe.x + this.globe.vx);
     this.globe.y = Math.round(this.globe.y + this.globe.vy);
 
-    // Handle canvas boundary collisions smoothly
-    if (this.globe.x + this.globe.radius > this.canvas.width) {
-      this.globe.x = this.canvas.width - this.globe.radius;
-      this.globe.vx *= -this.globe.bounce;
-    }
-    if (this.globe.x - this.globe.radius < 0) {
-      this.globe.x = this.globe.radius;
-      this.globe.vx *= -this.globe.bounce;
-    }
-
-    // Handle top boundary collision - only if globe is moving up
-    if (this.globe.y - this.globe.radius < 0) {
-      this.globe.y = this.globe.radius;
-      this.globe.vy *= -this.globe.bounce;
-    }
-
-    // Handle bottom boundary collision - only if globe is within canvas
-    if (this.globe.y + this.globe.radius > this.canvas.height) {
-      this.globe.y = this.canvas.height - this.globe.radius;
-      this.globe.vy *= -this.globe.bounce;
+    // Handle canvas boundary collisions using screen coordinates
+    if (this.canvasBounds) {
+      // Right boundary
+      if (this.globe.x + this.globe.radius > this.canvasBounds.right) {
+        this.globe.x = this.canvasBounds.right - this.globe.radius;
+        this.globe.vx *= -this.globe.bounce;
+      }
+      // Left boundary
+      if (this.globe.x - this.globe.radius < this.canvasBounds.left) {
+        this.globe.x = this.canvasBounds.left + this.globe.radius;
+        this.globe.vx *= -this.globe.bounce;
+      }
+      // Top boundary (only if globe is moving up and within canvas area)
+      if (
+        this.globe.y - this.globe.radius < this.canvasBounds.top &&
+        this.globe.vy < 0
+      ) {
+        this.globe.y = this.canvasBounds.top + this.globe.radius;
+        this.globe.vy *= -this.globe.bounce;
+      }
+      // Bottom boundary
+      if (this.globe.y + this.globe.radius > this.canvasBounds.bottom) {
+        this.globe.y = this.canvasBounds.bottom - this.globe.radius;
+        this.globe.vy *= -this.globe.bounce;
+      }
     }
 
     // Final collision check after movement (safety net)
@@ -206,7 +243,11 @@ class MiniGame {
 
   checkLineCollisions() {
     // Access lines drawn by the user (from drawing.js)
-    if (typeof window.lines !== "undefined" && window.lines) {
+    if (
+      typeof window.lines !== "undefined" &&
+      window.lines &&
+      this.canvasBounds
+    ) {
       for (let line of window.lines) {
         if (line.length < 2) continue;
 
@@ -214,7 +255,20 @@ class MiniGame {
           const p1 = line[i];
           const p2 = line[i + 1];
 
-          const collisionData = this.checkLineSegmentCollision(p1, p2);
+          // Convert canvas coordinates to screen coordinates
+          const screenP1 = [
+            p1[0] + this.canvasBounds.left,
+            p1[1] + this.canvasBounds.top,
+          ];
+          const screenP2 = [
+            p2[0] + this.canvasBounds.left,
+            p2[1] + this.canvasBounds.top,
+          ];
+
+          const collisionData = this.checkLineSegmentCollision(
+            screenP1,
+            screenP2,
+          );
           if (collisionData.isColliding) {
             // Calculate surface normal for realistic bounce physics
             const dx = collisionData.closestX - this.globe.x;
@@ -317,9 +371,9 @@ class MiniGame {
   handleMouseMove(event) {
     if (!this.isActive) return;
 
-    const rect = this.canvas.getBoundingClientRect();
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
+    // Use screen coordinates for mouse detection
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
 
     // Use larger click radius for better user experience
     const distance = Math.sqrt(
@@ -337,9 +391,9 @@ class MiniGame {
   handleCanvasClick(event) {
     if (!this.isActive) return;
 
-    const rect = this.canvas.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    const clickY = event.clientY - rect.top;
+    // Use screen coordinates for click detection
+    const clickX = event.clientX;
+    const clickY = event.clientY;
 
     // Check if click hits the globe (generous hitbox)
     const distance = Math.sqrt(
