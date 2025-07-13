@@ -301,9 +301,23 @@ class MiniGame {
     );
 
     if (distance < this.globe.clickRadius) {
-      // Make globe bounce up when clicked with bigger impact
-      this.globe.vy = -18; // Even stronger upward velocity
-      this.globe.vx += (Math.random() - 0.5) * 15; // Even stronger random horizontal velocity
+      // Calculate direction from click point to globe center
+      const directionX = this.globe.x - clickX;
+      const directionY = this.globe.y - clickY;
+
+      // Normalize the direction vector
+      const magnitude = Math.sqrt(
+        directionX * directionX + directionY * directionY,
+      );
+      if (magnitude > 0) {
+        const normalizedX = directionX / magnitude;
+        const normalizedY = directionY / magnitude;
+
+        // Apply force in opposite direction of click
+        const force = 22;
+        this.globe.vx += normalizedX * force;
+        this.globe.vy += normalizedY * force;
+      }
     }
   }
 
