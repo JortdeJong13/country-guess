@@ -39,6 +39,17 @@ export const lowConfidenceMessages = [
   "Could be {{guessed}}, but that's a stretch.",
 ];
 
+const easterEggMessages = [
+  "It looks like you have drawn Narnia!",
+  "You found the Easter egg, congratulations...",
+  "I'm running out of patience. You need to draw a country first.",
+  "Are you trying to summon a country?",
+  "I'll inform the UN about this new invisible country!",
+  "You've drawn... absolutely nothing. A bold choice!",
+  "This must be the mythical land of Nowhere!",
+  "This must be the lost city of Atlantis!",
+];
+
 // Messages for correct predictions
 export const correctMessages = [
   "Yep — that’s {{selected}}!",
@@ -410,4 +421,10 @@ export function getCountryFacts(country) {
     ? `\n\nFun fact: ${countryFacts[country]}`
     : "";
   return funFact;
+}
+
+export function getEasterEggMessage() {
+  return easterEggMessages[
+    Math.floor(Math.random() * easterEggMessages.length)
+  ];
 }

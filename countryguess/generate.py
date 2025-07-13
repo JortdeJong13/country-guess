@@ -70,7 +70,7 @@ def generate_drawing(polygon, shape, temp=1.0):
     polygon = augment_polygon(polygon, temp)
 
     # Transform Polygon into Shapley MultiPolygon
-    polygon = MultiPolygon([poly.to_shapely_polygon() for poly in polygon])
+    polygon = MultiPolygon([poly.to_shapely_polygon() for poly in polygon])  # type: ignore
 
     # Normalize Augmented Polygon
     polygon = normalize_geom(polygon, shape)
