@@ -86,10 +86,11 @@ function guess() {
     );
     emptyGuessCounter++;
 
-    if (emptyGuessCounter === 13) {
+    if (emptyGuessCounter === 10) {
       // Display a random easter egg message
       const randomMessage = msg.getEasterEggMessage();
       document.getElementById("guess-message").innerText = randomMessage;
+      emptyGuessCounter = 0;
     } else {
       document.getElementById("guess-message").innerText =
         "You first need to draw a country";
