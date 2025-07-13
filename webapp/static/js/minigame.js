@@ -39,9 +39,9 @@ class MiniGame {
       vy: 0,
       rotation: 0,
       emoji: "🌍",
-      gravity: 0.3,
+      gravity: 0.6,
       bounce: 0.9,
-      friction: 0.992,
+      friction: 0.995,
     };
 
     // Easter egg activation tracking
@@ -144,7 +144,7 @@ class MiniGame {
       width: canvasRect.width,
       height: canvasRect.height,
     };
-    this.globe.vx = (Math.random() - 0.5) * 0.5; // Very small horizontal velocity
+    this.globe.vx = (Math.random() - 0.5) * 2; // Small horizontal velocity
     this.globe.vy = 0; // Start with no vertical velocity, let gravity take over
 
     // Hide the title emoji
@@ -414,7 +414,7 @@ class MiniGame {
         const normalizedY = directionY / magnitude;
 
         // Apply force in opposite direction of click
-        const force = 22;
+        const force = 35;
         this.globe.vx += normalizedX * force;
         this.globe.vy += normalizedY * force;
       }
