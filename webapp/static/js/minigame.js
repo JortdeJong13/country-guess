@@ -142,7 +142,6 @@ class MiniGame {
     if (this.titleTiltCount >= 5 && !this.isTilted) {
       this.isTilted = true;
       // Start gravity-like tilt animation (fast accelerating fall)
-      // Use a small delay to ensure any previous transitions are cleared
       setTimeout(() => {
         this.titleElement.style.transition =
           "transform 0.4s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
