@@ -9,13 +9,11 @@ const guessButton = document.getElementById("guess-btn");
 guessButton.addEventListener("click", handleButtonClick);
 
 let isInConfirmMode = false;
-let emptyGuessCounter = 0;
 
 function refreshDrawing() {
   clearCanvas();
   document.getElementById("guess-message").innerText = "";
 
-  emptyGuessCounter = 0;
   if (isInConfirmMode) {
     hideConfirmation();
     if (window.currentDrawingId) {
@@ -84,13 +82,11 @@ function guess() {
     console.log(
       "Coordinates list is empty, please draw something before guessing",
     );
-    emptyGuessCounter++;
 
-    if (emptyGuessCounter === 10) {
-      // Display a random easter egg message
+    // 5% chance to show easter egg message
+    if (Math.random() < 0.05) {
       const randomMessage = msg.getEasterEggMessage();
       document.getElementById("guess-message").innerText = randomMessage;
-      emptyGuessCounter = 0;
     } else {
       document.getElementById("guess-message").innerText =
         "You first need to draw a country";

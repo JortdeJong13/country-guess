@@ -17,6 +17,16 @@
         <title>Draw Country</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+        <style>
+            @keyframes slideDown {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(8deg);
+                }
+            }
+        </style>
     </head>
     <body
         class="min-h-screen bg-neutral-900 text-rose-400 relative m-0 p-0 font-sans text-center"
@@ -24,12 +34,19 @@
         <!-- Title Container -->
         <div class="relative flex items-center justify-center px-10 mt-4">
             <!-- Title -->
-            <h1 class="text-4xl font-bold">
+            <h1
+                id="title-text"
+                class="text-4xl font-bold cursor-pointer select-none"
+            >
                 Draw a Country
-                <span id="globe-emoji" class="cursor-pointer select-none"
-                    >🌍</span
-                >
             </h1>
+
+            <!-- Separate Globe Emoji -->
+            <span
+                id="globe-emoji"
+                class="text-4xl cursor-pointer select-none ml-2"
+                >🌍</span
+            >
 
             <!-- GitHub Link -->
             <a
