@@ -1,10 +1,3 @@
-/**
- * Easter Egg Mini Game - Bouncing Globe
- *
- * Activated by clicking the title "Draw a Country" 5 times.
- * Features a bouncing Earth emoji that falls from above and bounces
- * around the canvas, interacting with drawn lines and responding to clicks.
- */
 class MiniGame {
   constructor() {
     this.canvas = document.getElementById("canvas");
@@ -49,6 +42,11 @@ class MiniGame {
     this.globeElement = document.querySelector("#globe-emoji");
     this.originalGlobeCursor = this.globeElement.style.cursor;
 
+    // Title tilting effect tracking
+    this.titleElement = document.querySelector("#title-text");
+    this.titleTiltCount = 0;
+    this.isTilted = false;
+
     this.init();
   }
 
@@ -64,8 +62,21 @@ class MiniGame {
     this.globeElement.style.display = "inline-block"; // Ensure transforms work
     this.globeElement.style.transformOrigin = "center center";
 
+    // Setup title for tilting effects and make non-selectable
+    this.titleElement.style.transformOrigin = "top left";
+    this.titleElement.style.transition = "transform 0.3s ease-out";
+    this.titleElement.style.userSelect = "none";
+    this.titleElement.style.webkitUserSelect = "none";
+    this.titleElement.style.mozUserSelect = "none";
+    this.titleElement.style.msUserSelect = "none";
+
     // Add click listener to canvas for globe interaction
     this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e));
+
+    // Add click listener to title for tilting effect (separate from globe)
+    this.titleElement.addEventListener("click", (e) =>
+      this.handleTitleClick(e),
+    );
 
     // Track mouse movement for cursor feedback (pointer over globe)
     this.canvas.addEventListener("mousemove", (e) => this.handleMouseMove(e));
@@ -115,6 +126,50 @@ class MiniGame {
     if (this.titleClickCount >= 6) {
       this.startGame();
       this.titleClickCount = 0; // Reset counter
+    }
+  }
+
+  handleTitleClick(event) {
+    // Prevent this click from triggering any other handlers
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Don't respond to clicks if already tilted
+    if (this.isTilted) return;
+
+    this.titleTiltCount++;
+
+    // Check if we should tilt first
+    if (this.titleTiltCount >= 5 && !this.isTilted) {
+      this.isTilted = true;
+      // Start gravity-like tilt animation (fast accelerating fall)
+      this.titleElement.style.transition =
+        "transform 0.4s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
+      this.titleElement.style.transform = "rotate(8deg)";
+    } else {
+      // Only do bounce feedback if not tilting
+      this.titleElement.style.setProperty(
+        "transform",
+        "scale(0.95)",
+        "important",
+      );
+      setTimeout(() => {
+        this.titleElement.style.setProperty(
+          "transform",
+          "scale(1.02)",
+          "important",
+        );
+        setTimeout(() => {
+          this.titleElement.style.setProperty(
+            "transform",
+            "scale(1)",
+            "important",
+          );
+          setTimeout(() => {
+            this.titleElement.style.removeProperty("transform");
+          }, 150);
+        }, 100);
+      }, 100);
     }
   }
 
@@ -446,6 +501,11 @@ class MiniGame {
 
     // Restore the title emoji
     this.globeElement.style.visibility = "visible";
+
+    // Reset title tilt
+    this.titleTiltCount = 0;
+    this.isTilted = false;
+    this.titleElement.style.transform = "rotate(0deg)";
 
     // Restore original cursor states
     this.globeElement.style.cursor = this.originalGlobeCursor;
