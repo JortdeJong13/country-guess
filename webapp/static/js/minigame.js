@@ -64,7 +64,6 @@ class MiniGame {
 
     // Setup title for tilting effects and make non-selectable
     this.titleElement.style.transformOrigin = "top left";
-    this.titleElement.style.transition = "transform 0.3s ease-out";
     this.titleElement.style.userSelect = "none";
     this.titleElement.style.webkitUserSelect = "none";
     this.titleElement.style.mozUserSelect = "none";
@@ -134,7 +133,7 @@ class MiniGame {
     event.preventDefault();
     event.stopPropagation();
 
-    // Don't respond to clicks if already tilted
+    // Don't respond to clicks if already tilted or falling
     if (this.isTilted) return;
 
     this.titleTiltCount++;
@@ -143,32 +142,44 @@ class MiniGame {
     if (this.titleTiltCount >= 5 && !this.isTilted) {
       this.isTilted = true;
       // Start gravity-like tilt animation (fast accelerating fall)
-      this.titleElement.style.transition =
-        "transform 0.4s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
-      this.titleElement.style.transform = "rotate(8deg)";
-    } else {
-      // Only do bounce feedback if not tilting
+      // Use a small delay to ensure any previous transitions are cleared
+      setTimeout(() => {
+        this.titleElement.style.transition =
+          "transform 0.4s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
+        this.titleElement.style.transform = "rotate(8deg)";
+      }, 50);
+    } else if (this.titleTiltCount < 5) {
+      // Only do bounce feedback if not close to tilting and not already tilted
+      this.titleElement.style.transition = "transform 0.1s ease-out";
       this.titleElement.style.setProperty(
         "transform",
-        "scale(0.95)",
+        "scale(0.985)",
         "important",
       );
       setTimeout(() => {
-        this.titleElement.style.setProperty(
-          "transform",
-          "scale(1.02)",
-          "important",
-        );
-        setTimeout(() => {
+        // Check again if we're still in a safe state to continue bouncing
+        if (!this.isTilted) {
           this.titleElement.style.setProperty(
             "transform",
-            "scale(1)",
+            "scale(1.005)",
             "important",
           );
           setTimeout(() => {
-            this.titleElement.style.removeProperty("transform");
-          }, 150);
-        }, 100);
+            if (!this.isTilted) {
+              this.titleElement.style.setProperty(
+                "transform",
+                "scale(1)",
+                "important",
+              );
+              setTimeout(() => {
+                if (!this.isTilted) {
+                  this.titleElement.style.removeProperty("transform");
+                  this.titleElement.style.transition = "";
+                }
+              }, 150);
+            }
+          }, 100);
+        }
       }, 100);
     }
   }
@@ -502,10 +513,12 @@ class MiniGame {
     // Restore the title emoji
     this.globeElement.style.visibility = "visible";
 
-    // Reset title tilt
+    // Reset title tilt and clear animation properties
     this.titleTiltCount = 0;
     this.isTilted = false;
-    this.titleElement.style.transform = "rotate(0deg)";
+    this.titleElement.style.transform = "";
+    this.titleElement.style.transition = "";
+    this.titleElement.style.animation = "";
 
     // Restore original cursor states
     this.globeElement.style.cursor = this.originalGlobeCursor;
