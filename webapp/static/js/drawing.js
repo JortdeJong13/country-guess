@@ -120,7 +120,7 @@ function draw(event) {
   var distance = Math.sqrt(
     Math.pow(coords.x - lastX, 2) + Math.pow(coords.y - lastY, 2),
   );
-  if (distance > 6) {
+  if (distance > 3) {
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(coords.x, coords.y);
