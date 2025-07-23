@@ -1,6 +1,6 @@
 Flask
 mlflow
-torch
+torch==2.5.1
 numpy
 Shapely
 geopandas
