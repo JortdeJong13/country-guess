@@ -429,10 +429,7 @@ class MiniGame {
     const canvasRect = this.canvas.getBoundingClientRect();
     this.createBoundaries(canvasRect);
 
-    // Recreate line walls
-    this.createLineWalls();
-
-    // Recreate top wall with hole
+    // Only recreate top wall with hole - line walls will be handled by the monitoring interval
     this.createTopWallWithHole(canvasRect);
   }
 
