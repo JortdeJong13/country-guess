@@ -245,19 +245,19 @@ class MiniGame {
     // Create globe body
     this.globe = Matter.Bodies.circle(startX, startY, this.globeRadius, {
       restitution: 0.95, // Very bouncy
-      friction: 0.1,
+      friction: 0.05,
       frictionAir: 0.01, // Less air resistance for more bounce
       density: 0.001, // Lighter
       frictionStatic: 0.3,
-      inertia: Infinity, // Reduce rotational resistance for more spinning
+      inertia: Infinity,
     });
 
     Matter.World.add(this.world, this.globe);
 
     // Give initial small velocity toward the canvas (always downward for now)
     Matter.Body.setVelocity(this.globe, {
-      x: (Math.random() - 0.5) * 1, // Slower horizontal velocity
-      y: 0, // Let gravity do the work
+      x: (Math.random() - 0.3) * 1,
+      y: 0,
     });
 
     // Create boundaries (walls around canvas)
@@ -501,7 +501,7 @@ class MiniGame {
     // Update globe rotation based on velocity
     if (this.globe) {
       const velocity = this.globe.velocity;
-      this.globeRotation += velocity.x * 0.01;
+      this.globeRotation += velocity.x * 0.03;
 
       // Prevent globe from sleeping (getting stuck)
       if (Math.abs(velocity.x) < 0.1 && Math.abs(velocity.y) < 0.1) {
