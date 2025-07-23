@@ -366,7 +366,6 @@ class MiniGame {
   }
 
   createLineWalls() {
-    console.log("Creating line walls");
     // Clear existing line walls
     if (this.lineWalls.length > 0) {
       Matter.World.remove(this.world, this.lineWalls);
@@ -439,7 +438,6 @@ class MiniGame {
     this.createBoundaries(canvasRect);
 
     // Recreate line walls and top wall with hole after resize
-    console.log("Handle resize");
     this.createLineWalls();
     this.createTopWallWithHole(canvasRect);
   }
