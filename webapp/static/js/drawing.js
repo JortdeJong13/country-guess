@@ -137,6 +137,12 @@ function stopDrawing() {
   if (currentLine.length > 1) {
     lines.push(currentLine);
     window.lines = lines;
+
+    // Immediately notify minigame of new line for better responsiveness
+    if (window.miniGame && window.miniGame.isActive) {
+      window.miniGame.createLineWalls();
+      window.miniGame.lastLineCount = lines.length;
+    }
   }
   currentLine = [];
 }

@@ -75,7 +75,7 @@ class MiniGame {
           this.lastLineCount = currentLineCount;
         }
       }
-    }, 100); // Check every 100ms
+    }, 50); // Check every 50ms
 
     // Handle clear button to reset everything
     document.getElementById("refresh-btn").addEventListener("click", () => {
@@ -91,6 +91,8 @@ class MiniGame {
 
     // Handle touch events for mobile
     this.canvas.addEventListener("touchend", (e) => {
+      // Only handle minigame touches, not drawing touches
+      if (!this.isActive) return;
       e.preventDefault();
       const touch = e.changedTouches[0];
       const clickEvent = new MouseEvent("click", {
@@ -364,6 +366,7 @@ class MiniGame {
   }
 
   createLineWalls() {
+    console.log("Creating line walls");
     // Clear existing line walls
     if (this.lineWalls.length > 0) {
       Matter.World.remove(this.world, this.lineWalls);
@@ -382,10 +385,12 @@ class MiniGame {
           const p2 = line[i + 1];
 
           // Convert canvas coordinates to screen coordinates
-          const screenX1 = canvasRect.left + p1[0];
-          const screenY1 = canvasRect.top + p1[1];
-          const screenX2 = canvasRect.left + p2[0];
-          const screenY2 = canvasRect.top + p2[1];
+          // Account for canvas scaling on mobile devices
+          const canvasScale = canvasRect.width / this.canvas.width;
+          const screenX1 = canvasRect.left + p1[0] * canvasScale;
+          const screenY1 = canvasRect.top + p1[1] * canvasScale;
+          const screenX2 = canvasRect.left + p2[0] * canvasScale;
+          const screenY2 = canvasRect.top + p2[1] * canvasScale;
 
           // Calculate line segment properties
           const centerX = (screenX1 + screenX2) / 2;
@@ -393,6 +398,10 @@ class MiniGame {
           const length = Math.sqrt(
             Math.pow(screenX2 - screenX1, 2) + Math.pow(screenY2 - screenY1, 2),
           );
+
+          // Skip very short segments to avoid physics issues
+          if (length < 1) continue;
+
           const angle = Math.atan2(screenY2 - screenY1, screenX2 - screenX1);
 
           // Create a thin rectangle to represent the line
@@ -429,7 +438,9 @@ class MiniGame {
     const canvasRect = this.canvas.getBoundingClientRect();
     this.createBoundaries(canvasRect);
 
-    // Only recreate top wall with hole - line walls will be handled by the monitoring interval
+    // Recreate line walls and top wall with hole after resize
+    console.log("Handle resize");
+    this.createLineWalls();
     this.createTopWallWithHole(canvasRect);
   }
 
