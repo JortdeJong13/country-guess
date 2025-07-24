@@ -1,6 +1,7 @@
 # Variables
 MODEL_NAME=triplet_model
 MLSERVER_URL=http://127.0.0.1:5001/predict
+DEBUG=1
 
 .PHONY: help
 help:
@@ -40,17 +41,21 @@ test-e2e:
 .PHONY: run-mlserver
 run-mlserver:
 	@echo "Starting ML server..."
-	MODEL_NAME=$(MODEL_NAME) python -m mlserver.serve
+	DEBUG=$(DEBUG) MODEL_NAME=$(MODEL_NAME) python -m mlserver.serve
 
 # Start the web app
 .PHONY: run-webapp
 run-webapp:
 	@echo "Starting web app..."
-	MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app
+	DEBUG=$(DEBUG) MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app
 
 # Start both the ML server and web app
 .PHONY: run-app
 run-app:
 	@echo "Starting both ML server and web app..."
-	MODEL_NAME=$(MODEL_NAME) python -m mlserver.serve &
-	MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app
+	( \
+		DEBUG=$(DEBUG) MODEL_NAME=$(MODEL_NAME) python -m mlserver.serve & \
+		ML_PID=$$!; \
+		DEBUG=$(DEBUG) MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app; \
+		kill $$ML_PID; \
+	)

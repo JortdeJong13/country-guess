@@ -27,6 +27,23 @@
                     transform: rotate(8deg);
                 }
             }
+
+            /* Spinner styles */
+            .loader {
+                width: 120px;
+                height: 15px;
+                border-radius: 15px;
+                background:
+                    radial-gradient(farthest-side, #f59e42 94%, #0000) left/15px
+                        15px no-repeat,
+                    #27272a;
+                animation: l2 1s infinite linear;
+            }
+            @keyframes l2 {
+                50% {
+                    background-position: right;
+                }
+            }
         </style>
     </head>
     <body
@@ -73,30 +90,32 @@
             </canvas>
         </div>
 
-        <!-- Buttons -->
-        <div
-            class="relative z-10 my-0 flex justify-center"
-            style="gap: clamp(1rem, 5vw, 3rem)"
-        >
-            <button
-                id="guess-btn"
-                class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
+        <div class="px-8 sm:px-0">
+            <!-- Buttons -->
+            <div
+                class="relative z-10 my-0 flex justify-center"
+                style="gap: clamp(1rem, 5vw, 3rem)"
             >
-                Guess Country
-            </button>
-            <button
-                id="refresh-btn"
-                class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
-            >
-                Clear Drawing
-            </button>
-        </div>
+                <button
+                    id="guess-btn"
+                    class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
+                >
+                    Guess Country
+                </button>
+                <button
+                    id="refresh-btn"
+                    class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
+                >
+                    Clear Drawing
+                </button>
+            </div>
 
-        <!-- Guess Message -->
-        <p
-            id="guess-message"
-            class="mt-5 text-lg text-amber-500 relative z-10 max-w-sm mx-auto"
-        ></p>
+            <!-- Guess Message -->
+            <p
+                id="guess-message"
+                class="mt-5 text-lg text-amber-500 relative z-10 max-w-2xl mx-auto"
+            ></p>
+        </div>
 
         <!-- Confirmation Container -->
         <div id="confirmation-container" class="hidden mt-5 relative z-10">

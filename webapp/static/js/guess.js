@@ -36,48 +36,48 @@ function handleButtonClick() {
   }
 }
 
-function guess() {
+async function guess() {
   if (lines.length > 0) {
-    fetch("/guess", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ lines: lines }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.message || "Unknown server error");
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const ranking = data.ranking;
-        const firstCountry = ranking.countries[0];
-        const firstScore = ranking.scores[0];
-
-        const message = msg.getConfidenceBasedMessage(firstScore, firstCountry);
-        document.getElementById("guess-message").innerText = message;
-        window.currentDrawingId = data.drawing_id;
-        showConfirmation(ranking);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-
-        // Provide user feedback of the error
-        let userMessage = "";
-        if (error.message === "Server unreachable") {
-          userMessage = "Could not reach the ML server.";
-        } else if (error.message === "Server error") {
-          userMessage = "There was an error with the ML server response.";
-        } else {
-          userMessage = "An unexpected error occurred.";
-        }
-
-        document.getElementById("guess-message").innerText = userMessage;
+    document.getElementById("guess-message").innerHTML =
+      `<div class="loader mx-auto"></div>`;
+    try {
+      const response = await fetch("/guess", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ lines: lines }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Unknown server error");
+      }
+
+      const data = await response.json();
+      const ranking = data.ranking;
+      const firstCountry = ranking.countries[0];
+      const firstScore = ranking.scores[0];
+
+      const message = msg.getConfidenceBasedMessage(firstScore, firstCountry);
+      document.getElementById("guess-message").innerText = message;
+      window.currentDrawingId = data.drawing_id;
+      showConfirmation(ranking);
+    } catch (error) {
+      console.error("Error:", error);
+
+      // Provide user feedback of the error
+      let userMessage = "";
+      if (error.message === "Server unreachable") {
+        userMessage = "Could not reach the ML server.";
+      } else if (error.message === "Server error") {
+        userMessage = "There was an error with the ML server response.";
+      } else {
+        userMessage = "An unexpected error occurred.";
+      }
+
+      document.getElementById("guess-message").innerText = userMessage;
+    }
   } else {
     console.log(
       "Coordinates list is empty, please draw something before guessing",

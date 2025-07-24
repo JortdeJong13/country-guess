@@ -16,10 +16,10 @@ class TestEndToEnd(unittest.TestCase):
     def setUpClass(cls):
         """Start the ML server and webapp before running tests."""
         cls.mlserver_process = subprocess.Popen(
-            ["make", "run-mlserver"],
+            ["make", "run-mlserver", "DEBUG=0"],
         )
         cls.webapp_process = subprocess.Popen(
-            ["make", "run-webapp"],
+            ["make", "run-webapp", "DEBUG=0"],
         )
 
         # Wait for ML server and webapp to be healthy
