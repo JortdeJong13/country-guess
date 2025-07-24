@@ -15,7 +15,7 @@ const highConfidenceMessages = [
 // Messages for medium confidence predictions
 export const mediumConfidenceMessages = [
   "This looks a lot like {{guessed}} to me.",
-  "I think this could be {{guessed}}. What do you think?",
+  "I think this could be {{guessed}}. Right?",
   "This reminds me of {{guessed}}.",
   "My best guess would be {{guessed}}.",
   "It has the shape of {{guessed}}, I’d say.",
@@ -23,7 +23,7 @@ export const mediumConfidenceMessages = [
   "This feels like {{guessed}}, but I could be off.",
   "I’d guess {{guessed}}, though I’m not entirely sure.",
   "It closely resembles {{guessed}}.",
-  "This might be {{guessed}} — the features match.",
+  "This might be {{guessed}}, the features match.",
 ];
 
 // Messages for low confidence predictions
