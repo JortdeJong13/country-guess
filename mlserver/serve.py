@@ -1,4 +1,5 @@
 import os
+import time
 
 import torch
 from flask import Flask, jsonify, request
@@ -24,6 +25,9 @@ def predict():
 
     # Get ranking of countries
     countries, scores = model.rank_countries(drawing)
+
+    # Add a delay because the model is too fast
+    time.sleep(0.5)
 
     return jsonify({"countries": countries[0].tolist(), "scores": scores[0].tolist()})
 

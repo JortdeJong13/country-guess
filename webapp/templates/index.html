@@ -27,6 +27,23 @@
                     transform: rotate(8deg);
                 }
             }
+
+            /* Spinner styles */
+            .loader {
+                width: 120px;
+                height: 15px;
+                border-radius: 15px;
+                background:
+                    radial-gradient(farthest-side, #f59e42 94%, #0000) left/15px
+                        15px no-repeat,
+                    #27272a;
+                animation: l2 1s infinite linear;
+            }
+            @keyframes l2 {
+                50% {
+                    background-position: right;
+                }
+            }
         </style>
     </head>
     <body
