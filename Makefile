@@ -53,5 +53,9 @@ run-webapp:
 .PHONY: run-app
 run-app:
 	@echo "Starting both ML server and web app..."
-	DEBUG=$(DEBUG) MODEL_NAME=$(MODEL_NAME) python -m mlserver.serve &
-	DEBUG=$(DEBUG) MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app
+	( \
+		DEBUG=$(DEBUG) MODEL_NAME=$(MODEL_NAME) python -m mlserver.serve & \
+		ML_PID=$$!; \
+		DEBUG=$(DEBUG) MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app; \
+		kill $$ML_PID; \
+	)
