@@ -69,7 +69,7 @@ def main():
     test_dl = DataLoader(test_data, batch_size=32)
 
     # Evaluate the model
-    country_names, ranking, conf_scores = evaluate(model, test_dl, ref_data)
+    _, ranking, _ = evaluate(model, test_dl, ref_data)
 
     # Results
     nr_test_samples = len(test_data)

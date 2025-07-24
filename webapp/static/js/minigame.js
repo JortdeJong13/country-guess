@@ -375,6 +375,8 @@ class MiniGame {
     // Access lines drawn by the user
     if (typeof window.lines !== "undefined" && window.lines) {
       const canvasRect = this.canvas.getBoundingClientRect();
+      // Account for canvas scaling on mobile devices
+      const canvasScale = canvasRect.width / this.canvas.width;
 
       for (let line of window.lines) {
         if (line.length < 2) continue;
@@ -384,8 +386,6 @@ class MiniGame {
           const p2 = line[i + 1];
 
           // Convert canvas coordinates to screen coordinates
-          // Account for canvas scaling on mobile devices
-          const canvasScale = canvasRect.width / this.canvas.width;
           const screenX1 = canvasRect.left + p1[0] * canvasScale;
           const screenY1 = canvasRect.top + p1[1] * canvasScale;
           const screenX2 = canvasRect.left + p2[0] * canvasScale;
