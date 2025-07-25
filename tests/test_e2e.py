@@ -1,4 +1,9 @@
-"""Test the Country Guess App end-to-end."""
+"""
+Test the Country Guess App end-to-end.
+
+Usage:
+    python -m tests.evaluation --model_name <MODEL_NAME>
+"""
 
 import json
 import subprocess
@@ -19,7 +24,7 @@ class TestEndToEnd(unittest.TestCase):
             ["make", "run-mlserver", "DEBUG=0"],
         )
         cls.webapp_process = subprocess.Popen(
-            ["make", "run-webapp", "DEBUG=0"],
+            ["make", "run-webapp", "DEBUG=0", "DRAWING_DIR=tests/data/drawings"],
         )
 
         # Wait for ML server and webapp to be healthy
@@ -45,13 +50,11 @@ class TestEndToEnd(unittest.TestCase):
             except requests.exceptions.RequestException:
                 pass
             time.sleep(1)
-        raise RuntimeError(
-            f"Service at {url} did not become healthy within {timeout} seconds"
-        )
+        raise RuntimeError(f"Service at {url} is unhealthy")
 
     def setUp(self):
         self.webapp_url = "http://localhost:5002"
-        self.drawing_dir = Path("data/drawings")
+        self.drawing_dir = Path("tests/data/drawings")
         self.country_name = "Mali"
         self.file_name = self.country_name.lower()
         self.start_time = time.time()
