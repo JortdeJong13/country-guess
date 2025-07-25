@@ -20,7 +20,6 @@ class TestEndToEnd(unittest.TestCase):
     """Test the Country Guess App end-to-end."""
 
     DRAWING_DIR = Path("tests/data/drawings")
-    LINES_DIR = Path("tests/data/lines")
 
     @classmethod
     def setUpClass(cls):
@@ -41,7 +40,7 @@ class TestEndToEnd(unittest.TestCase):
         cls._wait_for_service("http://localhost:5002/health", timeout=20)
 
         # Discover test files
-        cls.test_files = sorted(cls.LINES_DIR.glob("*.json"))
+        cls.test_files = sorted(Path("tests/data/lines").glob("*.json"))
 
     @classmethod
     def tearDownClass(cls):
