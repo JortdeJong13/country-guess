@@ -31,7 +31,7 @@ jobs:
       - name: Run evaluation
         id: eval
         run: |
-          report=$(make evaluate-model)
+          report=$(make evaluate-model | grep -v "^Evaluating" | grep -v "^python")
           echo "report<<EOF" >> $GITHUB_OUTPUT
           echo "$report" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
