@@ -6,7 +6,6 @@ Usage:
 """
 
 import argparse
-import json
 
 import numpy as np
 from torch.utils.data import DataLoader
@@ -55,7 +54,7 @@ def main():
     # Initialize datasets and dataloader
     ref_data = Dataset(shape=model.shape)
     test_data = TestDataset(shape=model.shape)
-    test_dl = DataLoader(test_data, batch_size=32)
+    test_dl = DataLoader(test_data, batch_size=32)  # type: ignore
 
     # Evaluate the model
     _, ranking, _ = evaluate(model, test_dl, ref_data)
