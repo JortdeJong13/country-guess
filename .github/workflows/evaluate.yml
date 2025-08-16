@@ -40,3 +40,13 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: ${{ steps.eval.outputs.report }}
+
+      - name: Commit evaluation report
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add data/accuracy.json
+          git commit -m "Update evaluation report [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
