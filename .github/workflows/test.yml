@@ -7,7 +7,8 @@ on:
       - "countryguess/**"
       - "mlserver/**"
       - "webapp/**"
-      - "tests/**"
+      - "tests/data/**"
+      - "tests/test_e2e.py"
 
 jobs:
   test:
