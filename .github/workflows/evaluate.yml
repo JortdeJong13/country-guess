@@ -55,10 +55,9 @@ jobs:
           EOF
 
       - name: Commit accuracy shield
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add data/accuracy-shield.json
-          git commit -m "Update accuracy shield [skip ci]" || echo "No changes to commit"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions
+          author_email: github-actions@github.com
+          message: Update accuracy shield [skip ci]
+          add: "data/accuracy-shield.json"
