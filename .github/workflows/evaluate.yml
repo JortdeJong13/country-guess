@@ -48,6 +48,5 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add data/evaluation.json
           git commit -m "Update evaluation report [skip ci]" || echo "No changes to commit"
-          git push origin HEAD:${GITHUB_REF#refs/heads/}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
