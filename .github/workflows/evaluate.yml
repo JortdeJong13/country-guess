@@ -9,6 +9,7 @@ on:
 
 permissions:
   pull-requests: write
+  contents: write
 
 jobs:
   evaluate:
@@ -55,9 +56,7 @@ jobs:
           EOF
 
       - name: Commit accuracy shield
-        uses: EndBug/add-and-commit@v9
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          author_name: github-actions
-          author_email: github-actions@github.com
-          message: Update accuracy shield [skip ci]
-          add: "data/accuracy-shield.json"
+          file_pattern: data/accuracy-shield.json
+          commit_message: Update accuracy shield [skip ci]
