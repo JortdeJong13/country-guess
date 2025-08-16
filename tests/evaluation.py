@@ -78,10 +78,6 @@ def main():
     # Print report
     print_report(report)
 
-    # Save report
-    with open("data/evaluation.json", "w") as file:
-        json.dump(report, file)
-
 
 if __name__ == "__main__":
     main()

@@ -41,11 +41,24 @@ jobs:
         with:
           message: ${{ steps.eval.outputs.report }}
 
-      - name: Commit evaluation report
+      - name: Create accuracy shield
+        run: |
+          top_1_acc=$(echo "${{ steps.eval.outputs.report }}" | grep "Top 1 Accuracy" | awk -F'|' '{print $3}' | tr -d ' %')
+          top_1_acc=${top_1_acc:-0}
+          cat <<EOF > data/accuracy-shield.json
+          {
+            "schemaVersion": 1,
+            "label": "top-1-accuracy",
+            "message": "$(printf "%.1f" $top_1_acc)%",
+            "color": "blue"
+          }
+          EOF
+
+      - name: Commit accuracy shield
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add data/evaluation.json
-          git commit -m "Update evaluation report [skip ci]" || echo "No changes to commit"
+          git add data/accuracy-shield.json
+          git commit -m "Update accuracy shield [skip ci]" || echo "No changes to commit"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
