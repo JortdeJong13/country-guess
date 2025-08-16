@@ -42,6 +42,7 @@ jobs:
           message: ${{ steps.eval.outputs.report }}
 
       - name: Commit evaluation report
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
