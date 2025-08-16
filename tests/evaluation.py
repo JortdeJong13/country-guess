@@ -68,11 +68,11 @@ def main():
 
     # Generate report
     report = {
-        "model_name": model_name,
-        "nr_test_samples": nr_test_samples,
-        "avg_rank": avg_rank,
-        "top_10_acc": top_10_acc,
-        "top_1_acc": top_1_acc,
+        "Model Name": model_name,
+        "Number of Test Samples": nr_test_samples,
+        "Average Rank": f"{avg_rank:.2f}",
+        "Top 10 Accuracy": f"{top_10_acc:.1f}%",
+        "Top 1 Accuracy": f"{top_1_acc:.1f}%",
     }
 
     # Print report
