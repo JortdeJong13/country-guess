@@ -1,6 +1,6 @@
 # Country Guess App
 
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcountry-guess.nl&label=country-guess.nl)](https://country-guess.nl) [![Build Status](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml) [![Test Status](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml) 
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcountry-guess.nl&label=country-guess.nl)](https://country-guess.nl) [![Build Status](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/build.yml) [![Test Status](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml/badge.svg)](https://github.com/jortdejong13/country-guess/actions/workflows/test.yml) [![Model Accuracy](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jortdejong13/country-guess/main/data/accuracy-shield.json)](https://github.com/jortdejong13/country-guess/actions/workflows/evaluate.yml)
 
 Welcome to my Country Guess App side project! With this machine learning application you can test your drawing skills. You can draw a country shape in the browser, a Convolutional Neural Network will then guess which country you have drawn.
 
@@ -85,7 +85,7 @@ The following diagram depicts the different components that make up the app:
 The application consists of two independent services: the ML server and the web app backend.<br>
 The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns directory is not mounted, the ML server will fall back on a default model within the image.
 
-The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server responses with a ranking of all the countries in the reference country dataset. The user can confirm this guess or select the correct country from a dropdown list. The drawing will be saved along with the country name. To preserve user drawings, the user data is mounted as a volume. If no user data is mounted, the drawings made will not persist outside the Docker container.
+The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server responses with a ranking of all the countries in the reference country dataset. The user can confirm this guess or select the correct country from a dropdown list. The drawing will be saved along with the country name. To preserve user drawings, the drawings data is mounted as a volume. If no drawings data is mounted, the drawings made will not persist outside the Docker container.
 
 ## License
 

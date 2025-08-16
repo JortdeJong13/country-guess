@@ -26,28 +26,16 @@ def parse_args():
     return parser.parse_args()
 
 
-def print_report(model_name, nr_test_samples, avg_rank, top_10_acc, top_1_acc):
+def print_report(report, metric_width=25, value_width=15):
     """Print a formatted table of evaluation results."""
-    # Define column widths
-    metric_width, value_width = 25, 15
-
     # Table header and separator
     header = f"| {'Metric'.ljust(metric_width)} | {'Value'.ljust(value_width)} |"
     separator = f"|{'-' * (metric_width + 2)}|{'-' * (value_width + 2)}|"
 
-    # Metrics to display
-    metrics = [
-        ("Model Name", model_name),
-        ("Number of Test Samples", nr_test_samples),
-        ("Average Rank", f"{avg_rank:.2f}"),
-        ("Top 10 Accuracy", f"{top_10_acc:.1f}%"),
-        ("Top 1 Accuracy", f"{top_1_acc:.1f}%"),
-    ]
-
     # Generate rows dynamically
     rows = [
         f"| {metric.ljust(metric_width)} | {str(value).ljust(value_width)} |"
-        for metric, value in metrics
+        for metric, value in report.items()
     ]
 
     # Combine header, separator, and rows into a single table
@@ -66,7 +54,7 @@ def main():
     # Initialize datasets and dataloader
     ref_data = Dataset(shape=model.shape)
     test_data = TestDataset(shape=model.shape)
-    test_dl = DataLoader(test_data, batch_size=32)
+    test_dl = DataLoader(test_data, batch_size=32)  # type: ignore
 
     # Evaluate the model
     _, ranking, _ = evaluate(model, test_dl, ref_data)
@@ -78,7 +66,16 @@ def main():
     top_1_acc = 100 * np.mean(ranking < 1)
 
     # Generate report
-    print_report(model_name, nr_test_samples, avg_rank, top_10_acc, top_1_acc)
+    report = {
+        "Model Name": model_name,
+        "Number of Test Samples": nr_test_samples,
+        "Average Rank": f"{avg_rank:.2f}",
+        "Top 10 Accuracy": f"{top_10_acc:.1f}%",
+        "Top 1 Accuracy": f"{top_1_acc:.1f}%",
+    }
+
+    # Print report
+    print_report(report)
 
 
 if __name__ == "__main__":

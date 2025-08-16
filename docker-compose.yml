@@ -22,6 +22,7 @@ services:
       - "5002:5002"
     environment:
       - MLSERVER_URL=http://mlserver:5001/predict
+      - DRAWING_DIR=data/drawings
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
     volumes:

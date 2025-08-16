@@ -7,6 +7,7 @@ from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines, save_drawing, DrawingStore
 
+DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
 drawing_store = DrawingStore()
 app = Flask(__name__)
@@ -62,7 +63,7 @@ def feedback():
 
     if country_name:
         drawing = drawing_store.get(drawing_id)
-        save_drawing(country_name, drawing)
+        save_drawing(country_name, drawing, output_dir=DRAWING_DIR)
 
     drawing_store.remove(drawing_id)
     return jsonify({"message": "Feedback received"})
