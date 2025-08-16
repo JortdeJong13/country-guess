@@ -43,7 +43,7 @@ jobs:
           cat <<EOF > data/accuracy-shield.json
           {
             "schemaVersion": 1,
-            "label": "top-1-accuracy",
+            "label": "accuracy",
             "message": "$(printf "%.1f" $top_1_acc)%",
             "color": "blue"
           }
