@@ -97,14 +97,15 @@ class CustomEmbeddingModel(nn.Module):
             )
         self.conv_blocks = nn.Sequential(*conv_blocks)
         self.dropout = nn.Dropout(dropout)
-        self.linear = nn.Linear(
-            int(
-                channels
-                * 2 ** (nr_conv_blocks - 1)
-                * (self.shape[0] / (2**nr_conv_blocks)) ** 2
-            ),
-            embedding_size,
-        )
+
+        # Dynamically determine the input size for the linear layer
+        self.eval()
+        with torch.no_grad():
+            dummy = torch.zeros(1, 1, *self.shape)
+            out = self.conv_blocks(dummy)
+            flattened_size = out.flatten(start_dim=1).shape[1]
+
+        self.linear = nn.Linear(flattened_size, embedding_size)
 
     def conv_block(self, in_dim, out_dim):
         """Convolutional block with batch normalization and ReLU activation."""
