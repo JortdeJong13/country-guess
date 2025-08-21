@@ -99,6 +99,7 @@ class CustomEmbeddingModel(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
         # Dynamically determine the input size for the linear layer
+        self.eval()
         with torch.no_grad():
             dummy = torch.zeros(1, 1, *self.shape)
             out = self.conv_blocks(dummy)
