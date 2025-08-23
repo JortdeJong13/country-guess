@@ -16,38 +16,43 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def geom_to_img(geometry, shape):
+def geom_to_img(geom, shape, img=None):
     """Convert any geometry to binary image."""
-    img = np.zeros(shape, dtype=np.uint8)
+    if img is None:
+        # Initialize an empty image
+        img = np.zeros(shape, dtype=np.uint8)
 
-    # Handle single geometries and multi-geometries
-    if isinstance(geometry, (Polygon, LineString)):
-        geoms = [geometry]
-    else:
-        geoms = geometry.geoms
+    if hasattr(geom, "geoms"):
+        # Add subgeometries to the image
+        for subgeom in geom.geoms:
+            img = geom_to_img(subgeom, shape, img)
+        return img
 
-    for geom in geoms:
-        if isinstance(geom, LineString):
-            points = np.array(geom.coords).astype(int)
-            # Draw lines between consecutive points
-            for p1, p2 in zip(points[:-1], points[1:]):
-                rr, cc = draw.line(p1[1], p1[0], p2[1], p2[0])
-                img[rr, cc] = 1
+    elif isinstance(geom, LineString):
+        points = np.array(geom.coords).astype(int)
 
-        elif isinstance(geom, Polygon):
-            points = np.array(geom.exterior.coords)
-            rr, cc = draw.polygon_perimeter(points[:, 1], points[:, 0], shape=img.shape)
+        # Draw lines between consecutive points
+        for p1, p2 in zip(points[:-1], points[1:]):
+            rr, cc = draw.line(p1[1], p1[0], p2[1], p2[0])
             img[rr, cc] = 1
+        return img
 
-            # Draw interior borders
-            for interior in geom.interiors:
-                interior_coords = np.array(interior.coords).astype(int)
-                rr, cc = draw.polygon_perimeter(
-                    interior_coords[:, 1], interior_coords[:, 0], shape=img.shape
-                )
-                img[rr, cc] = 1
+    elif isinstance(geom, Polygon):
+        points = np.array(geom.exterior.coords)
+        rr, cc = draw.polygon_perimeter(points[:, 1], points[:, 0], shape=img.shape)
+        img[rr, cc] = 1
 
-    return img
+        # Draw interior borders
+        for interior in geom.interiors:
+            interior_coords = np.array(interior.coords).astype(int)
+            rr, cc = draw.polygon_perimeter(
+                interior_coords[:, 1], interior_coords[:, 0], shape=img.shape
+            )
+            img[rr, cc] = 1
+        return img
+
+    else:
+        raise ValueError(f"Unsupported geometry type: {type(geom)}")
 
 
 class Dataset:
