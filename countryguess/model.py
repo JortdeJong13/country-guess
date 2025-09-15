@@ -21,7 +21,8 @@ class TripletModel(nn.Module):
     def __init__(self, embedding_model):
         super().__init__()
         self.embedding_model = embedding_model
-        self._ref_countries = None
+        self._ref_country_names = None
+        self._ref_country_embeddings = None
 
     @property
     def shape(self):
@@ -35,48 +36,46 @@ class TripletModel(nn.Module):
     @torch.no_grad()
     def load_reference(self, ref_data):
         """Embed reference countries."""
-        assert ref_data.shape == self.shape
-        self._ref_countries = {}
-        for item in ref_data:
-            country_name, geom = item["country_name"], item["geometry"]
-            img = geom_to_img(geom, ref_data.shape)
-            embedding = self(
-                torch.tensor(img[None, None, :, :], dtype=torch.float32).to(
-                    next(self.parameters()).device
-                )
+        if ref_data.shape != self.shape:
+            raise ValueError(
+                f"ref_data shape {ref_data.shape} does not match expected {self.shape}"
             )
-            self._ref_countries[country_name] = embedding
+
+        country_names, imgs = [], []
+        for item in ref_data:
+            country_names.append(item["country_name"])
+            geom = item["geometry"]
+            img = geom_to_img(geom, ref_data.shape)
+            imgs.append(img)
+        imgs = np.stack(imgs)  # [num_countries, H, W]
+
+        device = next(self.parameters()).device
+        imgs_tensor = torch.tensor(imgs[:, None, :, :], dtype=torch.float32).to(device)
+        embeddings = self(imgs_tensor)  # [num_countries, embedding_dim]
+
+        self._ref_country_names = country_names
+        self._ref_country_embeddings = embeddings  # [num_countries, embedding_dim]
 
     @torch.no_grad()
     def rank_countries(self, drawings):
         """Rank countries based on their similarity to the given drawings."""
-        embedding = self(drawings)
-        countries, distances = [], []
-
-        if not self._ref_countries:
+        embedding = self(drawings)  # [batch, embedding_dim]
+        if self._ref_country_embeddings is None:
             raise RuntimeError("First the reference dataset needs to be loaded!")
 
-        for country, ref_emb in self._ref_countries.items():
-            countries.append(country)
-            distance = torch.linalg.norm(embedding - ref_emb, axis=-1)
-            distances.append(distance.cpu())
+        # Compute pairwise distances: [batch, num_countries]
+        distances = torch.cdist(embedding, self._ref_country_embeddings)
 
-        countries = np.array(countries)
-        distances = np.array(distances).T
-
-        # Calculate confidence scores
+        # Calculate confidence scores (softmax over negative distances)
         similarities = -distances
-        exp_similarities = np.exp(
-            similarities - np.max(similarities, axis=1, keepdims=True)
-        )
-        confidences = exp_similarities / np.sum(exp_similarities, axis=1, keepdims=True)
+        confidences = torch.softmax(similarities, dim=1)  # [batch, num_countries]
 
         # Sort by distances (ascending order)
-        idx = np.argsort(distances, axis=1)
-        countries = countries[idx]
-        confidences = np.take_along_axis(confidences, idx, axis=1)
+        idx = torch.argsort(distances, dim=1)
+        countries = np.array(self._ref_country_names)[idx.cpu().numpy()]
+        confidences = torch.gather(confidences, 1, idx)
 
-        return countries, confidences
+        return countries, confidences.cpu().numpy()
 
 
 class CustomEmbeddingModel(nn.Module):
