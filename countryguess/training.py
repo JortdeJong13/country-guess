@@ -49,7 +49,7 @@ def train(model, train_dl, triplet_loss, optimizer):
     return np.mean(losses)
 
 
-@torch.no_grad
+@torch.no_grad()
 def evaluate(model, dl, ref_data):
     """Evaluate the model and return the ranking and confidence scores."""
     device = next(model.parameters()).device

@@ -32,7 +32,7 @@ class TripletModel(nn.Module):
         """Forward pass through the model."""
         return self.embedding_model(x)
 
-    @torch.no_grad
+    @torch.no_grad()
     def load_reference(self, ref_data):
         """Embed reference countries."""
         assert ref_data.shape == self.shape
@@ -47,7 +47,7 @@ class TripletModel(nn.Module):
             )
             self._ref_countries[country_name] = embedding
 
-    @torch.no_grad
+    @torch.no_grad()
     def rank_countries(self, drawings):
         """Rank countries based on their similarity to the given drawings."""
         embedding = self(drawings)
