@@ -35,7 +35,7 @@ class TripletModel(nn.Module):
 
     @torch.no_grad()
     def load_reference(self, ref_data):
-        """Embed reference countries."""
+        """Load reference countries into embeddings."""
         if ref_data.shape != self.shape:
             raise ValueError(
                 f"ref_data shape {ref_data.shape} does not match expected {self.shape}"
@@ -65,10 +65,7 @@ class TripletModel(nn.Module):
 
         # Compute pairwise distances: [batch, num_countries]
         distances = torch.cdist(embedding, self._ref_country_embeddings)
-
-        # Calculate confidence scores (softmax over negative distances)
-        similarities = -distances
-        confidences = torch.softmax(similarities, dim=1)  # [batch, num_countries]
+        confidences = torch.softmax(-distances, dim=1)
 
         # Sort by distances (ascending order)
         idx = torch.argsort(distances, dim=1)
@@ -132,12 +129,10 @@ class CustomEmbeddingModel(nn.Module):
 
 def get_device():
     if torch.cuda.is_available():
-        device = torch.device("cuda")
+        return torch.device("cuda")
     elif torch.backends.mps.is_available():
-        device = torch.device("mps")
-    else:
-        device = torch.device("cpu")
-    return device
+        return torch.device("mps")
+    return torch.device("cpu")
 
 
 def fetch_model(model_name):
