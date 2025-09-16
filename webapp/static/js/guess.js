@@ -83,14 +83,8 @@ async function guess() {
       "Coordinates list is empty, please draw something before guessing",
     );
 
-    // 5% chance to show easter egg message
-    if (Math.random() < 0.05) {
-      const randomMessage = msg.getEasterEggMessage();
-      document.getElementById("guess-message").innerText = randomMessage;
-    } else {
-      document.getElementById("guess-message").innerText =
-        "You first need to draw a country";
-    }
+    const emptyGuessMessage = msg.getEmptyGuessMessage();
+    document.getElementById("guess-message").innerText = emptyGuessMessage;
   }
 }
 
@@ -153,7 +147,7 @@ function confirmCountry() {
         msg.correctMessages,
         selectedCountry,
         guessedCountry,
-      ) + msg.getCountryFacts(selectedCountry);
+      ) + msg.getCountryFact(selectedCountry);
 
     setTimeout(() => {
       confetti({

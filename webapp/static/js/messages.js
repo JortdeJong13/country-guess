@@ -416,15 +416,20 @@ export function getRandomMessage(messageList, guessedCountry, selectedCountry) {
     .replace("{{guessed}}", guessedCountry);
 }
 
-export function getCountryFacts(country) {
+export function getCountryFact(country) {
   const funFact = countryFacts[country]
     ? `\n\nFun fact: ${countryFacts[country]}`
     : "";
   return funFact;
 }
 
-export function getEasterEggMessage() {
-  return easterEggMessages[
-    Math.floor(Math.random() * easterEggMessages.length)
-  ];
+export function getEmptyGuessMessage() {
+  // 5% chance to show easter egg message
+  if (Math.random() < 0.05) {
+    return easterEggMessages[
+      Math.floor(Math.random() * easterEggMessages.length)
+    ];
+  } else {
+    return "You first need to draw a country";
+  }
 }
