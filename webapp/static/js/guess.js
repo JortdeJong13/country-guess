@@ -131,44 +131,12 @@ function hideConfirmation() {
 }
 
 function confirmCountry() {
-  var dropdown = document.getElementById("country-dropdown");
-  var selectedCountry = dropdown.value;
+  const dropdown = document.getElementById("country-dropdown");
+  const selectedCountry = dropdown.value;
   const guessedCountry = dropdown.options[0].value;
 
-  let message;
-
-  if (selectedCountry === "Other") {
-    message = "I thought I knew all the countries... I guess not!";
-  } else if (selectedCountry === guessedCountry) {
-    message =
-      msg.getRandomMessage(
-        msg.correctMessages,
-        selectedCountry,
-        guessedCountry,
-      ) + msg.getCountryFact(selectedCountry);
-
-    setTimeout(() => {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        startVelocity: 70,
-        zIndex: 1000,
-        origin: { y: 1, x: 0.5 },
-        resize: true,
-        useWorker: true,
-        ticks: 280,
-      });
-    }, 50);
-  } else {
-    message = msg.getRandomMessage(
-      msg.incorrectMessages,
-      guessedCountry,
-      selectedCountry,
-    );
-  }
-
+  const message = msg.getConfirmationMessage(selectedCountry, guessedCountry);
   showGuessMessage(message);
-
   hideConfirmation();
 
   // Send feedback with country name

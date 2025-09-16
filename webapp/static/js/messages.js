@@ -405,7 +405,7 @@ export function getConfidenceBasedMessage(score, guessedCountry) {
   return getRandomMessage(messageList, guessedCountry, guessedCountry);
 }
 
-export function getRandomMessage(messageList, guessedCountry, selectedCountry) {
+function getRandomMessage(messageList, guessedCountry, selectedCountry) {
   // Pick a random message from the list
   const randomIndex = Math.floor(Math.random() * messageList.length);
   const template = messageList[randomIndex];
@@ -416,11 +416,40 @@ export function getRandomMessage(messageList, guessedCountry, selectedCountry) {
     .replace("{{guessed}}", guessedCountry);
 }
 
-export function getCountryFact(country) {
+function getCountryFact(country) {
   const funFact = countryFacts[country]
     ? `\n\nFun fact: ${countryFacts[country]}`
     : "";
   return funFact;
+}
+
+export function getConfirmationMessage(selectedCountry, guessedCountry) {
+  // Guess country is correct
+  if (selectedCountry === guessedCountry) {
+    setTimeout(() => {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        startVelocity: 70,
+        zIndex: 1000,
+        origin: { y: 1, x: 0.5 },
+        resize: true,
+        useWorker: true,
+        ticks: 280,
+      });
+    }, 50);
+
+    return (
+      getRandomMessage(correctMessages, selectedCountry, guessedCountry) +
+      getCountryFact(selectedCountry)
+    );
+  }
+  // User drew a miscellaneous country
+  if (selectedCountry === "Other") {
+    return "I thought I knew all the countries... I guess not!";
+  }
+  // Guess country is incorrect
+  return getRandomMessage(incorrectMessages, guessedCountry, selectedCountry);
 }
 
 export function getEmptyGuessMessage() {
