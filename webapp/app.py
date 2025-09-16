@@ -5,7 +5,8 @@ import requests
 from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
-from countryguess.utils import proces_lines, save_drawing, DrawingStore
+from countryguess.utils import proces_lines
+from webapp.drawing_utils import DrawingStore, save_drawing
 
 DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
