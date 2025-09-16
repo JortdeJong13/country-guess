@@ -21,7 +21,7 @@ class TripletModel(nn.Module):
     def __init__(self, embedding_model):
         super().__init__()
         self.embedding_model = embedding_model
-        self._ref_country_names = None
+        self.ref_country_names = None
         self._ref_country_embeddings = None
 
     @property
@@ -53,7 +53,7 @@ class TripletModel(nn.Module):
         imgs_tensor = torch.tensor(imgs[:, None, :, :], dtype=torch.float32).to(device)
         embeddings = self(imgs_tensor)  # [num_countries, embedding_dim]
 
-        self._ref_country_names = country_names
+        self.ref_country_names = country_names
         self._ref_country_embeddings = embeddings  # [num_countries, embedding_dim]
 
     @torch.no_grad()
@@ -69,7 +69,7 @@ class TripletModel(nn.Module):
 
         # Sort by distances (ascending order)
         idx = torch.argsort(distances, dim=1)
-        countries = np.array(self._ref_country_names)[idx.cpu().numpy()]
+        countries = np.array(self.ref_country_names)[idx.cpu().numpy()]
         confidences = torch.gather(confidences, 1, idx)
 
         return countries, confidences.cpu().numpy()

@@ -91,6 +91,15 @@
         </div>
 
         <div class="px-8 sm:px-0">
+            <!-- Daily Challenge Country -->
+            <p
+                id="daily-challenge"
+                class="mb-4 text-lg text-center text-amber-500"
+            >
+                Daily Challenge:
+                <span id="daily-country-name"></span>
+            </p>
+
             <!-- Buttons -->
             <div
                 class="relative z-10 my-0 flex justify-center"
@@ -164,6 +173,10 @@
         <script
             type="module"
             src="{{ url_for('static', filename='js/minigame.js') }}"
+        ></script>
+        <script
+            type="module"
+            src="{{ url_for('static', filename='js/daily_challenge.js') }}"
         ></script>
     </body>
 </html>

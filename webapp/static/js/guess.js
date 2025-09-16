@@ -1,5 +1,6 @@
 import { lines, clearCanvas } from "./drawing.js";
 import * as msg from "./messages.js";
+import { checkDailyChallenge } from "./daily_challenge.js";
 
 document
   .getElementById("refresh-btn")
@@ -34,6 +35,10 @@ function handleButtonClick() {
   } else {
     guess();
   }
+}
+
+function showGuessMessage(message) {
+  document.getElementById("guess-message").innerText = message;
 }
 
 async function postGuess(lines) {
@@ -82,10 +87,6 @@ async function guess() {
   }
 }
 
-function showGuessMessage(message) {
-  document.getElementById("guess-message").innerText = message;
-}
-
 function showConfirmation(ranking) {
   const confirmationContainer = document.getElementById(
     "confirmation-container",
@@ -130,12 +131,39 @@ function hideConfirmation() {
   isInConfirmMode = false;
 }
 
+function getConfirmationMessage(selectedCountry, guessedCountry) {
+  // Guess country is correct
+  if (selectedCountry === guessedCountry) {
+    setTimeout(() => {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        startVelocity: 70,
+        zIndex: 1000,
+        origin: { y: 1, x: 0.5 },
+        resize: true,
+        useWorker: true,
+        ticks: 280,
+      });
+    }, 50);
+
+    if (checkDailyChallenge(guessedCountry)) {
+      return "🎉 You've completed the daily challenge!";
+    }
+
+    return msg.getCorrectGuessMessage(selectedCountry, guessedCountry);
+  }
+
+  // Guess country is incorrect
+  return msg.getIncorrectGuessMessage(selectedCountry, guessedCountry);
+}
+
 function confirmCountry() {
   const dropdown = document.getElementById("country-dropdown");
   const selectedCountry = dropdown.value;
   const guessedCountry = dropdown.options[0].value;
 
-  const message = msg.getConfirmationMessage(selectedCountry, guessedCountry);
+  const message = getConfirmationMessage(selectedCountry, guessedCountry);
   showGuessMessage(message);
   hideConfirmation();
 

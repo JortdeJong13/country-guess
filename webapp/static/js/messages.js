@@ -395,6 +395,17 @@ const countryFacts = {
     "Zimbabwe shares Victoria Falls, one of the world's largest waterfalls.",
 };
 
+export function getEmptyGuessMessage() {
+  // 5% chance to show easter egg message
+  if (Math.random() < 0.05) {
+    return easterEggMessages[
+      Math.floor(Math.random() * easterEggMessages.length)
+    ];
+  } else {
+    return "You first need to draw a country";
+  }
+}
+
 export function getConfidenceBasedMessage(score, guessedCountry) {
   const messageList =
     score > 0.28
@@ -405,7 +416,7 @@ export function getConfidenceBasedMessage(score, guessedCountry) {
   return getRandomMessage(messageList, guessedCountry, guessedCountry);
 }
 
-function getRandomMessage(messageList, guessedCountry, selectedCountry) {
+function getRandomMessage(messageList, selectedCountry, guessedCountry) {
   // Pick a random message from the list
   const randomIndex = Math.floor(Math.random() * messageList.length);
   const template = messageList[randomIndex];
@@ -423,42 +434,16 @@ function getCountryFact(country) {
   return funFact;
 }
 
-export function getConfirmationMessage(selectedCountry, guessedCountry) {
-  // Guess country is correct
-  if (selectedCountry === guessedCountry) {
-    setTimeout(() => {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        startVelocity: 70,
-        zIndex: 1000,
-        origin: { y: 1, x: 0.5 },
-        resize: true,
-        useWorker: true,
-        ticks: 280,
-      });
-    }, 50);
-
-    return (
-      getRandomMessage(correctMessages, selectedCountry, guessedCountry) +
-      getCountryFact(selectedCountry)
-    );
-  }
-  // User drew a miscellaneous country
-  if (selectedCountry === "Other") {
-    return "I thought I knew all the countries... I guess not!";
-  }
-  // Guess country is incorrect
-  return getRandomMessage(incorrectMessages, guessedCountry, selectedCountry);
+export function getCorrectGuessMessage(selectedCountry, guessedCountry) {
+  return (
+    getRandomMessage(correctMessages, selectedCountry, guessedCountry) +
+    getCountryFact(selectedCountry)
+  );
 }
 
-export function getEmptyGuessMessage() {
-  // 5% chance to show easter egg message
-  if (Math.random() < 0.05) {
-    return easterEggMessages[
-      Math.floor(Math.random() * easterEggMessages.length)
-    ];
-  } else {
-    return "You first need to draw a country";
+export function getIncorrectGuessMessage(selectedCountry, guessedCountry) {
+  if (selectedCountry == "Other") {
+    return "I thought I knew all the countries... I guess not!";
   }
+  return getRandomMessage(incorrectMessages, selectedCountry, guessedCountry);
 }
