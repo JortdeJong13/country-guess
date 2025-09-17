@@ -13,7 +13,7 @@ const highConfidenceMessages = [
 ];
 
 // Messages for medium confidence predictions
-export const mediumConfidenceMessages = [
+const mediumConfidenceMessages = [
   "This looks a lot like {{guessed}} to me.",
   "I think this could be {{guessed}}. Right?",
   "This reminds me of {{guessed}}.",
@@ -27,7 +27,7 @@ export const mediumConfidenceMessages = [
 ];
 
 // Messages for low confidence predictions
-export const lowConfidenceMessages = [
+const lowConfidenceMessages = [
   "I'm not sure, but this might be {{guessed}}?",
   "Tough one... maybe {{guessed}}?",
   "Could it be {{guessed}}? I'm guessing here.",
@@ -51,7 +51,7 @@ const easterEggMessages = [
 ];
 
 // Messages for correct predictions
-export const correctMessages = [
+const correctMessages = [
   "Yep — that’s {{selected}}!",
   "You drew {{selected}} perfectly!",
   "Spot on! That's {{selected}}!",
@@ -64,7 +64,7 @@ export const correctMessages = [
 ];
 
 // Messages for incorrect predictions
-export const incorrectMessages = [
+const incorrectMessages = [
   "Oh! It’s actually {{selected}} — I see why I thought it was {{guessed}}.",
   "Ah, {{selected}}! That does look a lot like {{guessed}} though.",
   "Now I see — it’s {{selected}}, not {{guessed}}.",
@@ -75,6 +75,19 @@ export const incorrectMessages = [
   "I see it now — definitely {{selected}}, not {{guessed}}.",
   "Oops, that’s {{selected}}. I’ll remember the difference.",
   "{{selected}} — got it! I’ll be sharper next time.",
+];
+
+const dailyChallengeMessages = [
+  "Well done, that’s today’s {{selected}} challenge done.",
+  "You wrapped up the daily challenge with {{selected}}.",
+  "That’s a solid {{selected}} — daily challenge finished.",
+  "Challenge complete — {{selected}} was today’s country.",
+  "Good job, {{selected}} closes out today’s challenge.",
+  "Today’s challenge done: {{selected}}.",
+  "That’s it for today — come back tomorrow for a new challenge!",
+  "Challenge complete! Check back tomorrow for another country.",
+  "You’re done for today — tomorrow brings a fresh challenge.",
+  "Daily challenge cleared. See you tomorrow with {{selected}} checked off.",
 ];
 
 const countryFacts = {
@@ -434,9 +447,9 @@ function getCountryFact(country) {
   return funFact;
 }
 
-export function getCorrectGuessMessage(selectedCountry, guessedCountry) {
+export function getCorrectGuessMessage(selectedCountry) {
   return (
-    getRandomMessage(correctMessages, selectedCountry, guessedCountry) +
+    getRandomMessage(correctMessages, selectedCountry, null) +
     getCountryFact(selectedCountry)
   );
 }
@@ -446,4 +459,11 @@ export function getIncorrectGuessMessage(selectedCountry, guessedCountry) {
     return "I thought I knew all the countries... I guess not!";
   }
   return getRandomMessage(incorrectMessages, selectedCountry, guessedCountry);
+}
+
+export function getDailyChallengeMessage(selectedCountry) {
+  return (
+    getRandomMessage(dailyChallengeMessages, selectedCountry, null) +
+    getCountryFact(selectedCountry)
+  );
 }

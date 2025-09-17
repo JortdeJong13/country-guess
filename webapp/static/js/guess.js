@@ -147,11 +147,11 @@ function getConfirmationMessage(selectedCountry, guessedCountry) {
       });
     }, 50);
 
-    if (checkDailyChallenge(guessedCountry)) {
-      return "🎉 You've completed the daily challenge!";
+    if (checkDailyChallenge(selectedCountry)) {
+      return msg.getDailyChallengeMessage(selectedCountry);
     }
 
-    return msg.getCorrectGuessMessage(selectedCountry, guessedCountry);
+    return msg.getCorrectGuessMessage(selectedCountry);
   }
 
   // Guess country is incorrect

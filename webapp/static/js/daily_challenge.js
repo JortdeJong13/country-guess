@@ -358,10 +358,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 /**
  * Public API
  */
-export function checkDailyChallenge(guessedCountry) {
-  if (!dailyCountry || !guessedCountry || hasCompletedToday()) return false;
+export function checkDailyChallenge(selectedCountry) {
+  if (!dailyCountry || !selectedCountry || hasCompletedToday()) return false;
 
-  if (guessedCountry.toLowerCase() === dailyCountry.toLowerCase()) {
+  if (selectedCountry.toLowerCase() === dailyCountry.toLowerCase()) {
     onDailyChallengeSuccess();
     return true;
   }
