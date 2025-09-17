@@ -485,7 +485,7 @@ export function getIncorrectGuessMessage(selectedCountry, guessedCountry) {
 export function getDailyChallengeMessage(selectedCountry, streak) {
   if (streak == goldenStreak) {
     return (
-      "You're on a daily challenge streak, you have earned the golden guess button!" +
+      "You're on a daily challenge streak. You have unlocked the golden guess button!" +
       getCountryFact(selectedCountry)
     );
   }

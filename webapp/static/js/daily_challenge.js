@@ -5,7 +5,6 @@
 
 // State variables
 let dailyCountry = null;
-let dailyStreak = 0;
 let isAnimating = false;
 let isPillExpanded = false;
 let currentAnimation = null;
@@ -50,7 +49,7 @@ function hasCompletedToday() {
   return !!history[getTodayISO()];
 }
 
-function setDailyStreak() {
+function getDailyStreak() {
   const history = getHistory();
   const today = getTodayISO();
 
@@ -61,9 +60,7 @@ function setDailyStreak() {
     currentDate.setDate(currentDate.getDate() - 1);
   }
 
-  // Reset streak to zero
-  dailyStreak = 0;
-
+  let dailyStreak = 0;
   while (true) {
     const dateStr = currentDate.toISOString().slice(0, 10);
     // If this date exists in history, increment streak
@@ -75,6 +72,8 @@ function setDailyStreak() {
       break;
     }
   }
+
+  return dailyStreak;
 }
 
 function isTouchDevice() {
@@ -292,8 +291,8 @@ function setupPillInteractions() {
  * Content Management
  */
 function updateDailyChallenge() {
-  setDailyStreak();
-  setGoldenGuessButton();
+  const dailyStreak = getDailyStreak();
+  setGoldenGuessButton(dailyStreak);
 
   const pillEl = document.getElementById("daily-challenge-pill");
   const countryNameEl = document.getElementById("daily-country-name");
@@ -334,9 +333,6 @@ function onDailyChallengeSuccess() {
   history[today] = dailyCountry;
   setHistory(history);
 
-  // For message, dailyStreak is slow to update
-  const newDailyStreak = dailyStreak + 1;
-
   // Stop tempting bounce since challenge is completed
   stopTemptingBounce();
 
@@ -364,7 +360,9 @@ function onDailyChallengeSuccess() {
   } else {
     updateDailyChallenge();
   }
-  return newDailyStreak;
+
+  const dailyStreak = getDailyStreak();
+  return dailyStreak;
 }
 
 /**
@@ -390,7 +388,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   addEntranceAnimation();
 });
 
-function setGoldenGuessButton() {
+function setGoldenGuessButton(dailyStreak) {
   if (dailyStreak < goldenStreak) return;
 
   const button = document.getElementById("guess-btn");
