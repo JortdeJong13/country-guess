@@ -26,8 +26,7 @@ Welcome to my Country Guess App side project! With this machine learning applica
 
 ## Getting Started
 
-The Country Guess App is accessible at [country-guess.nl](https://country-guess.nl), feel free to try it out!
-<br>Alternatively, you can follow the instructions to run the app locally:
+The Country Guess App is accessible at [country-guess.nl](https://country-guess.nl), feel free to try it out! Alternatively, you can follow the instructions to run the app locally:
 
 ### 1. Using Pre-built Docker Images (Recommended)
 Pull and run the latest images:
