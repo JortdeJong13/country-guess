@@ -5,6 +5,7 @@
 
 // State variables
 let dailyCountry = null;
+let dailyStreak = 0;
 let isAnimating = false;
 let isPillExpanded = false;
 let currentAnimation = null;
@@ -12,6 +13,7 @@ let interactionsSetup = false;
 let hasUserInteracted = false;
 let temptingBounceTimeout = null;
 let currentPillWidth = 200;
+export let goldenStreak = 4;
 
 // Constants
 const ANIMATION_DURATIONS = {
@@ -48,9 +50,8 @@ function hasCompletedToday() {
   return !!history[getTodayISO()];
 }
 
-function getStreak() {
+function setDailyStreak() {
   const history = getHistory();
-  let streak = 0;
   const today = getTodayISO();
 
   // Start from today if completed, otherwise start from yesterday
@@ -60,19 +61,20 @@ function getStreak() {
     currentDate.setDate(currentDate.getDate() - 1);
   }
 
+  // Reset streak to zero
+  dailyStreak = 0;
+
   while (true) {
     const dateStr = currentDate.toISOString().slice(0, 10);
     // If this date exists in history, increment streak
     if (history[dateStr]) {
-      streak++;
+      dailyStreak++;
       // Move to previous day
       currentDate.setDate(currentDate.getDate() - 1);
     } else {
       break;
     }
   }
-
-  return streak;
 }
 
 function isTouchDevice() {
@@ -290,6 +292,9 @@ function setupPillInteractions() {
  * Content Management
  */
 function updateDailyChallenge() {
+  setDailyStreak();
+  setGoldenGuessButton();
+
   const pillEl = document.getElementById("daily-challenge-pill");
   const countryNameEl = document.getElementById("daily-country-name");
   if (!pillEl || !countryNameEl) return;
@@ -301,7 +306,7 @@ function updateDailyChallenge() {
     stopTemptingBounce();
 
     if (icon) {
-      if (getStreak() > 1) {
+      if (dailyStreak > 1) {
         icon.textContent = "🔥"; // Fire for streak
       } else {
         icon.textContent = "🎉"; // Party for completing today
@@ -328,6 +333,9 @@ function onDailyChallengeSuccess() {
   const history = getHistory();
   history[today] = dailyCountry;
   setHistory(history);
+
+  // For message, dailyStreak is slow to update
+  const newDailyStreak = dailyStreak + 1;
 
   // Stop tempting bounce since challenge is completed
   stopTemptingBounce();
@@ -356,6 +364,7 @@ function onDailyChallengeSuccess() {
   } else {
     updateDailyChallenge();
   }
+  return newDailyStreak;
 }
 
 /**
@@ -366,36 +375,42 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   if (hasCompletedToday()) {
     // Use history to get daily country instead of fetching from server
-    const history = getHistory();
-    dailyCountry = history[getTodayISO()];
-    updateDailyChallenge();
-    addEntranceAnimation();
-    return;
+    dailyCountry = getHistory()[getTodayISO()];
+  } else {
+    try {
+      const response = await fetch("/daily_country");
+      const data = await response.json();
+      dailyCountry = data.country || null;
+    } catch {
+      dailyCountry = null;
+    }
   }
 
-  try {
-    const response = await fetch("/daily_country");
-    const data = await response.json();
-    dailyCountry = data.country || null;
-
-    updateDailyChallenge();
-    addEntranceAnimation();
-  } catch {
-    dailyCountry = null;
-    updateDailyChallenge();
-    addEntranceAnimation();
-  }
+  updateDailyChallenge();
+  addEntranceAnimation();
 });
+
+function setGoldenGuessButton() {
+  if (dailyStreak < goldenStreak) return;
+
+  const button = document.getElementById("guess-btn");
+  if (button) {
+    button.classList.add("golden");
+  }
+}
 
 /**
  * Public API
  */
 export function checkDailyChallenge(selectedCountry) {
-  if (!dailyCountry || !selectedCountry || hasCompletedToday()) return false;
+  if (!dailyCountry || !selectedCountry || hasCompletedToday()) {
+    return { challengeCompleted: false, streak: null };
+  }
 
   if (selectedCountry.toLowerCase() === dailyCountry.toLowerCase()) {
-    onDailyChallengeSuccess();
-    return true;
+    const newDailyStreak = onDailyChallengeSuccess();
+    return { challengeCompleted: true, streak: newDailyStreak };
   }
-  return false;
+
+  return { challengeCompleted: false, streak: null };
 }

@@ -1,3 +1,5 @@
+import { goldenStreak } from "./daily_challenge.js";
+
 // Messages for high confidence predictions
 const highConfidenceMessages = [
   "I'm absolutely sure this is {{guessed}}!",
@@ -88,6 +90,19 @@ const dailyChallengeMessages = [
   "Challenge complete! Check back tomorrow for another country.",
   "You’re done for today, tomorrow brings a fresh challenge.",
   "Daily challenge cleared. See you tomorrow!",
+];
+
+const dailyStreakMessages = [
+  "Well done {{selected}}, {{streak}} days in a row.",
+  "You got {{selected}}, streak: {{streak}} days.",
+  "Nice {{selected}}, {{streak}} day streak.",
+  "Perfect {{selected}}, {{streak}} days strong.",
+  "Great {{selected}}, your streak is {{streak}}.",
+  "Today’s {{selected}}, {{streak}} days streaking.",
+  "Challenge done {{selected}}, {{streak}} days running.",
+  "Keeping that golden guess button!, streak: {{streak}} days.",
+  "Another {{selected}} complete, {{streak}} days.",
+  "Daily challenge {{selected}}, {{streak}} days streak.",
 ];
 
 const countryFacts = {
@@ -419,6 +434,20 @@ export function getEmptyGuessMessage() {
   }
 }
 
+function getRandomMessage(messageList, variables) {
+  // Pick a random message from the list
+  const randomIndex = Math.floor(Math.random() * messageList.length);
+  let template = messageList[randomIndex];
+
+  // Replace all placeholders dynamically
+  for (const [key, value] of Object.entries(variables)) {
+    const regex = new RegExp(`{{${key}}}`, "g");
+    template = template.replace(regex, value);
+  }
+
+  return template;
+}
+
 export function getConfidenceBasedMessage(score, guessedCountry) {
   const messageList =
     score > 0.28
@@ -426,18 +455,7 @@ export function getConfidenceBasedMessage(score, guessedCountry) {
       : score > 0.18
         ? mediumConfidenceMessages
         : lowConfidenceMessages;
-  return getRandomMessage(messageList, guessedCountry, guessedCountry);
-}
-
-function getRandomMessage(messageList, selectedCountry, guessedCountry) {
-  // Pick a random message from the list
-  const randomIndex = Math.floor(Math.random() * messageList.length);
-  const template = messageList[randomIndex];
-
-  // Replace placeholders with the given values
-  return template
-    .replace("{{selected}}", selectedCountry)
-    .replace("{{guessed}}", guessedCountry);
+  return getRandomMessage(messageList, { guessed: guessedCountry });
 }
 
 function getCountryFact(country) {
@@ -449,7 +467,7 @@ function getCountryFact(country) {
 
 export function getCorrectGuessMessage(selectedCountry) {
   return (
-    getRandomMessage(correctMessages, selectedCountry, null) +
+    getRandomMessage(correctMessages, { selected: selectedCountry }) +
     getCountryFact(selectedCountry)
   );
 }
@@ -458,12 +476,31 @@ export function getIncorrectGuessMessage(selectedCountry, guessedCountry) {
   if (selectedCountry == "Other") {
     return "I thought I knew all the countries... I guess not!";
   }
-  return getRandomMessage(incorrectMessages, selectedCountry, guessedCountry);
+  return getRandomMessage(incorrectMessages, {
+    selected: selectedCountry,
+    guessed: guessedCountry,
+  });
 }
 
-export function getDailyChallengeMessage(selectedCountry) {
+export function getDailyChallengeMessage(selectedCountry, streak) {
+  if (streak == goldenStreak) {
+    return (
+      "You're on a daily challenge streak, you have earned the golden guess button!" +
+      getCountryFact(selectedCountry)
+    );
+  }
+
+  if (streak > goldenStreak) {
+    return (
+      getRandomMessage(dailyStreakMessages, {
+        selected: selectedCountry,
+        streak: streak,
+      }) + getCountryFact(selectedCountry)
+    );
+  }
+
   return (
-    getRandomMessage(dailyChallengeMessages, selectedCountry, null) +
+    getRandomMessage(dailyChallengeMessages, { selected: selectedCountry }) +
     getCountryFact(selectedCountry)
   );
 }

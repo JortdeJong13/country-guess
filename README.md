@@ -63,7 +63,7 @@ MLSERVER_URL=http://127.0.0.1:5001/predict python -m webapp.app
 
 ### Drawing
 
-Once the app is running, you can draw a country. The ML model will guess which country has been drawn, you can confirm or correct the guess using the dropdown list. This drawing will then be included in the test set for future model evaluation.
+Once the app is running, you can draw a country. The ML model will guess which country has been drawn, you can confirm or correct the guess using the dropdown list. This drawing will then be included in the test set for future model evaluation. Don't know what to draw? Everyday there is a new daily challenge with a country for you to draw.
 
 ### Diving in
 

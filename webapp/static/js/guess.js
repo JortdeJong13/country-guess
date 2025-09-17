@@ -6,8 +6,8 @@ document
   .getElementById("refresh-btn")
   .addEventListener("click", refreshDrawing);
 
-const guessButton = document.getElementById("guess-btn");
-guessButton.addEventListener("click", handleButtonClick);
+const guessBtn = document.getElementById("guess-btn");
+guessBtn.addEventListener("click", handleButtonClick);
 
 let isInConfirmMode = false;
 
@@ -26,7 +26,7 @@ function refreshDrawing() {
 
   // Unlock guess button
   const guessBtn = document.getElementById("guess-btn");
-  guessBtn.style = "";
+  guessBtn.classList.remove("guess-locked");
 }
 
 function handleButtonClick() {
@@ -147,8 +147,12 @@ function getConfirmationMessage(selectedCountry, guessedCountry) {
       });
     }, 50);
 
-    if (checkDailyChallenge(selectedCountry)) {
-      return msg.getDailyChallengeMessage(selectedCountry);
+    const dailyChallenge = checkDailyChallenge(selectedCountry);
+    if (dailyChallenge.challengeCompleted) {
+      return msg.getDailyChallengeMessage(
+        selectedCountry,
+        dailyChallenge.streak,
+      );
     }
 
     return msg.getCorrectGuessMessage(selectedCountry);
@@ -167,36 +171,46 @@ function confirmCountry() {
   showGuessMessage(message);
   hideConfirmation();
 
-  // Send feedback with country name
+  // Send feedback
   if (window.currentDrawingId) {
-    sendFeedback(selectedCountry);
+    // Capture the drawing ID locally before sending
+    const drawingId = window.currentDrawingId;
+    sendFeedback(selectedCountry, drawingId);
+
+    // Clear the global drawing ID
     window.currentDrawingId = null;
 
-    // Lock guess button after confirmation
+    // Lock the guess button via class
     const guessBtn = document.getElementById("guess-btn");
-    guessBtn.style.opacity = "0.5";
-    guessBtn.style.backgroundColor = "#3f3f46";
-    guessBtn.style.cursor = "not-allowed";
-    guessBtn.style.pointerEvents = "none";
+    guessBtn.classList.add("guess-locked");
   }
 }
 
-async function sendFeedback(countryName) {
+async function sendFeedback(countryName, drawingId) {
+  if (!countryName || !drawingId) {
+    console.warn("Missing country name or drawing ID. Feedback not sent.");
+    return;
+  }
+
   try {
     const response = await fetch("/feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        country: countryName,
-        drawing_id: window.currentDrawingId,
-      }),
+      body: JSON.stringify({ country: countryName, drawing_id: drawingId }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Server responded with status ${response.status}`);
+    }
+
     const data = await response.json();
-    console.log(data.message);
+    console.log("Feedback sent successfully:", data);
+    return data;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Failed to send feedback:", error);
+    return null;
   }
 }
 
