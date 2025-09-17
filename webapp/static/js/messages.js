@@ -193,7 +193,7 @@ const countryFacts = {
     "Guyana's Kaieteur Falls is one of the world's tallest single-drop waterfalls.",
   Haiti:
     "Haiti was the first post-colonial independent black-led nation in the world.",
-  "Heard Island and McDonald Islands":
+  "Heard and McDonald Islands":
     "These islands are home to Australia's only active volcano, Big Ben.",
   Honduras: "Honduras is home to the ancient Mayan city of Copán.",
   Hungary:
