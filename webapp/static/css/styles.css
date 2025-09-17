@@ -14,8 +14,8 @@
     height: 15px;
     border-radius: 15px;
     background:
-        radial-gradient(farthest-side, #f59e42 94%, #0000) left/15px
-            15px no-repeat,
+        radial-gradient(farthest-side, #f59e42 94%, #0000) left/15px 15px
+            no-repeat,
         #27272a;
     animation: l2 1s infinite linear;
 }
@@ -29,8 +29,8 @@
 .daily-challenge-pill {
     position: fixed;
     top: 90px;
-    left: -220px;
-    width: 220px;
+    left: -240px;
+    width: 260px;
     height: 50px;
     background: #fbbf24;
     border-radius: 25px;
@@ -55,17 +55,59 @@
     color: #1f2937;
     font-weight: 600;
     font-size: 14px;
-    opacity: 0;
+    opacity: 1;
     white-space: nowrap;
     pointer-events: none;
-    width: 120px;
+    width: calc(100% - 80px);
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .daily-challenge-icon {
     position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 10px;
+    top: 12px;
     font-size: 20px;
     opacity: 1;
+    z-index: 10;
+    pointer-events: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* Tempting bounce animation for new users - slide in bouncing */
+@keyframes temptingBounce {
+    0% {
+        transform: translateX(0);
+    }
+    15% {
+        transform: translateX(15px);
+    }
+    30% {
+        transform: translateX(0);
+    }
+    45% {
+        transform: translateX(8px);
+    }
+    60% {
+        transform: translateX(0);
+    }
+    75% {
+        transform: translateX(3px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.daily-challenge-pill.tempting {
+    animation: temptingBounce 1.5s ease-out infinite;
+    animation-delay: 1s;
 }
