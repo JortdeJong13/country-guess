@@ -325,7 +325,7 @@ const countryFacts = {
     "Somalia has the longest coastline in mainland Africa, stretching over 3,000 kilometers.",
   "South Africa":
     "South Africa uniquely has three capital cities: Pretoria, Bloemfontein, and Cape Town.",
-  "South Georgia & the South Sandwich Islands":
+  "South Georgia Islands":
     "South Georgia is home to vast penguin colonies and has no permanent residents.",
   "South Korea": "South Korea's Jeju Island is a UNESCO World Heritage site.",
   "South Sudan":
