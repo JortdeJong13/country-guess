@@ -52,7 +52,7 @@
     left: 70px;
     top: 50%;
     transform: translateY(-50%);
-    color: #1f2937;
+    color: #283547;
     font-weight: 600;
     font-size: 14px;
     opacity: 1;
@@ -88,7 +88,7 @@
         transform: translateX(0);
     }
     15% {
-        transform: translateX(15px);
+        transform: translateX(10px);
     }
     30% {
         transform: translateX(0);

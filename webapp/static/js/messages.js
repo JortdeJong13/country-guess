@@ -80,14 +80,14 @@ const incorrectMessages = [
 const dailyChallengeMessages = [
   "Well done, that’s today’s {{selected}} challenge done.",
   "You wrapped up the daily challenge with {{selected}}.",
-  "That’s a solid {{selected}} — daily challenge finished.",
-  "Challenge complete — {{selected}} was today’s country.",
+  "That’s a solid {{selected}}, daily challenge finished.",
+  "You've drawn a perfect {{selected}}!",
   "Good job, {{selected}} closes out today’s challenge.",
   "Today’s challenge done: {{selected}}.",
-  "That’s it for today — come back tomorrow for a new challenge!",
+  "That’s it for today! New challenge tomorrow.",
   "Challenge complete! Check back tomorrow for another country.",
-  "You’re done for today — tomorrow brings a fresh challenge.",
-  "Daily challenge cleared. See you tomorrow with {{selected}} checked off.",
+  "You’re done for today, tomorrow brings a fresh challenge.",
+  "Daily challenge cleared. See you tomorrow!",
 ];
 
 const countryFacts = {

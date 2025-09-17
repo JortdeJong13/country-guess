@@ -48,6 +48,33 @@ function hasCompletedToday() {
   return !!history[getTodayISO()];
 }
 
+function getStreak() {
+  const history = getHistory();
+  let streak = 0;
+  const today = getTodayISO();
+
+  // Start from today if completed, otherwise start from yesterday
+  const currentDate = new Date(today);
+  if (!history[today]) {
+    // Today not completed, start from yesterday
+    currentDate.setDate(currentDate.getDate() - 1);
+  }
+
+  while (true) {
+    const dateStr = currentDate.toISOString().slice(0, 10);
+    // If this date exists in history, increment streak
+    if (history[dateStr]) {
+      streak++;
+      // Move to previous day
+      currentDate.setDate(currentDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+}
+
 function isTouchDevice() {
   return "ontouchstart" in window || navigator.maxTouchPoints > 0;
 }
@@ -185,9 +212,6 @@ function addEntranceAnimation() {
     duration: ANIMATION_DURATIONS.entrance,
     delay: POSITIONS.entranceDelay,
     complete: () => {
-      if (!interactionsSetup) {
-        setupPillInteractions();
-      }
       startTemptingBounce();
     },
   });
@@ -274,18 +298,20 @@ function updateDailyChallenge() {
   const icon = pillEl.querySelector(".daily-challenge-icon");
 
   if (hasCompletedToday()) {
-    // Completed state
-    if (icon) icon.textContent = "✅";
-    const history = getHistory();
-    const completedCountry = history[getTodayISO()];
-    displayText = completedCountry || dailyCountry;
-  } else if (dailyCountry) {
+    stopTemptingBounce();
+
+    if (icon) {
+      if (getStreak() > 1) {
+        icon.textContent = "🔥"; // Fire for streak
+      } else {
+        icon.textContent = "🎉"; // Party for completing today
+      }
+    }
+    displayText = dailyCountry;
+  } else {
     // Active challenge
     if (icon) icon.textContent = "🏆";
     displayText = dailyCountry;
-  } else {
-    // Loading state
-    displayText = "Loading...";
   }
 
   countryNameEl.textContent = displayText;
@@ -302,6 +328,9 @@ function onDailyChallengeSuccess() {
   const history = getHistory();
   history[today] = dailyCountry;
   setHistory(history);
+
+  // Stop tempting bounce since challenge is completed
+  stopTemptingBounce();
 
   const pill = document.getElementById("daily-challenge-pill");
   const icon = pill.querySelector(".daily-challenge-icon");
@@ -333,9 +362,13 @@ function onDailyChallengeSuccess() {
  * Initialization
  */
 document.addEventListener("DOMContentLoaded", async function () {
-  updateDailyChallenge();
+  setupPillInteractions();
 
   if (hasCompletedToday()) {
+    // Use history to get daily country instead of fetching from server
+    const history = getHistory();
+    dailyCountry = history[getTodayISO()];
+    updateDailyChallenge();
     addEntranceAnimation();
     return;
   }
@@ -344,7 +377,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const response = await fetch("/daily_country");
     const data = await response.json();
     dailyCountry = data.country || null;
-    // dailyCountry = "United States Virgin Islands";
 
     updateDailyChallenge();
     addEntranceAnimation();
