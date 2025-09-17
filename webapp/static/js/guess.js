@@ -1,18 +1,19 @@
 import { lines, clearCanvas } from "./drawing.js";
 import * as msg from "./messages.js";
+import { checkDailyChallenge } from "./daily_challenge.js";
 
 document
   .getElementById("refresh-btn")
   .addEventListener("click", refreshDrawing);
 
-const guessButton = document.getElementById("guess-btn");
-guessButton.addEventListener("click", handleButtonClick);
+const guessBtn = document.getElementById("guess-btn");
+guessBtn.addEventListener("click", handleButtonClick);
 
 let isInConfirmMode = false;
 
 function refreshDrawing() {
   clearCanvas();
-  document.getElementById("guess-message").innerText = "";
+  showGuessMessage("");
 
   if (isInConfirmMode) {
     hideConfirmation();
@@ -25,7 +26,7 @@ function refreshDrawing() {
 
   // Unlock guess button
   const guessBtn = document.getElementById("guess-btn");
-  guessBtn.style = "";
+  guessBtn.classList.remove("guess-locked");
 }
 
 function handleButtonClick() {
@@ -36,61 +37,53 @@ function handleButtonClick() {
   }
 }
 
+function showGuessMessage(message) {
+  document.getElementById("guess-message").innerText = message;
+}
+
+async function postGuess(lines) {
+  const response = await fetch("/guess", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lines }),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Unknown server error");
+  }
+  return response.json();
+}
+
 async function guess() {
-  if (lines.length > 0) {
-    document.getElementById("guess-message").innerHTML =
-      `<div class="loader mx-auto"></div>`;
-    try {
-      const response = await fetch("/guess", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ lines: lines }),
-      });
+  if (lines.length === 0) {
+    const emptyGuessMessage = msg.getEmptyGuessMessage();
+    showGuessMessage(emptyGuessMessage);
+    return;
+  }
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Unknown server error");
-      }
+  document.getElementById("guess-message").innerHTML =
+    `<div class="loader mx-auto"></div>`;
+  try {
+    const data = await postGuess(lines);
+    const ranking = data.ranking;
+    const firstCountry = ranking.countries[0];
+    const firstScore = ranking.scores[0];
 
-      const data = await response.json();
-      const ranking = data.ranking;
-      const firstCountry = ranking.countries[0];
-      const firstScore = ranking.scores[0];
+    const message = msg.getConfidenceBasedMessage(firstScore, firstCountry);
+    showGuessMessage(message);
+    window.currentDrawingId = data.drawing_id;
+    showConfirmation(ranking);
+  } catch (error) {
+    console.error("Error:", error);
 
-      const message = msg.getConfidenceBasedMessage(firstScore, firstCountry);
-      document.getElementById("guess-message").innerText = message;
-      window.currentDrawingId = data.drawing_id;
-      showConfirmation(ranking);
-    } catch (error) {
-      console.error("Error:", error);
-
-      // Provide user feedback of the error
-      let userMessage = "";
-      if (error.message === "Server unreachable") {
-        userMessage = "Could not reach the ML server.";
-      } else if (error.message === "Server error") {
-        userMessage = "There was an error with the ML server response.";
-      } else {
-        userMessage = "An unexpected error occurred.";
-      }
-
-      document.getElementById("guess-message").innerText = userMessage;
+    // Provide user feedback of the error
+    let message = "An unexpected error occurred.";
+    if (error.message === "Server unreachable") {
+      message = "Could not reach the ML server.";
+    } else if (error.message === "Server error") {
+      message = "There was an error with the ML server response.";
     }
-  } else {
-    console.log(
-      "Coordinates list is empty, please draw something before guessing",
-    );
-
-    // 5% chance to show easter egg message
-    if (Math.random() < 0.05) {
-      const randomMessage = msg.getEasterEggMessage();
-      document.getElementById("guess-message").innerText = randomMessage;
-    } else {
-      document.getElementById("guess-message").innerText =
-        "You first need to draw a country";
-    }
+    showGuessMessage(message);
   }
 }
 
@@ -138,23 +131,9 @@ function hideConfirmation() {
   isInConfirmMode = false;
 }
 
-function confirmCountry() {
-  var dropdown = document.getElementById("country-dropdown");
-  var selectedCountry = dropdown.value;
-  const guessedCountry = dropdown.options[0].value;
-
-  let message;
-
-  if (selectedCountry === "Other") {
-    message = "I thought I knew all the countries... I guess not!";
-  } else if (selectedCountry === guessedCountry) {
-    message =
-      msg.getRandomMessage(
-        msg.correctMessages,
-        selectedCountry,
-        guessedCountry,
-      ) + msg.getCountryFacts(selectedCountry);
-
+function getConfirmationMessage(selectedCountry, guessedCountry) {
+  // Guess country is correct
+  if (selectedCountry === guessedCountry) {
     setTimeout(() => {
       confetti({
         particleCount: 150,
@@ -167,48 +146,71 @@ function confirmCountry() {
         ticks: 280,
       });
     }, 50);
-  } else {
-    message = msg.getRandomMessage(
-      msg.incorrectMessages,
-      guessedCountry,
-      selectedCountry,
-    );
+
+    const dailyChallenge = checkDailyChallenge(selectedCountry);
+    if (dailyChallenge.challengeCompleted) {
+      return msg.getDailyChallengeMessage(
+        selectedCountry,
+        dailyChallenge.streak,
+      );
+    }
+
+    return msg.getCorrectGuessMessage(selectedCountry);
   }
 
-  document.getElementById("guess-message").innerText = message;
+  // Guess country is incorrect
+  return msg.getIncorrectGuessMessage(selectedCountry, guessedCountry);
+}
 
+function confirmCountry() {
+  const dropdown = document.getElementById("country-dropdown");
+  const selectedCountry = dropdown.value;
+  const guessedCountry = dropdown.options[0].value;
+
+  const message = getConfirmationMessage(selectedCountry, guessedCountry);
+  showGuessMessage(message);
   hideConfirmation();
 
-  // Send feedback with country name
+  // Send feedback
   if (window.currentDrawingId) {
-    sendFeedback(selectedCountry);
+    // Capture the drawing ID locally before sending
+    const drawingId = window.currentDrawingId;
+    sendFeedback(selectedCountry, drawingId);
+
+    // Clear the global drawing ID
     window.currentDrawingId = null;
 
-    // Lock guess button after confirmation
+    // Lock the guess button via class
     const guessBtn = document.getElementById("guess-btn");
-    guessBtn.style.opacity = "0.5";
-    guessBtn.style.backgroundColor = "#3f3f46";
-    guessBtn.style.cursor = "not-allowed";
-    guessBtn.style.pointerEvents = "none";
+    guessBtn.classList.add("guess-locked");
   }
 }
 
-async function sendFeedback(countryName) {
+async function sendFeedback(countryName, drawingId) {
+  if (!countryName || !drawingId) {
+    console.warn("Missing country name or drawing ID. Feedback not sent.");
+    return;
+  }
+
   try {
     const response = await fetch("/feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        country: countryName,
-        drawing_id: window.currentDrawingId,
-      }),
+      body: JSON.stringify({ country: countryName, drawing_id: drawingId }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Server responded with status ${response.status}`);
+    }
+
     const data = await response.json();
-    console.log(data.message);
+    console.log("Feedback sent successfully:", data);
+    return data;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Failed to send feedback:", error);
+    return null;
   }
 }
 

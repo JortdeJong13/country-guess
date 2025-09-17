@@ -18,33 +18,10 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-        <style>
-            @keyframes slideDown {
-                0% {
-                    transform: rotate(0deg);
-                }
-                100% {
-                    transform: rotate(8deg);
-                }
-            }
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    </head>
 
-            /* Spinner styles */
-            .loader {
-                width: 120px;
-                height: 15px;
-                border-radius: 15px;
-                background:
-                    radial-gradient(farthest-side, #f59e42 94%, #0000) left/15px
-                        15px no-repeat,
-                    #27272a;
-                animation: l2 1s infinite linear;
-            }
-            @keyframes l2 {
-                50% {
-                    background-position: right;
-                }
-            }
-        </style>
     </head>
     <body
         class="min-h-screen bg-neutral-900 text-rose-400 relative m-0 p-0 font-sans text-center"
@@ -69,16 +46,35 @@
             <!-- GitHub Link -->
             <a
                 href="https://github.com/JortdeJong13/country-guess"
-                class="hidden sm:flex absolute right-10 text-gray-300 no-underline items-center hover:text-gray-400 z-10 transform hover:scale-110 active:scale-100"
+                class="flex absolute right-10 text-gray-300 no-underline items-center hover:text-gray-400 z-10 transform hover:scale-110 active:scale-100"
                 target="_blank"
             >
-                source
+                <span class="hidden md:inline">source</span>
                 <img
                     src="{{ url_for('static', filename='github.png') }}"
                     alt="GitHub"
-                    class="w-5 h-5 ml-2"
+                    class="w-5 h-5 ml-2 sm:block hidden"
                 />
             </a>
+        </div>
+
+        <!-- Daily Challenge Pill -->
+        <div id="daily-challenge-pill" class="daily-challenge-pill">
+            <div class="daily-challenge-icon">🏆</div>
+            <div class="daily-challenge-content">
+                <div style="font-size: 16px; font-weight: 700">
+                    Daily Challenge
+                </div>
+                <div
+                    id="daily-country-name"
+                    style="
+                        font-weight: 600;
+                        font-size: 14px;
+                        margin-top: 1px;
+                        line-height: 1.2;
+                    "
+                ></div>
+            </div>
         </div>
 
         <!-- Canvas -->
@@ -155,15 +151,7 @@
         </script>
         <script
             type="module"
-            src="{{ url_for('static', filename='js/drawing.js') }}"
-        ></script>
-        <script
-            type="module"
-            src="{{ url_for('static', filename='js/guess.js') }}"
-        ></script>
-        <script
-            type="module"
-            src="{{ url_for('static', filename='js/minigame.js') }}"
+            src="{{ url_for('static', filename='js/main.js') }}"
         ></script>
     </body>
 </html>

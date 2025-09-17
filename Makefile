@@ -1,6 +1,6 @@
 # Variables
 MODEL_NAME=triplet_model
-MLSERVER_URL=http://127.0.0.1:5001/predict
+MLSERVER_URL=http://127.0.0.1:5001
 DEBUG=1
 
 .PHONY: help

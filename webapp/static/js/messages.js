@@ -1,3 +1,5 @@
+import { goldenStreak } from "./daily_challenge.js";
+
 // Messages for high confidence predictions
 const highConfidenceMessages = [
   "I'm absolutely sure this is {{guessed}}!",
@@ -13,7 +15,7 @@ const highConfidenceMessages = [
 ];
 
 // Messages for medium confidence predictions
-export const mediumConfidenceMessages = [
+const mediumConfidenceMessages = [
   "This looks a lot like {{guessed}} to me.",
   "I think this could be {{guessed}}. Right?",
   "This reminds me of {{guessed}}.",
@@ -27,7 +29,7 @@ export const mediumConfidenceMessages = [
 ];
 
 // Messages for low confidence predictions
-export const lowConfidenceMessages = [
+const lowConfidenceMessages = [
   "I'm not sure, but this might be {{guessed}}?",
   "Tough one... maybe {{guessed}}?",
   "Could it be {{guessed}}? I'm guessing here.",
@@ -51,7 +53,7 @@ const easterEggMessages = [
 ];
 
 // Messages for correct predictions
-export const correctMessages = [
+const correctMessages = [
   "Yep — that’s {{selected}}!",
   "You drew {{selected}} perfectly!",
   "Spot on! That's {{selected}}!",
@@ -64,7 +66,7 @@ export const correctMessages = [
 ];
 
 // Messages for incorrect predictions
-export const incorrectMessages = [
+const incorrectMessages = [
   "Oh! It’s actually {{selected}} — I see why I thought it was {{guessed}}.",
   "Ah, {{selected}}! That does look a lot like {{guessed}} though.",
   "Now I see — it’s {{selected}}, not {{guessed}}.",
@@ -75,6 +77,32 @@ export const incorrectMessages = [
   "I see it now — definitely {{selected}}, not {{guessed}}.",
   "Oops, that’s {{selected}}. I’ll remember the difference.",
   "{{selected}} — got it! I’ll be sharper next time.",
+];
+
+const dailyChallengeMessages = [
+  "Well done, that’s today’s {{selected}} challenge done.",
+  "You wrapped up the daily challenge with {{selected}}.",
+  "That’s a solid {{selected}}, daily challenge finished.",
+  "You've drawn a perfect {{selected}}!",
+  "Good job, {{selected}} closes out today’s challenge.",
+  "Today’s challenge done: {{selected}}.",
+  "That’s it for today! New challenge tomorrow.",
+  "Challenge complete! Check back tomorrow for another country.",
+  "You’re done for today, tomorrow brings a fresh challenge.",
+  "Daily challenge cleared. See you tomorrow!",
+];
+
+const dailyStreakMessages = [
+  "Well done {{selected}}, {{streak}} days in a row.",
+  "You got {{selected}}, streak: {{streak}} days.",
+  "Nice {{selected}}, {{streak}} day streak.",
+  "Perfect {{selected}}, {{streak}} days strong.",
+  "Great {{selected}}, your streak is {{streak}}.",
+  "Today’s {{selected}}, {{streak}} days streaking.",
+  "Challenge done {{selected}}, {{streak}} days running.",
+  "Keeping that golden guess button!, streak: {{streak}} days.",
+  "Another {{selected}} complete, {{streak}} days.",
+  "Daily challenge {{selected}}, {{streak}} days streak.",
 ];
 
 const countryFacts = {
@@ -193,7 +221,7 @@ const countryFacts = {
     "Guyana's Kaieteur Falls is one of the world's tallest single-drop waterfalls.",
   Haiti:
     "Haiti was the first post-colonial independent black-led nation in the world.",
-  "Heard Island and McDonald Islands":
+  "Heard and McDonald Islands":
     "These islands are home to Australia's only active volcano, Big Ben.",
   Honduras: "Honduras is home to the ancient Mayan city of Copán.",
   Hungary:
@@ -325,7 +353,7 @@ const countryFacts = {
     "Somalia has the longest coastline in mainland Africa, stretching over 3,000 kilometers.",
   "South Africa":
     "South Africa uniquely has three capital cities: Pretoria, Bloemfontein, and Cape Town.",
-  "South Georgia & the South Sandwich Islands":
+  "South Georgia Islands":
     "South Georgia is home to vast penguin colonies and has no permanent residents.",
   "South Korea": "South Korea's Jeju Island is a UNESCO World Heritage site.",
   "South Sudan":
@@ -395,6 +423,31 @@ const countryFacts = {
     "Zimbabwe shares Victoria Falls, one of the world's largest waterfalls.",
 };
 
+export function getEmptyGuessMessage() {
+  // 5% chance to show easter egg message
+  if (Math.random() < 0.05) {
+    return easterEggMessages[
+      Math.floor(Math.random() * easterEggMessages.length)
+    ];
+  } else {
+    return "You first need to draw a country";
+  }
+}
+
+function getRandomMessage(messageList, variables) {
+  // Pick a random message from the list
+  const randomIndex = Math.floor(Math.random() * messageList.length);
+  let template = messageList[randomIndex];
+
+  // Replace all placeholders dynamically
+  for (const [key, value] of Object.entries(variables)) {
+    const regex = new RegExp(`{{${key}}}`, "g");
+    template = template.replace(regex, value);
+  }
+
+  return template;
+}
+
 export function getConfidenceBasedMessage(score, guessedCountry) {
   const messageList =
     score > 0.28
@@ -402,29 +455,52 @@ export function getConfidenceBasedMessage(score, guessedCountry) {
       : score > 0.18
         ? mediumConfidenceMessages
         : lowConfidenceMessages;
-  return getRandomMessage(messageList, guessedCountry, guessedCountry);
+  return getRandomMessage(messageList, { guessed: guessedCountry });
 }
 
-export function getRandomMessage(messageList, guessedCountry, selectedCountry) {
-  // Pick a random message from the list
-  const randomIndex = Math.floor(Math.random() * messageList.length);
-  const template = messageList[randomIndex];
-
-  // Replace placeholders with the given values
-  return template
-    .replace("{{selected}}", selectedCountry)
-    .replace("{{guessed}}", guessedCountry);
-}
-
-export function getCountryFacts(country) {
+function getCountryFact(country) {
   const funFact = countryFacts[country]
     ? `\n\nFun fact: ${countryFacts[country]}`
     : "";
   return funFact;
 }
 
-export function getEasterEggMessage() {
-  return easterEggMessages[
-    Math.floor(Math.random() * easterEggMessages.length)
-  ];
+export function getCorrectGuessMessage(selectedCountry) {
+  return (
+    getRandomMessage(correctMessages, { selected: selectedCountry }) +
+    getCountryFact(selectedCountry)
+  );
+}
+
+export function getIncorrectGuessMessage(selectedCountry, guessedCountry) {
+  if (selectedCountry == "Other") {
+    return "I thought I knew all the countries... I guess not!";
+  }
+  return getRandomMessage(incorrectMessages, {
+    selected: selectedCountry,
+    guessed: guessedCountry,
+  });
+}
+
+export function getDailyChallengeMessage(selectedCountry, streak) {
+  if (streak == goldenStreak) {
+    return (
+      "You're on a daily challenge streak. You have unlocked the golden guess button!" +
+      getCountryFact(selectedCountry)
+    );
+  }
+
+  if (streak > goldenStreak) {
+    return (
+      getRandomMessage(dailyStreakMessages, {
+        selected: selectedCountry,
+        streak: streak,
+      }) + getCountryFact(selectedCountry)
+    );
+  }
+
+  return (
+    getRandomMessage(dailyChallengeMessages, { selected: selectedCountry }) +
+    getCountryFact(selectedCountry)
+  );
 }

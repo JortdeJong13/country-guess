@@ -1,14 +1,20 @@
+import datetime
+import hashlib
 import os
 import uuid
+from typing import Dict, Optional
 
 import requests
 from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
-from countryguess.utils import proces_lines, save_drawing, DrawingStore
+from countryguess.utils import proces_lines
+from webapp.drawing_utils import DrawingStore, save_drawing
 
 DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
+DAILY_COUNTRY: Dict[str, Optional[str]] = {"date": None, "country": None}
+
 drawing_store = DrawingStore()
 app = Flask(__name__)
 
@@ -16,6 +22,38 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+def get_daily_country():
+    today = datetime.date.today().isoformat()
+
+    # Check cache for daily country
+    if DAILY_COUNTRY["date"] == today:
+        return DAILY_COUNTRY["country"]
+
+    # Get all reference countries from the ML server
+    response = requests.get(f"{MLSERVER_URL}/countries", timeout=5)
+    response.raise_for_status()
+    countries = response.json()["countries"]
+
+    # Pick a random country as the daily country
+    hash = hashlib.sha256(f"{today}-country-guess-salt".encode()).hexdigest()
+    index = int(hash, 16) % len(countries)
+    country = countries[index]
+
+    DAILY_COUNTRY["date"] = today
+    DAILY_COUNTRY["country"] = country
+
+    return country
+
+
+@app.route("/daily_country")
+def daily_country():
+    try:
+        country = get_daily_country()
+        return jsonify({"country": country})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/guess", methods=["POST"])
@@ -32,9 +70,7 @@ def guess():
 
     try:
         # Request prediction from ML server
-        response = requests.post(MLSERVER_URL, json=drawing, timeout=10)
-
-        # Check if there is an error
+        response = requests.post(f"{MLSERVER_URL}/predict", json=drawing, timeout=10)
         response.raise_for_status()
 
         return jsonify(

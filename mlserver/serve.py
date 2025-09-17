@@ -28,6 +28,13 @@ def predict():
     return jsonify({"countries": countries[0].tolist(), "scores": scores[0].tolist()})
 
 
+@app.route("/countries")
+def countries():
+    """Return all loaded reference countries"""
+    country_list = getattr(model, "ref_country_names", [])
+    return jsonify({"countries": country_list})
+
+
 @app.route("/health")
 def health():
     # Check if model is loaded
