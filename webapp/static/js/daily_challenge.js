@@ -17,7 +17,7 @@ export let goldenStreak = 4;
 // Constants
 const ANIMATION_DURATIONS = {
   slideIn: 1200,
-  slideOut: 600,
+  slideOut: 800,
   iconBounce: 600,
   entrance: 800,
 };
@@ -136,9 +136,10 @@ function slideInPill() {
   const expandedPos = POSITIONS.expandedOffset;
 
   // Main slide animation
+  const currentLeft = parseFloat(getComputedStyle(pill).left);
   currentAnimation = anime({
     targets: pill,
-    left: [collapsedPos, expandedPos],
+    left: [currentLeft, expandedPos],
     easing: "easeOutElastic(1, .6)",
     duration: ANIMATION_DURATIONS.slideIn,
     complete: () => {
@@ -177,9 +178,10 @@ function slideOutPill() {
   const expandedPos = POSITIONS.expandedOffset;
 
   // Main slide animation
+  const currentLeft = parseFloat(getComputedStyle(pill).left);
   currentAnimation = anime({
     targets: pill,
-    left: [expandedPos, collapsedPos],
+    left: [currentLeft, collapsedPos],
     easing: "easeInElastic(1, .6)",
     duration: ANIMATION_DURATIONS.slideOut,
     delay: 50,
@@ -312,19 +314,21 @@ function updateDailyChallenge() {
       }
     }
     displayText = dailyCountry;
+    countryNameEl.style.textDecoration = "line-through";
   } else {
     // Active challenge
     if (icon) icon.textContent = "🏆";
     displayText = dailyCountry;
+    countryNameEl.style.textDecoration = "none";
   }
 
   countryNameEl.textContent = displayText;
 
   // Update pill dimensions
-  if (displayText) {
-    const newWidth = calculatePillWidth(displayText);
-    updatePillDimensions(newWidth);
-  }
+  // if (displayText) {
+  const newWidth = calculatePillWidth(displayText);
+  updatePillDimensions(newWidth);
+  // }
 }
 
 function onDailyChallengeSuccess() {
@@ -365,29 +369,6 @@ function onDailyChallengeSuccess() {
   return dailyStreak;
 }
 
-/**
- * Initialization
- */
-document.addEventListener("DOMContentLoaded", async function () {
-  setupPillInteractions();
-
-  if (hasCompletedToday()) {
-    // Use history to get daily country instead of fetching from server
-    dailyCountry = getHistory()[getTodayISO()];
-  } else {
-    try {
-      const response = await fetch("/daily_country");
-      const data = await response.json();
-      dailyCountry = data.country || null;
-    } catch {
-      dailyCountry = null;
-    }
-  }
-
-  updateDailyChallenge();
-  addEntranceAnimation();
-});
-
 function setGoldenGuessButton(dailyStreak) {
   if (dailyStreak < goldenStreak) return;
 
@@ -412,3 +393,37 @@ export function checkDailyChallenge(selectedCountry) {
 
   return { challengeCompleted: false, streak: null };
 }
+
+async function resolveDailyCountry() {
+  if (hasCompletedToday()) {
+    const history = getHistory();
+    const fromHistory = history[getTodayISO()] || null;
+    if (fromHistory) return fromHistory;
+  }
+
+  try {
+    const response = await fetch("/daily_country");
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (data.error || !data.country) return null;
+
+    return data.country;
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
+ * Initialization
+ */
+document.addEventListener("DOMContentLoaded", async function () {
+  dailyCountry = await resolveDailyCountry();
+
+  if (dailyCountry) {
+    setupPillInteractions();
+    updateDailyChallenge();
+    addEntranceAnimation();
+  }
+});
