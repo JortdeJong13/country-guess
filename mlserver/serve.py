@@ -32,7 +32,7 @@ def predict():
 def countries():
     """Return all loaded reference countries"""
     country_list = getattr(model, "ref_country_names", [])
-    return jsonify({"countries": country_list})
+    return jsonify({"countries": sorted(country_list)})
 
 
 @app.route("/health")

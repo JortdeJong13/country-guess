@@ -76,10 +76,6 @@ function getDailyStreak() {
   return dailyStreak;
 }
 
-function isTouchDevice() {
-  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-}
-
 /**
  * Pill Sizing Functions
  */
@@ -256,7 +252,9 @@ function setupPillInteractions() {
 
   interactionsSetup = true;
 
-  if (isTouchDevice()) {
+  const isMobile = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+  if (isMobile) {
     // Mobile: Click to toggle
     pill.addEventListener("click", (e) => {
       e.preventDefault();
@@ -394,6 +392,9 @@ export function checkDailyChallenge(selectedCountry) {
   return { challengeCompleted: false, streak: null };
 }
 
+/**
+ * Get daily country from history or fetch it from the server
+ */
 async function resolveDailyCountry() {
   if (hasCompletedToday()) {
     const history = getHistory();

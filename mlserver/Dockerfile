@@ -1,9 +1,12 @@
 FROM python:3.9-slim
 
 # Install dependencies
-RUN apt-get update && apt-get install -y curl gdal-bin libgdal-dev g++ ffmpeg
+RUN apt-get update && apt-get install -y \
+    curl gdal-bin libgdal-dev g++ ffmpeg \
+    libgeos-dev libproj-dev \
+    && rm -rf /var/lib/apt/lists/*
 COPY mlserver/requirements.txt mlserver/
-RUN pip install -r mlserver/requirements.txt
+RUN pip install --no-cache-dir -r mlserver/requirements.txt
 
 # Copy reference data and code
 COPY data/reference data/reference

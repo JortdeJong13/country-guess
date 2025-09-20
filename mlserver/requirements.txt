@@ -1,7 +1,8 @@
 Flask
-mlflow
+mlflow-skinny
 torch==2.5.1
 numpy
 Shapely
 geopandas
 scikit-image
+matplotlib>=3.3
