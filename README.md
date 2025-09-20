@@ -80,8 +80,9 @@ When training a model, you can start an MLflow Tracking server by running the ``
 The following diagram depicts the different components that make up the app:
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="design-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="design-light.svg" />
+  <source media="(prefers-color-scheme: dark)" srcset="images/design-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/design-light.svg">
+  <img alt="Design diagram" src="images/design-dark.svg" />
 </picture>
 
 The application consists of two independent services: the ML server and the web app backend.<br>
