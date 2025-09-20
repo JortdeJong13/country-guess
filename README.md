@@ -79,7 +79,11 @@ When training a model, you can start an MLflow Tracking server by running the ``
 
 The following diagram depicts the different components that make up the app:
 
-![Workflow](images/Workflow.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/design-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/design-light.svg">
+  <img alt="Design diagram" src="images/design-dark.svg" />
+</picture>
 
 The application consists of two independent services: the ML server and the web app backend.<br>
 The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns directory is not mounted, the ML server will fall back on a default model within the image.
