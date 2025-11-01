@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "South Georgia Islands",
-        "timestamp": "2025-08-20T09:31:57.973443"
+        "timestamp": "2025-08-20T09:31:57.973443",
+        "country_guess": "Uruguay",
+        "guess_score": 0.0624406673014164
       },
       "geometry": {
         "type": "MultiLineString",

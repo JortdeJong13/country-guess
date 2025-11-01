@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "DR Congo",
-        "timestamp": "2025-08-13T23:49:03.842735"
+        "timestamp": "2025-08-13T23:49:03.842735",
+        "country_guess": "Greece",
+        "guess_score": 0.3399914503097534
       },
       "geometry": {
         "type": "MultiLineString",

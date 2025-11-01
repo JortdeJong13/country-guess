@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Egypt",
-        "timestamp": "2025-09-14T23:23:17.436152"
+        "timestamp": "2025-09-14T23:23:17.436152",
+        "country_guess": "Mauritius",
+        "guess_score": 0.27195462584495544
       },
       "geometry": {
         "type": "MultiLineString",

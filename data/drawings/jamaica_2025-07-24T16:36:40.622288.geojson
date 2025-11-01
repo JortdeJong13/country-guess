@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Jamaica",
-        "timestamp": "2025-07-24T16:36:40.622288"
+        "timestamp": "2025-07-24T16:36:40.622288",
+        "country_guess": "Mongolia",
+        "guess_score": 0.19623801112174988
       },
       "geometry": {
         "type": "MultiLineString",

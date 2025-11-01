@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Other",
-        "timestamp": "2025-10-18T23:30:40.263182"
+        "timestamp": "2025-10-18T23:30:40.263182",
+        "country_guess": "Puerto Rico",
+        "guess_score": 0.1582537591457367
       },
       "geometry": {
         "type": "MultiLineString",

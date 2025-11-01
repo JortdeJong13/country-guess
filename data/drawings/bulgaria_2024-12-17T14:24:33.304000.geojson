@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Bulgaria",
-        "timestamp": "2024-12-17T14:24:33.304000"
+        "timestamp": "2024-12-17T14:24:33.304000",
+        "country_guess": "Bulgaria",
+        "guess_score": 0.3956992030143738
       },
       "geometry": {
         "type": "MultiLineString",

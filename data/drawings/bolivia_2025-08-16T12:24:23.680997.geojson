@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Bolivia",
-        "timestamp": "2025-08-16T12:24:23.680997"
+        "timestamp": "2025-08-16T12:24:23.680997",
+        "country_guess": "Bolivia",
+        "guess_score": 0.7337872385978699
       },
       "geometry": {
         "type": "MultiLineString",

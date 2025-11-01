@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Libya",
-        "timestamp": "2024-12-18T09:29:34.890000"
+        "timestamp": "2024-12-18T09:29:34.890000",
+        "country_guess": "Libya",
+        "guess_score": 0.11087123304605484
       },
       "geometry": {
         "type": "MultiLineString",

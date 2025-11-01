@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Djibouti",
-        "timestamp": "2025-10-18T23:25:05.962419"
+        "timestamp": "2025-10-18T23:25:05.962419",
+        "country_guess": "Malaysia",
+        "guess_score": 0.05733460560441017
       },
       "geometry": {
         "type": "MultiLineString",

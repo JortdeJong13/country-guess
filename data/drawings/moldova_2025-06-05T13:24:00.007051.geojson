@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Moldova",
-        "timestamp": "2025-06-05T13:24:00.007051"
+        "timestamp": "2025-06-05T13:24:00.007051",
+        "country_guess": "Moldova",
+        "guess_score": 0.1420954018831253
       },
       "geometry": {
         "type": "MultiLineString",

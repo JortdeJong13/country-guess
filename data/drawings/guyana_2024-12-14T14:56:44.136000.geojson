@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Guyana",
-        "timestamp": "2024-12-14T14:56:44.136000"
+        "timestamp": "2024-12-14T14:56:44.136000",
+        "country_guess": "Guyana",
+        "guess_score": 0.6558387279510498
       },
       "geometry": {
         "type": "MultiLineString",

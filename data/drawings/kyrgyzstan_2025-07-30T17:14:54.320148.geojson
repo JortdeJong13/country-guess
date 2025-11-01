@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Kyrgyzstan",
-        "timestamp": "2025-07-30T17:14:54.320148"
+        "timestamp": "2025-07-30T17:14:54.320148",
+        "country_guess": "Kyrgyzstan",
+        "guess_score": 0.4601597487926483
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Thailand",
-        "timestamp": "2025-10-18T23:28:42.791405"
+        "timestamp": "2025-10-18T23:28:42.791405",
+        "country_guess": "Argentina",
+        "guess_score": 0.10548093169927597
       },
       "geometry": {
         "type": "MultiLineString",

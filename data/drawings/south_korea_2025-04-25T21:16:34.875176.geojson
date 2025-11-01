@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "South Korea",
-        "timestamp": "2025-04-25T21:16:34.875176"
+        "timestamp": "2025-04-25T21:16:34.875176",
+        "country_guess": "South Korea",
+        "guess_score": 0.4554915130138397
       },
       "geometry": {
         "type": "MultiLineString",

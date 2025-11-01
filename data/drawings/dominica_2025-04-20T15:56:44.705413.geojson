@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Dominica",
-        "timestamp": "2025-04-20T15:56:44.705413"
+        "timestamp": "2025-04-20T15:56:44.705413",
+        "country_guess": "Dominica",
+        "guess_score": 0.49987098574638367
       },
       "geometry": {
         "type": "MultiLineString",

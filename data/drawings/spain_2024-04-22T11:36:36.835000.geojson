@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Spain",
-        "timestamp": "2024-04-22T11:36:36.835000"
+        "timestamp": "2024-04-22T11:36:36.835000",
+        "country_guess": "France",
+        "guess_score": 0.15439464151859283
       },
       "geometry": {
         "type": "MultiLineString",

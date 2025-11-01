@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Botswana",
-        "timestamp": "2024-05-07T14:18:19.564000"
+        "timestamp": "2024-05-07T14:18:19.564000",
+        "country_guess": "Botswana",
+        "guess_score": 0.883537232875824
       },
       "geometry": {
         "type": "MultiLineString",

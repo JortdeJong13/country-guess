@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Bahamas",
-        "timestamp": "2025-06-20T13:23:49.847910"
+        "timestamp": "2025-06-20T13:23:49.847910",
+        "country_guess": "Bahamas",
+        "guess_score": 0.09281473606824875
       },
       "geometry": {
         "type": "MultiLineString",

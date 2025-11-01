@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United Kingdom",
-        "timestamp": "2025-09-14T23:24:32.353523"
+        "timestamp": "2025-09-14T23:24:32.353523",
+        "country_guess": "Timor-Leste",
+        "guess_score": 0.08490493148565292
       },
       "geometry": {
         "type": "MultiLineString",

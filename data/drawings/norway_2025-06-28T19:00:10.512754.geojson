@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Norway",
-        "timestamp": "2025-06-28T19:00:10.512754"
+        "timestamp": "2025-06-28T19:00:10.512754",
+        "country_guess": "Norway",
+        "guess_score": 0.5902979373931885
       },
       "geometry": {
         "type": "MultiLineString",

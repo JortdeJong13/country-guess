@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Paraguay",
-        "timestamp": "2024-04-20T20:17:04.393000"
+        "timestamp": "2024-04-20T20:17:04.393000",
+        "country_guess": "Paraguay",
+        "guess_score": 0.8724250197410583
       },
       "geometry": {
         "type": "MultiLineString",

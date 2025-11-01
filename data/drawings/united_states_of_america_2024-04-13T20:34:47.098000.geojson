@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United States of America",
-        "timestamp": "2024-04-13T20:34:47.098000"
+        "timestamp": "2024-04-13T20:34:47.098000",
+        "country_guess": "El Salvador",
+        "guess_score": 0.09829539805650711
       },
       "geometry": {
         "type": "MultiLineString",

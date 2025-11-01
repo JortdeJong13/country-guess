@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Israel",
-        "timestamp": "2025-08-31T01:06:11.722162"
+        "timestamp": "2025-08-31T01:06:11.722162",
+        "country_guess": "Israel",
+        "guess_score": 0.17944838106632233
       },
       "geometry": {
         "type": "MultiLineString",

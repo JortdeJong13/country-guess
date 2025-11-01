@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Germany",
-        "timestamp": "2025-06-22T07:26:40.713023"
+        "timestamp": "2025-06-22T07:26:40.713023",
+        "country_guess": "Guyana",
+        "guess_score": 0.07538874447345734
       },
       "geometry": {
         "type": "MultiLineString",

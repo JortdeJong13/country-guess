@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Belgium",
-        "timestamp": "2025-08-16T10:15:43.501412"
+        "timestamp": "2025-08-16T10:15:43.501412",
+        "country_guess": "Latvia",
+        "guess_score": 0.20387428998947144
       },
       "geometry": {
         "type": "MultiLineString",

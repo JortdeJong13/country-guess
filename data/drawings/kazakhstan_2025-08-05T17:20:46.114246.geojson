@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Kazakhstan",
-        "timestamp": "2025-08-05T17:20:46.114246"
+        "timestamp": "2025-08-05T17:20:46.114246",
+        "country_guess": "Czech Republic",
+        "guess_score": 0.28245335817337036
       },
       "geometry": {
         "type": "MultiLineString",

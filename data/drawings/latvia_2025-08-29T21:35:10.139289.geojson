@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Latvia",
-        "timestamp": "2025-08-29T21:35:10.139289"
+        "timestamp": "2025-08-29T21:35:10.139289",
+        "country_guess": "Turks and Caicos Islands",
+        "guess_score": 0.3401978611946106
       },
       "geometry": {
         "type": "MultiLineString",

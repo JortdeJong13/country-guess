@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Other",
-        "timestamp": "2025-08-31T01:02:02.017216"
+        "timestamp": "2025-08-31T01:02:02.017216",
+        "country_guess": "Algeria",
+        "guess_score": 0.1613406389951706
       },
       "geometry": {
         "type": "MultiLineString",

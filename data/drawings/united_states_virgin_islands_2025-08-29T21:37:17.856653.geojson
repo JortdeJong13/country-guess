@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United States Virgin Islands",
-        "timestamp": "2025-08-29T21:37:17.856653"
+        "timestamp": "2025-08-29T21:37:17.856653",
+        "country_guess": "Puerto Rico",
+        "guess_score": 0.04633035138249397
       },
       "geometry": {
         "type": "MultiLineString",

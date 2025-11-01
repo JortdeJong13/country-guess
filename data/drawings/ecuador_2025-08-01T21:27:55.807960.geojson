@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Ecuador",
-        "timestamp": "2025-08-01T21:27:55.807960"
+        "timestamp": "2025-08-01T21:27:55.807960",
+        "country_guess": "Bulgaria",
+        "guess_score": 0.08727699518203735
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Croatia",
-        "timestamp": "2025-08-12T15:07:42.599103"
+        "timestamp": "2025-08-12T15:07:42.599103",
+        "country_guess": "Croatia",
+        "guess_score": 0.36164435744285583
       },
       "geometry": {
         "type": "MultiLineString",

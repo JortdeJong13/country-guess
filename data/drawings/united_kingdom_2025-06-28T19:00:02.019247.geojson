@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United Kingdom",
-        "timestamp": "2025-06-28T19:00:02.019247"
+        "timestamp": "2025-06-28T19:00:02.019247",
+        "country_guess": "United Kingdom",
+        "guess_score": 0.08747964352369308
       },
       "geometry": {
         "type": "MultiLineString",

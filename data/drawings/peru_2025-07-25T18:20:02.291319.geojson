@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Peru",
-        "timestamp": "2025-07-25T18:20:02.291319"
+        "timestamp": "2025-07-25T18:20:02.291319",
+        "country_guess": "Peru",
+        "guess_score": 0.8651344776153564
       },
       "geometry": {
         "type": "MultiLineString",

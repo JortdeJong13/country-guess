@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Timor-Leste",
-        "timestamp": "2025-06-28T19:04:28.076272"
+        "timestamp": "2025-06-28T19:04:28.076272",
+        "country_guess": "Timor-Leste",
+        "guess_score": 0.1432093381881714
       },
       "geometry": {
         "type": "MultiLineString",

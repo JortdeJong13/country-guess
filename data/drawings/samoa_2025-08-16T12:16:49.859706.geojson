@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Samoa",
-        "timestamp": "2025-08-16T12:16:49.859706"
+        "timestamp": "2025-08-16T12:16:49.859706",
+        "country_guess": "Samoa",
+        "guess_score": 0.6825186014175415
       },
       "geometry": {
         "type": "MultiLineString",
