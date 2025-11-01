@@ -18,8 +18,6 @@ function refreshDrawing() {
   if (isInConfirmMode) {
     hideConfirmation();
     if (window.currentDrawingId) {
-      // Send feedback with null to cleanup without saving
-      sendFeedback(null);
       window.currentDrawingId = null;
     }
   }

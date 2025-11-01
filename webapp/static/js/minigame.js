@@ -167,8 +167,8 @@ class MiniGame {
       }, 150);
     }, 150);
 
-    // Activate minigame after 6 clicks
-    if (this.titleClickCount >= 6) {
+    // Activate minigame after 5 clicks
+    if (this.titleClickCount >= 5) {
       this.startGame();
       this.titleClickCount = 0; // Reset counter
     }
