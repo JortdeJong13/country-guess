@@ -31,8 +31,13 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
         "features": [
             {
                 "type": "Feature",
-                "properties": {"country_name": country_name, "timestamp": timestamp},
-                "geometry": json.loads(drawing),
+                "properties": {
+                    "country_name": country_name,
+                    "timestamp": timestamp,
+                    "country_guess": drawing["guess"][0],
+                    "guess_score": drawing["guess"][1],
+                },
+                "geometry": json.loads(drawing["geometry"]),
             }
         ],
     }
@@ -49,13 +54,13 @@ class DrawingStore:
         self.drawings = {}
         self.max_drawings = max_drawings
 
-    def store(self, drawing_id: str, drawing: str):
+    def store(self, drawing_id: str, drawing: str, guess: tuple[str, float]):
         """Stores a drawing with the given ID, removing oldest if at capacity."""
         if len(self.drawings) >= self.max_drawings:
             first_key = next(iter(self.drawings))
             self.drawings.pop(first_key)
 
-        self.drawings[drawing_id] = drawing
+        self.drawings[drawing_id] = {"geometry": drawing, "guess": guess}
 
     def get(self, drawing_id: str):
         """Retrieves a drawing by its ID."""

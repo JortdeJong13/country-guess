@@ -64,17 +64,19 @@ def guess():
     lines = data["lines"]
     drawing = proces_lines(lines)
 
-    # Store the drawing in the session
-    drawing_id = str(uuid.uuid4())
-    drawing_store.store(drawing_id, drawing)
-
     try:
         # Request prediction from ML server
         response = requests.post(f"{MLSERVER_URL}/predict", json=drawing, timeout=10)
         response.raise_for_status()
+        ranking = response.json()
+
+        # Store the drawing and ranking in the session
+        drawing_id = str(uuid.uuid4())
+        guess = (ranking["countries"][0], ranking["scores"][0])
+        drawing_store.store(drawing_id, drawing, guess)
 
         return jsonify(
-            {"message": "Success", "ranking": response.json(), "drawing_id": drawing_id}
+            {"message": "Success", "ranking": ranking, "drawing_id": drawing_id}
         )
 
     except (ConnectionError, Timeout) as conn_err:
@@ -91,13 +93,12 @@ def feedback():
     data = request.json
     if not data:
         return jsonify({"message": "Invalid input"}), 400
-    country_name = data.get("country")
-    drawing_id = data.get("drawing_id")
 
+    drawing_id = data.get("drawing_id")
     if not drawing_id or not drawing_store.contains(drawing_id):
         return jsonify({"message": "Drawing not found"}), 400
 
-    if country_name:
+    if country_name := data.get("country"):
         drawing = drawing_store.get(drawing_id)
         save_drawing(country_name, drawing, output_dir=DRAWING_DIR)
 
