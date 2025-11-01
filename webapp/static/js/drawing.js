@@ -1,7 +1,5 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-ctx.lineWidth = 2;
-ctx.lineCap = "round";
 
 let originalWidth = canvas.width;
 let originalHeight = canvas.height;
@@ -65,7 +63,7 @@ function scaleLines(scaleX, scaleY) {
 // Function to redraw canvas after resize
 function redrawCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 3;
   ctx.lineCap = "round";
   ctx.strokeStyle = "#ffffff";
 
@@ -132,19 +130,66 @@ function draw(event) {
   }
 }
 
+function updateMiniGame() {
+  if (window.miniGame && window.miniGame.isActive) {
+    window.miniGame.createLineWalls();
+    window.miniGame.lastLineCount = window.lines.length;
+  }
+}
+
 function stopDrawing() {
   isDrawing = false;
   if (currentLine.length > 1) {
     lines.push(currentLine);
     window.lines = lines;
 
-    // Immediately notify minigame of new line for better responsiveness
-    if (window.miniGame && window.miniGame.isActive) {
-      window.miniGame.createLineWalls();
-      window.miniGame.lastLineCount = lines.length;
-    }
+    updateMiniGame();
   }
   currentLine = [];
+}
+
+// Renders a user drawing on the canvas, scaling and centering it with a margin.
+function renderUserDrawing(linesToDraw) {
+  if (!linesToDraw || linesToDraw.length === 0) return;
+
+  // Find bounding box of all points
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+  linesToDraw.forEach((line) => {
+    line.forEach(([x, y]) => {
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    });
+  });
+
+  // Compute scale and offset to fit drawing in canvas with margin
+  const margin = canvas.width * 0.08;
+  const drawWidth = maxX - minX;
+  const drawHeight = maxY - minY;
+  const scale = Math.min(
+    (canvas.width - 2 * margin) / (drawWidth || 1),
+    (canvas.height - 2 * margin) / (drawHeight || 1),
+  );
+
+  // Center drawing
+  const offsetX = (canvas.width - scale * drawWidth) / 2 - scale * minX;
+  const offsetY = (canvas.height - scale * drawHeight) / 2 - scale * minY;
+
+  // Flip vertically and scale
+  lines = linesToDraw.map((line) =>
+    line.map(([x, y]) => [
+      x * scale + offsetX,
+      (maxY - (y - minY)) * scale + offsetY,
+    ]),
+  );
+  window.lines = lines;
+
+  redrawCanvas();
+  updateMiniGame();
 }
 
 // Touch event handlers
@@ -169,4 +214,4 @@ function clearCanvas() {
 // Make lines globally accessible for minigame
 window.lines = lines;
 
-export { lines, clearCanvas };
+export { lines, clearCanvas, renderUserDrawing };

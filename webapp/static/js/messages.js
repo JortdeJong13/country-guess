@@ -79,6 +79,45 @@ const incorrectMessages = [
   "{{selected}} — got it! I’ll be sharper next time.",
 ];
 
+// Messages for correct user drawings with high confidence
+const correctUserDrawingMessagesHigh = [
+  "Here someone drew a perfect {{selected}}.",
+  "Another drawing of {{selected}}.",
+  "Someone else drew a nice {{selected}}!",
+  "Very clear drawing of {{selected}}.",
+  "A correct and recognizable {{selected}} drawing.",
+  "Strong details make this clearly {{selected}}.",
+  "A very nice submission of {{selected}} from Anonymous42.",
+  "Picasso submitted this {{selected}}.",
+  "Thank you Peter Sneek from Limburg for this drawing!",
+  "A confident and accurate {{selected}}.",
+];
+
+// Messages for correct user drawings with low confidence
+const correctUserDrawingMessagesLow = [
+  "This is my favorite drawing of {{selected}}!",
+  "A simple and nice drawing of {{selected}}.",
+  "This {{selected}} was drawn on a Nokia.",
+  "A friendly drawing of {{selected}}.",
+  "The idea of {{selected}} comes through nicely here.",
+  "This shows {{selected}} in a softer style.",
+  "A calm and thoughtful drawing of {{selected}}.",
+  "This is a recognizable interpretation of {{selected}}.",
+  "A warm representation of {{selected}}.",
+];
+
+// Messages for incorrect user drawings
+const incorrectUserDrawingMessages = [
+  "Someone claims to have drawn {{selected}}... looks more like {{guessed}}.",
+  "This appears closer to {{guessed}} than {{selected}}.",
+  "This is a drawing of {{selected}}.",
+  "I thought this was {{guessed}}, but it's actually {{selected}}.",
+  "This looks more like {{guessed}} than the intended {{selected}}.",
+  "The drawing fits {{guessed}} instead of {{selected}}.",
+  "Legally I cannot tell you who drew this {{selected}}!",
+  "I won't tell you who drew this terrible {{selected}}!",
+];
+
 const dailyChallengeMessages = [
   "Well done, that’s today’s {{selected}} challenge done.",
   "You wrapped up the daily challenge with {{selected}}.",
@@ -503,4 +542,17 @@ export function getDailyChallengeMessage(selectedCountry, streak) {
     getRandomMessage(dailyChallengeMessages, { selected: selectedCountry }) +
     getCountryFact(selectedCountry)
   );
+}
+
+export function getUserDrawingMessage(score, countryName, countryGuess) {
+  const messageList =
+    countryName !== countryGuess
+      ? incorrectUserDrawingMessages
+      : score > 0.28
+        ? correctUserDrawingMessagesHigh
+        : correctUserDrawingMessagesLow;
+  return getRandomMessage(messageList, {
+    selected: countryName,
+    guessed: countryGuess,
+  });
 }

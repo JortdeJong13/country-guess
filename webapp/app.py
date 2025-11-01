@@ -9,7 +9,7 @@ from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines
-from webapp.drawing_utils import DrawingStore, save_drawing
+from webapp.drawing_utils import DrawingStore, load_drawing, save_drawing
 
 DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
@@ -75,9 +75,7 @@ def guess():
         guess = (ranking["countries"][0], ranking["scores"][0])
         drawing_store.store(drawing_id, drawing, guess)
 
-        return jsonify(
-            {"message": "Success", "ranking": ranking, "drawing_id": drawing_id}
-        )
+        return jsonify({"ranking": ranking, "drawing_id": drawing_id})
 
     except (ConnectionError, Timeout) as conn_err:
         # Handle connection errors and timeouts
@@ -104,6 +102,15 @@ def feedback():
 
     drawing_store.remove(drawing_id)
     return jsonify({"message": "Feedback received"})
+
+
+@app.route("/drawing")
+def drawing():
+    try:
+        drawing = load_drawing(drawing_dir=DRAWING_DIR)
+        return jsonify(drawing)
+    except Exception as e:
+        return jsonify({"message": "Failed to load drawing", "error": str(e)}), 500
 
 
 @app.route("/health")

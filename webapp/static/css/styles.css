@@ -113,7 +113,7 @@
 }
 
 /* Golden state */
-#guess-btn.golden {
+#left-btn.golden {
     background-color: #fbbf24; /* amber-400 */
     color: #1e293b; /* slate-800 */
     border-color: #fcd34d; /* amber-300 */
@@ -124,14 +124,14 @@
 }
 
 /* Locked state */
-#guess-btn.guess-locked {
+#left-btn.guess-locked {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
 
 /* Locked but golden */
-#guess-btn.golden.guess-locked {
+#left-btn.golden.guess-locked {
     background-color: #ffb300; /* amber-600 */
     opacity: 0.5;
     cursor: not-allowed;

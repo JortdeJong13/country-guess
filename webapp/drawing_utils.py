@@ -2,11 +2,36 @@
 
 import json
 import logging
+import random
 from datetime import datetime
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+
+def load_drawing(drawing_dir="./data/drawings/"):
+    """Loads a random user drawing."""
+    drawing_files = list(Path(drawing_dir).glob("*.geojson"))
+    if not drawing_files:
+        logger.warning("No drawings found in the drawing directory.")
+        return None
+
+    drawing_file = random.choice(drawing_files)
+    with open(drawing_file, "r", encoding="utf-8") as f:
+        drawing = json.load(f)
+
+    feature = drawing["features"][0]
+    geometry = feature.get("geometry", {})
+    properties = feature.get("properties", {})
+
+    return {
+        "lines": geometry.get("coordinates", []),
+        "country_name": properties.get("country_name", ""),
+        "timestamp": properties.get("timestamp", ""),
+        "country_guess": properties.get("country_guess", ""),
+        "guess_score": properties.get("guess_score", None),
+    }
 
 
 def save_drawing(country_name, drawing, output_dir="./data/drawings/"):

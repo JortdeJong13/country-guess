@@ -1,4 +1,4 @@
-import { lines, clearCanvas } from "./drawing.js";
+import { lines, clearCanvas, renderUserDrawing } from "./drawing.js";
 import * as msg from "./messages.js";
 import { checkDailyChallenge } from "./daily_challenge.js";
 
@@ -6,29 +6,45 @@ document
   .getElementById("refresh-btn")
   .addEventListener("click", refreshDrawing);
 
-const guessBtn = document.getElementById("guess-btn");
-guessBtn.addEventListener("click", handleButtonClick);
+const leftBtn = document.getElementById("left-btn");
+leftBtn.addEventListener("click", handleButtonClick);
 
-let isInConfirmMode = false;
+let inConfirmMode = false;
+let inShowDrawingMode = false;
+
+function setLeftBtnState(state, options = {}) {
+  // state: "guess", "confirm", "next"
+  // options: { locked: boolean, golden: boolean }
+  leftBtn.textContent =
+    state === "guess"
+      ? "Guess Country"
+      : state === "confirm"
+        ? "Confirm"
+        : state === "next"
+          ? "Next Country"
+          : leftBtn.textContent;
+
+  leftBtn.classList.remove("guess-locked", "golden");
+  if (options.locked) leftBtn.classList.add("guess-locked");
+  if (options.golden) leftBtn.classList.add("golden");
+
+  // Update flags
+  inConfirmMode = state === "confirm";
+  inShowDrawingMode = state === "next";
+}
 
 function refreshDrawing() {
   clearCanvas();
   showGuessMessage("");
-
-  if (isInConfirmMode) {
-    hideConfirmation();
-    if (window.currentDrawingId) {
-      window.currentDrawingId = null;
-    }
-  }
-
-  // Unlock guess button
-  const guessBtn = document.getElementById("guess-btn");
-  guessBtn.classList.remove("guess-locked");
+  hideConfirmation();
+  window.currentDrawingId = null;
+  setLeftBtnState("guess");
 }
 
 function handleButtonClick() {
-  if (isInConfirmMode) {
+  if (inShowDrawingMode) {
+    showUserDrawing();
+  } else if (inConfirmMode) {
     confirmCountry();
   } else {
     guess();
@@ -89,12 +105,8 @@ function showConfirmation(ranking) {
   const confirmationContainer = document.getElementById(
     "confirmation-container",
   );
-  const guessBtn = document.getElementById("guess-btn");
   confirmationContainer.style.display = "block";
-
-  // Update button text and function
-  guessBtn.textContent = "Confirm";
-  isInConfirmMode = true;
+  setLeftBtnState("confirm");
 
   var dropdown = document.getElementById("country-dropdown");
   dropdown.innerHTML = ""; // Clear previous options
@@ -121,12 +133,8 @@ function hideConfirmation() {
   const confirmationContainer = document.getElementById(
     "confirmation-container",
   );
-  const guessBtn = document.getElementById("guess-btn");
   confirmationContainer.style.display = "none";
-
-  // Reset button text and function
-  guessBtn.textContent = "Guess Country";
-  isInConfirmMode = false;
+  setLeftBtnState("guess");
 }
 
 function getConfirmationMessage(selectedCountry, guessedCountry) {
@@ -178,9 +186,8 @@ function confirmCountry() {
     // Clear the global drawing ID
     window.currentDrawingId = null;
 
-    // Lock the guess button via class
-    const guessBtn = document.getElementById("guess-btn");
-    guessBtn.classList.add("guess-locked");
+    // Lock the guess button
+    setLeftBtnState("guess", { locked: true });
   }
 }
 
@@ -211,5 +218,26 @@ async function sendFeedback(countryName, drawingId) {
     return null;
   }
 }
+
+async function showUserDrawing() {
+  try {
+    const response = await fetch("/drawing");
+    if (!response.ok) {
+      throw new Error("Failed to fetch drawing");
+    }
+    const data = await response.json();
+    renderUserDrawing(data.lines);
+    setLeftBtnState("next");
+    const userDrawingMessage = msg.getUserDrawingMessage(
+      data.guess_score,
+      data.country_name,
+      data.country_guess,
+    );
+    showGuessMessage(userDrawingMessage);
+  } catch (error) {
+    console.error("Error fetching user drawing:", error);
+  }
+}
+window.showUserDrawing = showUserDrawing;
 
 export { hideConfirmation };

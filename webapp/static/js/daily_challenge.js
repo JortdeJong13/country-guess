@@ -370,7 +370,7 @@ function onDailyChallengeSuccess() {
 function setGoldenGuessButton(dailyStreak) {
   if (dailyStreak < goldenStreak) return;
 
-  const button = document.getElementById("guess-btn");
+  const button = document.getElementById("left-btn");
   if (button) {
     button.classList.add("golden");
   }
