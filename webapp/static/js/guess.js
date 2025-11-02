@@ -12,9 +12,8 @@ leftBtn.addEventListener("click", handleButtonClick);
 let inConfirmMode = false;
 let inShowDrawingMode = false;
 
-function setLeftBtnState(state, options = {}) {
+function setLeftBtnState(state) {
   // state: "guess", "confirm", "next"
-  // options: { locked: boolean, golden: boolean }
   leftBtn.textContent =
     state === "guess"
       ? "Guess Country"
@@ -24,10 +23,6 @@ function setLeftBtnState(state, options = {}) {
           ? "Next Country"
           : leftBtn.textContent;
 
-  leftBtn.classList.remove("guess-locked", "golden");
-  if (options.locked) leftBtn.classList.add("guess-locked");
-  if (options.golden) leftBtn.classList.add("golden");
-
   // Update flags
   inConfirmMode = state === "confirm";
   inShowDrawingMode = state === "next";
@@ -36,9 +31,9 @@ function setLeftBtnState(state, options = {}) {
 function refreshDrawing() {
   clearCanvas();
   showGuessMessage("");
-  hideConfirmation();
   window.currentDrawingId = null;
   setLeftBtnState("guess");
+  leftBtn.classList.remove("guess-locked");
 }
 
 function handleButtonClick() {
@@ -129,14 +124,6 @@ function showConfirmation(ranking) {
   document.getElementById("instruction-message").style.display = "block";
 }
 
-function hideConfirmation() {
-  const confirmationContainer = document.getElementById(
-    "confirmation-container",
-  );
-  confirmationContainer.style.display = "none";
-  setLeftBtnState("guess");
-}
-
 function getConfirmationMessage(selectedCountry, guessedCountry) {
   // Guess country is correct
   if (selectedCountry === guessedCountry) {
@@ -175,7 +162,12 @@ function confirmCountry() {
 
   const message = getConfirmationMessage(selectedCountry, guessedCountry);
   showGuessMessage(message);
-  hideConfirmation();
+
+  // Hide confirmation container
+  const confirmationContainer = document.getElementById(
+    "confirmation-container",
+  );
+  confirmationContainer.style.display = "none";
 
   // Send feedback
   if (window.currentDrawingId) {
@@ -187,7 +179,7 @@ function confirmCountry() {
     window.currentDrawingId = null;
 
     // Lock the guess button
-    setLeftBtnState("guess", { locked: true });
+    leftBtn.classList.add("guess-locked");
   }
 }
 
@@ -239,5 +231,3 @@ async function showUserDrawing() {
   }
 }
 window.showUserDrawing = showUserDrawing;
-
-export { hideConfirmation };

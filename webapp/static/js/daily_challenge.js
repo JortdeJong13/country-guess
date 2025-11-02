@@ -12,7 +12,7 @@ let interactionsSetup = false;
 let hasUserInteracted = false;
 let temptingBounceTimeout = null;
 let currentPillWidth = 200;
-export let goldenStreak = 4;
+export let goldenStreak = 3;
 
 // Constants
 const ANIMATION_DURATIONS = {

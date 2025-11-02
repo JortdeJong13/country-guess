@@ -22,11 +22,10 @@ def load_drawing(drawing_dir="./data/drawings/"):
         drawing = json.load(f)
 
     feature = drawing["features"][0]
-    geometry = feature.get("geometry", {})
     properties = feature.get("properties", {})
 
     return {
-        "lines": geometry.get("coordinates", []),
+        "lines": feature["geometry"]["coordinates"],
         "country_name": properties.get("country_name", ""),
         "timestamp": properties.get("timestamp", ""),
         "country_guess": properties.get("country_guess", ""),

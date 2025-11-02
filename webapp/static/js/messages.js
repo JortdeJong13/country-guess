@@ -54,29 +54,29 @@ const easterEggMessages = [
 
 // Messages for correct predictions
 const correctMessages = [
-  "Yep — that’s {{selected}}!",
+  "Yep, that’s {{selected}}!",
   "You drew {{selected}} perfectly!",
   "Spot on! That's {{selected}}!",
-  "Exactly right — this is {{selected}}.",
+  "Exactly right, this is {{selected}}.",
   "Awesome job on {{selected}}!",
-  "You nailed it — {{selected}} all the way!",
+  "You nailed it, {{selected}} all the way!",
   "This is a great depiction of {{selected}}!",
-  "Nice work — I added your {{selected}} to the test set!",
+  "Nice work, I added your {{selected}} to the test set!",
   "That’s a textbook {{selected}}!",
 ];
 
 // Messages for incorrect predictions
 const incorrectMessages = [
-  "Oh! It’s actually {{selected}} — I see why I thought it was {{guessed}}.",
+  "Oh! It’s actually {{selected}}. I see why I thought it was {{guessed}}.",
   "Ah, {{selected}}! That does look a lot like {{guessed}} though.",
-  "Now I see — it’s {{selected}}, not {{guessed}}.",
+  "Now I see, it’s {{selected}}, not {{guessed}}.",
   "Oh... Okay, I guess the test set could use a tricky {{selected}}!",
-  "I confused {{selected}} with {{guessed}} — good to know for next time!",
+  "I confused {{selected}} with {{guessed}}. Good to know for next time!",
   "{{selected}}! That one tripped me up.",
   "Looks like I mistook {{selected}} for {{guessed}}. I'm learning!",
-  "I see it now — definitely {{selected}}, not {{guessed}}.",
+  "I see it now, definitely {{selected}}, not {{guessed}}.",
   "Oops, that’s {{selected}}. I’ll remember the difference.",
-  "{{selected}} — got it! I’ll be sharper next time.",
+  "{{selected}}, got it! I’ll be sharper next time.",
 ];
 
 // Messages for correct user drawings with high confidence
@@ -89,7 +89,7 @@ const correctUserDrawingMessagesHigh = [
   "Strong details make this clearly {{selected}}.",
   "A very nice submission of {{selected}} from Anonymous42.",
   "Picasso submitted this {{selected}}.",
-  "Thank you Peter Sneek from Limburg for this drawing!",
+  "Thank you Nilay Rinkel from Rijswijk for this drawing of {{selected}}!",
   "A confident and accurate {{selected}}.",
 ];
 
@@ -97,7 +97,7 @@ const correctUserDrawingMessagesHigh = [
 const correctUserDrawingMessagesLow = [
   "This is my favorite drawing of {{selected}}!",
   "A simple and nice drawing of {{selected}}.",
-  "This {{selected}} was drawn on a Nokia.",
+  "This {{selected}} was drawn on a Nokia 3310.",
   "A friendly drawing of {{selected}}.",
   "The idea of {{selected}} comes through nicely here.",
   "This shows {{selected}} in a softer style.",
