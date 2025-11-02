@@ -28,17 +28,34 @@ function setLeftBtnState(state) {
   inShowDrawingMode = state === "next";
 }
 
+const archivesBtn = document.getElementById("archives-btn");
+archivesBtn.addEventListener("click", function () {
+  showArchives();
+});
+
+function hideConfirmationContainer() {
+  const confirmationContainer = document.getElementById(
+    "confirmation-container",
+  );
+  confirmationContainer.style.display = "none";
+}
+
 function refreshDrawing() {
   clearCanvas();
   showGuessMessage("");
   window.currentDrawingId = null;
+  hideConfirmationContainer();
+  // Show archives button
+  const archivesBtnContainer =
+    document.getElementById("archives-btn").parentElement;
+  archivesBtnContainer.style.display = "block";
   setLeftBtnState("guess");
   leftBtn.classList.remove("guess-locked");
 }
 
 function handleButtonClick() {
   if (inShowDrawingMode) {
-    showUserDrawing();
+    showArchives();
   } else if (inConfirmMode) {
     confirmCountry();
   } else {
@@ -97,6 +114,11 @@ async function guess() {
 }
 
 function showConfirmation(ranking) {
+  // Hide the archives button
+  const archivesBtnContainer =
+    document.getElementById("archives-btn").parentElement;
+  archivesBtnContainer.style.display = "none";
+
   const confirmationContainer = document.getElementById(
     "confirmation-container",
   );
@@ -162,12 +184,7 @@ function confirmCountry() {
 
   const message = getConfirmationMessage(selectedCountry, guessedCountry);
   showGuessMessage(message);
-
-  // Hide confirmation container
-  const confirmationContainer = document.getElementById(
-    "confirmation-container",
-  );
-  confirmationContainer.style.display = "none";
+  hideConfirmationContainer();
 
   // Send feedback
   if (window.currentDrawingId) {
@@ -211,7 +228,7 @@ async function sendFeedback(countryName, drawingId) {
   }
 }
 
-async function showUserDrawing() {
+async function showArchives() {
   try {
     const response = await fetch("/drawing");
     if (!response.ok) {
@@ -220,14 +237,13 @@ async function showUserDrawing() {
     const data = await response.json();
     renderUserDrawing(data.lines);
     setLeftBtnState("next");
-    const userDrawingMessage = msg.getUserDrawingMessage(
+    const archiveMessage = msg.getArchiveMessage(
       data.guess_score,
       data.country_name,
       data.country_guess,
     );
-    showGuessMessage(userDrawingMessage);
+    showGuessMessage(archiveMessage);
   } catch (error) {
     console.error("Error fetching user drawing:", error);
   }
 }
-window.showUserDrawing = showUserDrawing;

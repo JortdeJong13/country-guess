@@ -80,21 +80,21 @@ const incorrectMessages = [
 ];
 
 // Messages for correct user drawings with high confidence
-const correctUserDrawingMessagesHigh = [
+const correctArchiveMessagesHigh = [
   "Here someone drew a perfect {{selected}}.",
   "Another drawing of {{selected}}.",
-  "Someone else drew a nice {{selected}}!",
+  "Someone drew a nice {{selected}}!",
   "Very clear drawing of {{selected}}.",
   "A correct and recognizable {{selected}} drawing.",
   "Strong details make this clearly {{selected}}.",
   "A very nice submission of {{selected}} from Anonymous42.",
   "Picasso submitted this {{selected}}.",
   "Thank you Nilay Rinkel from Rijswijk for this drawing of {{selected}}!",
-  "A confident and accurate {{selected}}.",
+  "I present to you {{selected}}.",
 ];
 
 // Messages for correct user drawings with low confidence
-const correctUserDrawingMessagesLow = [
+const correctArchiveMessagesLow = [
   "This is my favorite drawing of {{selected}}!",
   "A simple and nice drawing of {{selected}}.",
   "This {{selected}} was drawn on a Nokia 3310.",
@@ -103,17 +103,16 @@ const correctUserDrawingMessagesLow = [
   "This shows {{selected}} in a softer style.",
   "A calm and thoughtful drawing of {{selected}}.",
   "This is a recognizable interpretation of {{selected}}.",
-  "A warm representation of {{selected}}.",
+  "My notes say this is {{selected}}.",
 ];
 
 // Messages for incorrect user drawings
-const incorrectUserDrawingMessages = [
+const incorrectArchiveMessages = [
   "Someone claims to have drawn {{selected}}... looks more like {{guessed}}.",
-  "This appears closer to {{guessed}} than {{selected}}.",
+  "A drawing of {{selected}}.",
+  "One from the archives {{selected}}.",
   "This is a drawing of {{selected}}.",
-  "I thought this was {{guessed}}, but it's actually {{selected}}.",
-  "This looks more like {{guessed}} than the intended {{selected}}.",
-  "The drawing fits {{guessed}} instead of {{selected}}.",
+  "This looks more like {{guessed}} than {{selected}}.",
   "Legally I cannot tell you who drew this {{selected}}!",
   "I won't tell you who drew this terrible {{selected}}!",
 ];
@@ -544,13 +543,16 @@ export function getDailyChallengeMessage(selectedCountry, streak) {
   );
 }
 
-export function getUserDrawingMessage(score, countryName, countryGuess) {
+export function getArchiveMessage(score, countryName, countryGuess) {
+  if (countryName == "Other") {
+    return "Oops, I thought I deleted this one...";
+  }
   const messageList =
     countryName !== countryGuess
-      ? incorrectUserDrawingMessages
+      ? incorrectArchiveMessages
       : score > 0.28
-        ? correctUserDrawingMessagesHigh
-        : correctUserDrawingMessagesLow;
+        ? correctArchiveMessagesHigh
+        : correctArchiveMessagesLow;
   return getRandomMessage(messageList, {
     selected: countryName,
     guessed: countryGuess,

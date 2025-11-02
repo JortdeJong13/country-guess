@@ -167,7 +167,7 @@ function renderUserDrawing(linesToDraw) {
   });
 
   // Compute scale and offset to fit drawing in canvas with margin
-  const margin = canvas.width * 0.08;
+  const margin = canvas.width * 0.1;
   const drawWidth = maxX - minX;
   const drawHeight = maxY - minY;
   const scale = Math.min(
