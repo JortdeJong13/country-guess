@@ -78,8 +78,7 @@ async function sendFeedback(countryName, drawingId) {
  */
 export async function guess() {
   if (lines.length === 0) {
-    const emptyGuessMessage = msg.getEmptyGuessMessage();
-    showMessage(emptyGuessMessage);
+    msg.setEmptyGuessMessage();
     return false;
   }
 
@@ -91,8 +90,7 @@ export async function guess() {
     const firstCountry = ranking.countries[0];
     const firstScore = ranking.scores[0];
 
-    const message = msg.getConfidenceBasedMessage(firstScore, firstCountry);
-    showMessage(message);
+    msg.setConfidenceBasedMessage(firstScore, firstCountry);
     window.currentDrawingId = data.drawing_id;
 
     populateCountryDropdown(ranking);
@@ -150,17 +148,14 @@ function getConfirmationMessage(selectedCountry, guessedCountry) {
 
     const dailyChallenge = checkDailyChallenge(selectedCountry);
     if (dailyChallenge.challengeCompleted) {
-      return msg.getDailyChallengeMessage(
-        selectedCountry,
-        dailyChallenge.streak,
-      );
+      msg.setDailyChallengeMessage(selectedCountry, dailyChallenge.streak);
     }
 
-    return msg.getCorrectGuessMessage(selectedCountry);
+    msg.setCorrectGuessMessage(selectedCountry);
   }
 
   // Guess country is incorrect
-  return msg.getIncorrectGuessMessage(selectedCountry, guessedCountry);
+  msg.setIncorrectGuessMessage(selectedCountry, guessedCountry);
 }
 
 export function confirmCountry() {

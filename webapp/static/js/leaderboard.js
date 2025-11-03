@@ -19,9 +19,6 @@ async function fetchDrawingByRank(rank) {
 /**
  * UI Helper Functions
  */
-function showMessage(message) {
-  document.getElementById("message").innerText = message;
-}
 
 function updateTotal(count) {
   totalDrawings = count;
@@ -30,12 +27,11 @@ function updateTotal(count) {
 function renderDrawing(data) {
   renderUserDrawing(data.lines);
 
-  const archiveMessage = msg.getArchiveMessage(
+  msg.setArchiveMessage(
     data.guess_score,
     data.country_name,
     data.country_guess,
   );
-  showMessage(archiveMessage);
 }
 
 /**

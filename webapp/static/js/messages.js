@@ -461,15 +461,17 @@ const countryFacts = {
     "Zimbabwe shares Victoria Falls, one of the world's largest waterfalls.",
 };
 
-export function getEmptyGuessMessage() {
-  // 5% chance to show easter egg message
-  if (Math.random() < 0.15) {
-    return easterEggMessages[
-      Math.floor(Math.random() * easterEggMessages.length)
-    ];
-  } else {
-    return "You first need to draw a country";
-  }
+function showMessage(message) {
+  document.getElementById("message").innerText = message;
+}
+
+export function setEmptyGuessMessage() {
+  const message =
+    Math.random() < 0.15
+      ? easterEggMessages[Math.floor(Math.random() * easterEggMessages.length)]
+      : "You first need to draw a country";
+
+  showMessage(message);
 }
 
 function getRandomMessage(messageList, variables) {
@@ -486,14 +488,15 @@ function getRandomMessage(messageList, variables) {
   return template;
 }
 
-export function getConfidenceBasedMessage(score, guessedCountry) {
+export function setConfidenceBasedMessage(score, guessedCountry) {
   const messageList =
     score > 0.28
       ? highConfidenceMessages
       : score > 0.18
         ? mediumConfidenceMessages
         : lowConfidenceMessages;
-  return getRandomMessage(messageList, { guessed: guessedCountry });
+  const message = getRandomMessage(messageList, { guessed: guessedCountry });
+  showMessage(message);
 }
 
 function getCountryFact(country) {
@@ -503,58 +506,66 @@ function getCountryFact(country) {
   return funFact;
 }
 
-export function getCorrectGuessMessage(selectedCountry) {
-  return (
+export function setCorrectGuessMessage(selectedCountry) {
+  const message =
     getRandomMessage(correctMessages, { selected: selectedCountry }) +
-    getCountryFact(selectedCountry)
-  );
+    getCountryFact(selectedCountry);
+
+  showMessage(message);
 }
 
-export function getIncorrectGuessMessage(selectedCountry, guessedCountry) {
+export function setIncorrectGuessMessage(selectedCountry, guessedCountry) {
   if (selectedCountry == "Other") {
-    return "I thought I knew all the countries... I guess not!";
+    showMessage("I thought I knew all the countries... I guess not!");
+    return;
   }
-  return getRandomMessage(incorrectMessages, {
+  const message = getRandomMessage(incorrectMessages, {
     selected: selectedCountry,
     guessed: guessedCountry,
   });
+
+  showMessage(message);
 }
 
-export function getDailyChallengeMessage(selectedCountry, streak) {
-  if (streak == goldenStreak) {
-    return (
-      "You're on a daily challenge streak. You have unlocked the golden guess button!" +
-      getCountryFact(selectedCountry)
-    );
-  }
+export function setDailyChallengeMessage(selectedCountry, streak) {
+  let message;
 
-  if (streak > goldenStreak) {
-    return (
+  if (streak == goldenStreak) {
+    message =
+      "You're on a daily challenge streak. You have unlocked the golden guess button!" +
+      getCountryFact(selectedCountry);
+  } else if (streak > goldenStreak) {
+    message =
       getRandomMessage(dailyStreakMessages, {
         selected: selectedCountry,
         streak: streak,
-      }) + getCountryFact(selectedCountry)
-    );
+      }) + getCountryFact(selectedCountry);
+  } else {
+    message =
+      getRandomMessage(dailyChallengeMessages, { selected: selectedCountry }) +
+      getCountryFact(selectedCountry);
   }
 
-  return (
-    getRandomMessage(dailyChallengeMessages, { selected: selectedCountry }) +
-    getCountryFact(selectedCountry)
-  );
+  showMessage(message);
 }
 
-export function getArchiveMessage(score, countryName, countryGuess) {
+export function setArchiveMessage(score, countryName, countryGuess) {
   if (countryName == "Other") {
-    return "Oops, I thought I deleted this one...";
+    showMessage("Oops, I thought I deleted this one...");
+    return;
   }
+
   const messageList =
     countryName !== countryGuess
       ? incorrectArchiveMessages
       : score > 0.28
         ? correctArchiveMessagesHigh
         : correctArchiveMessagesLow;
-  return getRandomMessage(messageList, {
+
+  const message = getRandomMessage(messageList, {
     selected: countryName,
     guessed: countryGuess,
   });
+
+  showMessage(message);
 }
