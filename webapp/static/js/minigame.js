@@ -66,7 +66,7 @@ class MiniGame {
     window.addEventListener("resize", () => this.handleResize());
 
     // Handle clear button to reset everything
-    document.getElementById("refresh-btn").addEventListener("click", () => {
+    document.getElementById("right-btn").addEventListener("click", () => {
       this.reset();
     });
 

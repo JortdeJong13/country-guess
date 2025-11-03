@@ -112,6 +112,13 @@
     animation-delay: 1s;
 }
 
+/* Locked state */
+#right-btn.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* Golden state */
 #left-btn.golden {
     background-color: #fbbf24; /* amber-400 */
@@ -124,14 +131,14 @@
 }
 
 /* Locked state */
-#left-btn.guess-locked {
+#left-btn.locked {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
 
 /* Locked but golden */
-#left-btn.golden.guess-locked {
+#left-btn.golden.locked {
     background-color: #ffb300; /* amber-600 */
     opacity: 0.5;
     cursor: not-allowed;

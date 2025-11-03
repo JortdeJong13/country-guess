@@ -2,7 +2,6 @@
 
 import json
 import logging
-import random
 from datetime import datetime
 from pathlib import Path
 
@@ -10,27 +9,44 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def load_drawing(drawing_dir="./data/drawings/"):
-    """Loads a random user drawing."""
+def load_drawing(rank, drawing_dir="./data/drawings/"):
+    """Loads user drawing with rank."""
     drawing_files = list(Path(drawing_dir).glob("*.geojson"))
     if not drawing_files:
         logger.warning("No drawings found in the drawing directory.")
         return None
 
-    drawing_file = random.choice(drawing_files)
-    with open(drawing_file, "r", encoding="utf-8") as f:
-        drawing = json.load(f)
+    drawings = []
+    for drawing_file in drawing_files:
+        with open(drawing_file, "r", encoding="utf-8") as f:
+            drawing = json.load(f)
+            feature = drawing["features"][0]
+            props = feature["properties"]
 
-    feature = drawing["features"][0]
-    properties = feature.get("properties", {})
+            drawings.append(
+                {
+                    "lines": feature["geometry"]["coordinates"],
+                    "country_name": props.get("country_name", ""),
+                    "timestamp": props.get("timestamp", ""),
+                    "country_guess": props.get("country_guess", ""),
+                    "guess_score": props["guess_score"],
+                }
+            )
 
-    return {
-        "lines": feature["geometry"]["coordinates"],
-        "country_name": properties.get("country_name", ""),
-        "timestamp": properties.get("timestamp", ""),
-        "country_guess": properties.get("country_guess", ""),
-        "guess_score": properties.get("guess_score", None),
-    }
+    # Sort by score, highest first
+    drawings.sort(key=lambda d: d["guess_score"], reverse=True)
+    total = len(drawings)
+
+    if not (0 <= rank < total):
+        logger.warning(f"Rank {rank} out of range (0 to {total - 1}).")
+        return None
+
+    # Insert rank + count into result
+    result = drawings[rank]
+    result["rank"] = rank
+    result["total"] = total
+
+    return result
 
 
 def save_drawing(country_name, drawing, output_dir="./data/drawings/"):

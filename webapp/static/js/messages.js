@@ -463,7 +463,7 @@ const countryFacts = {
 
 export function getEmptyGuessMessage() {
   // 5% chance to show easter egg message
-  if (Math.random() < 0.05) {
+  if (Math.random() < 0.15) {
     return easterEggMessages[
       Math.floor(Math.random() * easterEggMessages.length)
     ];

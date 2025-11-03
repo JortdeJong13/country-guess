@@ -107,7 +107,12 @@ def feedback():
 @app.route("/drawing")
 def drawing():
     try:
-        drawing = load_drawing(drawing_dir=DRAWING_DIR)
+        rank = int(request.args.get("rank", 0))
+        drawing = load_drawing(rank, drawing_dir=DRAWING_DIR)
+
+        if drawing is None:
+            return jsonify({"message": f"No drawing found for rank {rank}"}), 404
+
         return jsonify(drawing)
     except Exception as e:
         return jsonify({"message": "Failed to load drawing", "error": str(e)}), 500
