@@ -44,7 +44,7 @@ def load_drawing(rank, drawing_dir="./data/drawings/"):
     return result
 
 
-def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
+def save_drawing(country_name, drawing, hashed_ip, output_dir="./data/drawings/"):
     """Saves a country drawing as a GeoJSON file with metadata."""
     output_dir = Path(output_dir)
     logger.info("Saving drawing of %s to %s", country_name, output_dir)
@@ -76,6 +76,7 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
                     "country_score": score,
                     "timestamp": timestamp,
                     "country_guess": countries[0],
+                    "hashed_ip": hashed_ip,
                 },
                 "geometry": json.loads(drawing["geometry"]),
             }

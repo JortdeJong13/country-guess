@@ -97,7 +97,9 @@ def feedback():
 
     if country_name := data.get("country"):
         drawing = drawing_store.get(drawing_id)
-        save_drawing(country_name, drawing, output_dir=DRAWING_DIR)
+        ip_addr = request.remote_addr
+        hashed_ip = hashlib.sha256(ip_addr.encode()).hexdigest() if ip_addr else None
+        save_drawing(country_name, drawing, hashed_ip, output_dir=DRAWING_DIR)
 
     drawing_store.remove(drawing_id)
     return jsonify({"message": "Feedback received"})
