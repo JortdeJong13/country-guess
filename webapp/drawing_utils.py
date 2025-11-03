@@ -10,7 +10,7 @@ logger.setLevel(logging.INFO)
 
 
 def load_drawing(rank, drawing_dir="./data/drawings/"):
-    """Loads user drawing with rank."""
+    """Return a drawing with the given rank."""
     drawing_files = list(Path(drawing_dir).glob("*.geojson"))
     if not drawing_files:
         logger.warning("No drawings found in the drawing directory.")
@@ -20,21 +20,16 @@ def load_drawing(rank, drawing_dir="./data/drawings/"):
     for drawing_file in drawing_files:
         with open(drawing_file, "r", encoding="utf-8") as f:
             drawing = json.load(f)
-            feature = drawing["features"][0]
-            props = feature["properties"]
+        feature = drawing["features"][0]
+        props = feature["properties"]
 
+        if props["country_name"] == props["country_guess"]:
             drawings.append(
-                {
-                    "lines": feature["geometry"]["coordinates"],
-                    "country_name": props.get("country_name", ""),
-                    "timestamp": props.get("timestamp", ""),
-                    "country_guess": props.get("country_guess", ""),
-                    "guess_score": props["guess_score"],
-                }
+                {"lines": feature["geometry"]["coordinates"], "properties": props}
             )
 
     # Sort by score, highest first
-    drawings.sort(key=lambda d: d["guess_score"], reverse=True)
+    drawings.sort(key=lambda d: d["properties"]["country_score"], reverse=True)
     total = len(drawings)
 
     if not (0 <= rank < total):
@@ -61,6 +56,11 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
     # Create filename for new drawing
     filename = f"{country_name.lower().replace(' ', '_')}_{timestamp}.geojson"
 
+    # Get the score of the correct country
+    countries = drawing["ranking"]["countries"]
+    idx = countries.index(country_name)
+    score = drawing["ranking"]["scores"][idx]
+
     # Create GeoJSON feature, including CRS information
     geojson = {
         "type": "FeatureCollection",
@@ -73,9 +73,9 @@ def save_drawing(country_name, drawing, output_dir="./data/drawings/"):
                 "type": "Feature",
                 "properties": {
                     "country_name": country_name,
+                    "country_score": score,
                     "timestamp": timestamp,
-                    "country_guess": drawing["guess"][0],
-                    "guess_score": drawing["guess"][1],
+                    "country_guess": countries[0],
                 },
                 "geometry": json.loads(drawing["geometry"]),
             }
@@ -94,13 +94,13 @@ class DrawingStore:
         self.drawings = {}
         self.max_drawings = max_drawings
 
-    def store(self, drawing_id: str, drawing: str, guess: tuple[str, float]):
+    def store(self, drawing_id: str, drawing: str, ranking: dict[str, list]):
         """Stores a drawing with the given ID, removing oldest if at capacity."""
         if len(self.drawings) >= self.max_drawings:
             first_key = next(iter(self.drawings))
             self.drawings.pop(first_key)
 
-        self.drawings[drawing_id] = {"geometry": drawing, "guess": guess}
+        self.drawings[drawing_id] = {"geometry": drawing, "ranking": ranking}
 
     def get(self, drawing_id: str):
         """Retrieves a drawing by its ID."""

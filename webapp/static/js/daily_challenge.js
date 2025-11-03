@@ -271,7 +271,7 @@ function setupPillInteractions() {
     // Close on any touch anywhere
     document.addEventListener("touchstart", () => {
       setTimeout(() => {
-        if (isPillExpanded || isAnimating) {
+        if (isPillExpanded && !isAnimating) {
           slideOutPill();
         }
       }, 10);

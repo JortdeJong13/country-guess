@@ -106,17 +106,6 @@ const correctArchiveMessagesLow = [
   "My notes say this is {{selected}}.",
 ];
 
-// Messages for incorrect user drawings
-const incorrectArchiveMessages = [
-  "Someone claims to have drawn {{selected}}... looks more like {{guessed}}.",
-  "A drawing of {{selected}}.",
-  "One from the archives {{selected}}.",
-  "This is a drawing of {{selected}}.",
-  "This looks more like {{guessed}} than {{selected}}.",
-  "Legally I cannot tell you who drew this {{selected}}!",
-  "I won't tell you who drew this terrible {{selected}}!",
-];
-
 const dailyChallengeMessages = [
   "Well done, that’s today’s {{selected}} challenge done.",
   "You wrapped up the daily challenge with {{selected}}.",
@@ -467,7 +456,7 @@ function showMessage(message) {
 
 export function setEmptyGuessMessage() {
   const message =
-    Math.random() < 0.15
+    Math.random() < 0.1
       ? easterEggMessages[Math.floor(Math.random() * easterEggMessages.length)]
       : "You first need to draw a country";
 
@@ -549,22 +538,17 @@ export function setDailyChallengeMessage(selectedCountry, streak) {
   showMessage(message);
 }
 
-export function setArchiveMessage(score, countryName, countryGuess) {
-  if (countryName == "Other") {
-    showMessage("Oops, I thought I deleted this one...");
-    return;
-  }
+export function setLeaderboardMessage(rank, total, props) {
+  let message = `#${rank + 1}/${total} -- score: ${props.country_score.toFixed(2)}%\n`;
 
   const messageList =
-    countryName !== countryGuess
-      ? incorrectArchiveMessages
-      : score > 0.28
-        ? correctArchiveMessagesHigh
-        : correctArchiveMessagesLow;
+    props.country_score > 0.5
+      ? correctArchiveMessagesHigh
+      : correctArchiveMessagesLow;
 
-  const message = getRandomMessage(messageList, {
-    selected: countryName,
-    guessed: countryGuess,
+  message += getRandomMessage(messageList, {
+    selected: props.country_name,
+    guessed: props.country_guess,
   });
 
   showMessage(message);

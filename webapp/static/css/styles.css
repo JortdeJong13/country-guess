@@ -144,3 +144,14 @@
     cursor: not-allowed;
     pointer-events: none;
 }
+
+/* Leaderboard button active state */
+#leaderboard-btn.active {
+    background-color: #f43f5e; /* rose-500 */
+    color: #ffffff;
+    border-color: #fb7185; /* rose-400 */
+}
+
+#leaderboard-btn.active:hover {
+    background-color: #fb7185; /* rose-400 */
+}

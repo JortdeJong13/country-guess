@@ -72,8 +72,7 @@ def guess():
 
         # Store the drawing and ranking in the session
         drawing_id = str(uuid.uuid4())
-        guess = (ranking["countries"][0], ranking["scores"][0])
-        drawing_store.store(drawing_id, drawing, guess)
+        drawing_store.store(drawing_id, drawing, ranking)
 
         return jsonify({"ranking": ranking, "drawing_id": drawing_id})
 

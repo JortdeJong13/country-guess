@@ -130,32 +130,34 @@ function populateCountryDropdown(ranking) {
   dropdown.add(otherOption);
 }
 
-function getConfirmationMessage(selectedCountry, guessedCountry) {
-  // Guess country is correct
-  if (selectedCountry === guessedCountry) {
-    setTimeout(() => {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        startVelocity: 70,
-        zIndex: 1000,
-        origin: { y: 1, x: 0.5 },
-        resize: true,
-        useWorker: true,
-        ticks: 280,
-      });
-    }, 50);
-
-    const dailyChallenge = checkDailyChallenge(selectedCountry);
-    if (dailyChallenge.challengeCompleted) {
-      msg.setDailyChallengeMessage(selectedCountry, dailyChallenge.streak);
-    }
-
-    msg.setCorrectGuessMessage(selectedCountry);
+function setConfirmationMessage(selectedCountry, guessedCountry) {
+  // If incorrect, handle and exit early
+  if (selectedCountry !== guessedCountry) {
+    msg.setIncorrectGuessMessage(selectedCountry, guessedCountry);
+    return;
   }
 
-  // Guess country is incorrect
-  msg.setIncorrectGuessMessage(selectedCountry, guessedCountry);
+  // Correct guess → trigger confetti
+  setTimeout(() => {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      startVelocity: 70,
+      zIndex: 1000,
+      origin: { y: 1, x: 0.5 },
+      resize: true,
+      useWorker: true,
+      ticks: 280,
+    });
+  }, 50);
+
+  // Handle daily challenge messaging
+  const dailyChallenge = checkDailyChallenge(selectedCountry);
+  if (dailyChallenge.challengeCompleted) {
+    msg.setDailyChallengeMessage(selectedCountry, dailyChallenge.streak);
+  } else {
+    msg.setCorrectGuessMessage(selectedCountry);
+  }
 }
 
 export function confirmCountry() {
@@ -163,8 +165,7 @@ export function confirmCountry() {
   const selectedCountry = dropdown.value;
   const guessedCountry = dropdown.options[0].value;
 
-  const message = getConfirmationMessage(selectedCountry, guessedCountry);
-  showMessage(message);
+  setConfirmationMessage(selectedCountry, guessedCountry);
   hideConfirmationContainer();
 
   // Send feedback

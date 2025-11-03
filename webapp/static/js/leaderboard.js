@@ -17,24 +17,6 @@ async function fetchDrawingByRank(rank) {
 }
 
 /**
- * UI Helper Functions
- */
-
-function updateTotal(count) {
-  totalDrawings = count;
-}
-
-function renderDrawing(data) {
-  renderUserDrawing(data.lines);
-
-  msg.setArchiveMessage(
-    data.guess_score,
-    data.country_name,
-    data.country_guess,
-  );
-}
-
-/**
  * Public API
  */
 export async function showLeaderboard() {
@@ -59,8 +41,9 @@ export async function showLeaderboardPrevious() {
 export async function showLeaderboardAt(rank) {
   try {
     const data = await fetchDrawingByRank(rank);
-    renderDrawing(data);
-    updateTotal(data.total);
+    totalDrawings = data.total;
+    msg.setLeaderboardMessage(data.rank, data.total, data.properties);
+    renderUserDrawing(data.lines);
     return { success: true, rank: currentRank, total: totalDrawings };
   } catch (error) {
     console.error("Error loading leaderboard drawing:", error);

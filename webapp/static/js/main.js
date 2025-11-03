@@ -68,6 +68,7 @@ function updateHomeUI() {
   rightBtn.textContent = "Clear";
   leftBtn.classList.remove("locked");
   setLeaderboardButtonVisibility(true);
+  leaderboardBtn.classList.remove("active");
 }
 
 function updateConfirmUI() {
@@ -80,6 +81,7 @@ function updateLeaderboardUI() {
   leftBtn.textContent = "Previous";
   rightBtn.textContent = "Next";
   setLeaderboardButtonVisibility(true);
+  leaderboardBtn.classList.add("active");
 }
 
 /**
@@ -112,7 +114,6 @@ function handleLeaderboardButtonClick() {
     handleRefresh();
   } else {
     handleShowLeaderboard();
-    leftBtn.classList.add("locked");
   }
 }
 
@@ -136,6 +137,10 @@ function handleRefresh() {
   refreshGuess();
   clearCanvas();
   setState("home");
+  leaderboardBtn.textContent = "Show Leaderboard";
+  if (window.miniGame) {
+    window.miniGame.reset();
+  }
 }
 
 function updateLeaderboardButtonLocks(rank, total) {
@@ -147,6 +152,7 @@ async function handleShowLeaderboard() {
   const result = await showLeaderboard();
   if (result.success) {
     setState("leaderboard");
+    leaderboardBtn.textContent = "Close Leaderboard";
     updateLeaderboardButtonLocks(result.rank, result.total);
   }
 }

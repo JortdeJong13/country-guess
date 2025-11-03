@@ -65,11 +65,6 @@ class MiniGame {
     // Handle window resize
     window.addEventListener("resize", () => this.handleResize());
 
-    // Handle clear button to reset everything
-    document.getElementById("right-btn").addEventListener("click", () => {
-      this.reset();
-    });
-
     // Set up title transform origin for proper tilting from left side
     this.titleElement.style.transformOrigin = "left center";
     this.titleElement.style.userSelect = "none";
