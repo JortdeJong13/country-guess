@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "French Guiana",
-        "timestamp": "2025-10-18T23:24:45.911357"
+        "country_score": 0.1678299903869629,
+        "timestamp": "2025-10-18T23:24:45.911357",
+        "country_guess": "Botswana"
       },
       "geometry": {
         "type": "MultiLineString",

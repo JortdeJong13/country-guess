@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "South Sudan",
-        "timestamp": "2025-06-05T13:37:53.217580"
+        "country_score": 0.06394042074680328,
+        "timestamp": "2025-06-05T13:37:53.217580",
+        "country_guess": "South Sudan"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Honduras",
-        "timestamp": "2025-04-12T16:12:29.960260"
+        "country_score": 0.30986881256103516,
+        "timestamp": "2025-04-12T16:12:29.960260",
+        "country_guess": "Honduras"
       },
       "geometry": {
         "type": "MultiLineString",

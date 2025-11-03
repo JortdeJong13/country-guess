@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Uzbekistan",
-        "timestamp": "2025-02-27T09:36:58.908000"
+        "country_score": 0.49029505252838135,
+        "timestamp": "2025-02-27T09:36:58.908000",
+        "country_guess": "Uzbekistan"
       },
       "geometry": {
         "type": "MultiLineString",

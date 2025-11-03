@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Chad",
-        "timestamp": "2025-09-19T11:20:11.399366"
+        "country_score": 0.6192417740821838,
+        "timestamp": "2025-09-19T11:20:11.399366",
+        "country_guess": "Chad"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Bosnia & Herzegovina",
-        "timestamp": "2025-08-20T09:27:53.502531"
+        "country_score": 0.26214882731437683,
+        "timestamp": "2025-08-20T09:27:53.502531",
+        "country_guess": "Bosnia & Herzegovina"
       },
       "geometry": {
         "type": "MultiLineString",

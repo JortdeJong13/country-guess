@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "France",
-        "timestamp": "2025-06-22T07:24:18.754335"
+        "country_score": 0.018912024796009064,
+        "timestamp": "2025-06-22T07:24:18.754335",
+        "country_guess": "Zimbabwe"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -12,7 +12,6 @@ let interactionsSetup = false;
 let hasUserInteracted = false;
 let temptingBounceTimeout = null;
 let currentPillWidth = 200;
-export let goldenStreak = 4;
 
 // Constants
 const ANIMATION_DURATIONS = {
@@ -44,36 +43,9 @@ function setHistory(history) {
   localStorage.setItem("dailyChallengeHistory", JSON.stringify(history));
 }
 
-function hasCompletedToday() {
+export function hasCompletedToday() {
   const history = getHistory();
   return !!history[getTodayISO()];
-}
-
-function getDailyStreak() {
-  const history = getHistory();
-  const today = getTodayISO();
-
-  // Start from today if completed, otherwise start from yesterday
-  const currentDate = new Date(today);
-  if (!history[today]) {
-    // Today not completed, start from yesterday
-    currentDate.setDate(currentDate.getDate() - 1);
-  }
-
-  let dailyStreak = 0;
-  while (true) {
-    const dateStr = currentDate.toISOString().slice(0, 10);
-    // If this date exists in history, increment streak
-    if (history[dateStr]) {
-      dailyStreak++;
-      // Move to previous day
-      currentDate.setDate(currentDate.getDate() - 1);
-    } else {
-      break;
-    }
-  }
-
-  return dailyStreak;
 }
 
 /**
@@ -128,7 +100,6 @@ function slideInPill() {
   const icon = pill.querySelector(".daily-challenge-icon");
 
   // Calculate positions based on current pill width
-  const collapsedPos = -(currentPillWidth - POSITIONS.tipVisible);
   const expandedPos = POSITIONS.expandedOffset;
 
   // Main slide animation
@@ -171,7 +142,6 @@ function slideOutPill() {
 
   // Calculate positions based on current pill width
   const collapsedPos = -(currentPillWidth - POSITIONS.tipVisible);
-  const expandedPos = POSITIONS.expandedOffset;
 
   // Main slide animation
   const currentLeft = parseFloat(getComputedStyle(pill).left);
@@ -271,7 +241,7 @@ function setupPillInteractions() {
     // Close on any touch anywhere
     document.addEventListener("touchstart", () => {
       setTimeout(() => {
-        if (isPillExpanded || isAnimating) {
+        if (isPillExpanded && !isAnimating) {
           slideOutPill();
         }
       }, 10);
@@ -291,42 +261,27 @@ function setupPillInteractions() {
  * Content Management
  */
 function updateDailyChallenge() {
-  const dailyStreak = getDailyStreak();
-  setGoldenGuessButton(dailyStreak);
-
   const pillEl = document.getElementById("daily-challenge-pill");
   const countryNameEl = document.getElementById("daily-country-name");
   if (!pillEl || !countryNameEl) return;
 
-  let displayText = "";
+  countryNameEl.textContent = dailyCountry;
   const icon = pillEl.querySelector(".daily-challenge-icon");
 
   if (hasCompletedToday()) {
+    // Completed challenge
     stopTemptingBounce();
-
-    if (icon) {
-      if (dailyStreak > 1) {
-        icon.textContent = "🔥"; // Fire for streak
-      } else {
-        icon.textContent = "🎉"; // Party for completing today
-      }
-    }
-    displayText = dailyCountry;
+    icon.textContent = "🎉";
     countryNameEl.style.textDecoration = "line-through";
   } else {
     // Active challenge
-    if (icon) icon.textContent = "🏆";
-    displayText = dailyCountry;
+    icon.textContent = "🏆";
     countryNameEl.style.textDecoration = "none";
   }
 
-  countryNameEl.textContent = displayText;
-
   // Update pill dimensions
-  // if (displayText) {
-  const newWidth = calculatePillWidth(displayText);
+  const newWidth = calculatePillWidth(dailyCountry);
   updatePillDimensions(newWidth);
-  // }
 }
 
 function onDailyChallengeSuccess() {
@@ -362,34 +317,17 @@ function onDailyChallengeSuccess() {
   } else {
     updateDailyChallenge();
   }
-
-  const dailyStreak = getDailyStreak();
-  return dailyStreak;
-}
-
-function setGoldenGuessButton(dailyStreak) {
-  if (dailyStreak < goldenStreak) return;
-
-  const button = document.getElementById("guess-btn");
-  if (button) {
-    button.classList.add("golden");
-  }
 }
 
 /**
  * Public API
  */
 export function checkDailyChallenge(selectedCountry) {
-  if (!dailyCountry || !selectedCountry || hasCompletedToday()) {
-    return { challengeCompleted: false, streak: null };
+  if (selectedCountry == dailyCountry && !hasCompletedToday()) {
+    onDailyChallengeSuccess();
+    return true;
   }
-
-  if (selectedCountry.toLowerCase() === dailyCountry.toLowerCase()) {
-    const newDailyStreak = onDailyChallengeSuccess();
-    return { challengeCompleted: true, streak: newDailyStreak };
-  }
-
-  return { challengeCompleted: false, streak: null };
+  return false;
 }
 
 /**

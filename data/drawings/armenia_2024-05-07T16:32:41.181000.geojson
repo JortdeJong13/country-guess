@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Armenia",
-        "timestamp": "2024-05-07T16:32:41.181000"
+        "country_score": 0.14136776328086853,
+        "timestamp": "2024-05-07T16:32:41.181000",
+        "country_guess": "Laos"
       },
       "geometry": {
         "type": "MultiLineString",

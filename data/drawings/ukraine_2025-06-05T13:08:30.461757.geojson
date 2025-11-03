@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Ukraine",
-        "timestamp": "2025-06-05T13:08:30.461757"
+        "country_score": 0.2041541188955307,
+        "timestamp": "2025-06-05T13:08:30.461757",
+        "country_guess": "Ukraine"
       },
       "geometry": {
         "type": "MultiLineString",

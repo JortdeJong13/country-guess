@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Mongolia",
-        "timestamp": "2025-08-31T01:02:36.236420"
+        "country_score": 0.608068585395813,
+        "timestamp": "2025-08-31T01:02:36.236420",
+        "country_guess": "Mongolia"
       },
       "geometry": {
         "type": "MultiLineString",

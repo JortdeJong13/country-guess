@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "South Georgia & the South Sandwich Islands",
-        "timestamp": "2025-08-29T21:36:24.276373"
+        "country_score": null,
+        "timestamp": "2025-08-29T21:36:24.276373",
+        "country_guess": "Lithuania"
       },
       "geometry": {
         "type": "MultiLineString",

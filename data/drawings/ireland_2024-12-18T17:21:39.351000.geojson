@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Ireland",
-        "timestamp": "2024-12-18T17:21:39.351000"
+        "country_score": 0.0714675709605217,
+        "timestamp": "2024-12-18T17:21:39.351000",
+        "country_guess": "Qatar"
       },
       "geometry": {
         "type": "MultiLineString",

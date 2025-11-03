@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Reunion",
-        "timestamp": "2025-06-22T08:41:21.750907"
+        "country_score": 0.14586319029331207,
+        "timestamp": "2025-06-22T08:41:21.750907",
+        "country_guess": "Uruguay"
       },
       "geometry": {
         "type": "MultiLineString",

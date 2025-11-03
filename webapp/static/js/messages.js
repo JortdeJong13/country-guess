@@ -1,4 +1,4 @@
-import { goldenStreak } from "./daily_challenge.js";
+import { checkDailyChallenge } from "./daily_challenge.js";
 
 // Messages for high confidence predictions
 const highConfidenceMessages = [
@@ -54,55 +54,68 @@ const easterEggMessages = [
 
 // Messages for correct predictions
 const correctMessages = [
-  "Yep — that’s {{selected}}!",
+  "Yep, that’s {{selected}}!",
   "You drew {{selected}} perfectly!",
   "Spot on! That's {{selected}}!",
-  "Exactly right — this is {{selected}}.",
+  "Exactly right, this is {{selected}}.",
   "Awesome job on {{selected}}!",
-  "You nailed it — {{selected}} all the way!",
+  "You nailed it, {{selected}} all the way!",
   "This is a great depiction of {{selected}}!",
-  "Nice work — I added your {{selected}} to the test set!",
+  "Nice work, I added your {{selected}} to the test set!",
   "That’s a textbook {{selected}}!",
 ];
 
 // Messages for incorrect predictions
 const incorrectMessages = [
-  "Oh! It’s actually {{selected}} — I see why I thought it was {{guessed}}.",
+  "Oh! It’s actually {{selected}}. I see why I thought it was {{guessed}}.",
   "Ah, {{selected}}! That does look a lot like {{guessed}} though.",
-  "Now I see — it’s {{selected}}, not {{guessed}}.",
+  "Now I see, it’s {{selected}}, not {{guessed}}.",
   "Oh... Okay, I guess the test set could use a tricky {{selected}}!",
-  "I confused {{selected}} with {{guessed}} — good to know for next time!",
+  "I confused {{selected}} with {{guessed}}. Good to know for next time!",
   "{{selected}}! That one tripped me up.",
   "Looks like I mistook {{selected}} for {{guessed}}. I'm learning!",
-  "I see it now — definitely {{selected}}, not {{guessed}}.",
+  "I see it now, definitely {{selected}}, not {{guessed}}.",
   "Oops, that’s {{selected}}. I’ll remember the difference.",
-  "{{selected}} — got it! I’ll be sharper next time.",
+  "{{selected}}, got it! I’ll be sharper next time.",
+];
+
+// Messages for correct user drawings with high confidence
+const leaderboardMessagesHigh = [
+  "This is my favorite drawing of {{selected}}!",
+  "Here someone drew a perfect {{selected}}.",
+  "Another drawing of {{selected}}.",
+  "Someone drew a nice {{selected}}!",
+  "Very clear drawing of {{selected}}.",
+  "A correct and recognizable {{selected}} drawing.",
+  "Strong details make this clearly {{selected}}.",
+  "A very nice submission of {{selected}} from Anonymous42.",
+  "Picasso submitted this {{selected}}.",
+  "Thank you Christian for this drawing of {{selected}}!",
+  "I present to you {{selected}}.",
+];
+
+// Messages for correct user drawings with low confidence
+const leaderboardMessagesLow = [
+  "A simple and nice drawing of {{selected}}.",
+  "This {{selected}} was drawn on a Nokia 3310.",
+  "A friendly drawing of {{selected}}.",
+  "The idea of {{selected}} comes through nicely here.",
+  "This shows {{selected}} in a softer style.",
+  "A calm and thoughtful drawing of {{selected}}.",
+  "This is a recognizable interpretation of {{selected}}.",
+  "My notes say this is {{selected}}.",
 ];
 
 const dailyChallengeMessages = [
   "Well done, that’s today’s {{selected}} challenge done.",
   "You wrapped up the daily challenge with {{selected}}.",
   "That’s a solid {{selected}}, daily challenge finished.",
-  "You've drawn a perfect {{selected}}!",
   "Good job, {{selected}} closes out today’s challenge.",
   "Today’s challenge done: {{selected}}.",
   "That’s it for today! New challenge tomorrow.",
   "Challenge complete! Check back tomorrow for another country.",
   "You’re done for today, tomorrow brings a fresh challenge.",
   "Daily challenge cleared. See you tomorrow!",
-];
-
-const dailyStreakMessages = [
-  "Well done {{selected}}, {{streak}} days in a row.",
-  "You got {{selected}}, streak: {{streak}} days.",
-  "Nice {{selected}}, {{streak}} day streak.",
-  "Perfect {{selected}}, {{streak}} days strong.",
-  "Great {{selected}}, your streak is {{streak}}.",
-  "Today’s {{selected}}, {{streak}} days streaking.",
-  "Challenge done {{selected}}, {{streak}} days running.",
-  "Keeping that golden guess button!, streak: {{streak}} days.",
-  "Another {{selected}} complete, {{streak}} days.",
-  "Daily challenge {{selected}}, {{streak}} days streak.",
 ];
 
 const countryFacts = {
@@ -423,15 +436,17 @@ const countryFacts = {
     "Zimbabwe shares Victoria Falls, one of the world's largest waterfalls.",
 };
 
-export function getEmptyGuessMessage() {
-  // 5% chance to show easter egg message
-  if (Math.random() < 0.05) {
-    return easterEggMessages[
-      Math.floor(Math.random() * easterEggMessages.length)
-    ];
-  } else {
-    return "You first need to draw a country";
-  }
+function showMessage(message) {
+  document.getElementById("message").innerText = message;
+}
+
+export function setEmptyGuessMessage() {
+  const message =
+    Math.random() < 0.1
+      ? easterEggMessages[Math.floor(Math.random() * easterEggMessages.length)]
+      : "You first need to draw a country";
+
+  showMessage(message);
 }
 
 function getRandomMessage(messageList, variables) {
@@ -448,14 +463,15 @@ function getRandomMessage(messageList, variables) {
   return template;
 }
 
-export function getConfidenceBasedMessage(score, guessedCountry) {
+export function setConfidenceBasedMessage(score, guessedCountry) {
   const messageList =
     score > 0.28
       ? highConfidenceMessages
       : score > 0.18
         ? mediumConfidenceMessages
         : lowConfidenceMessages;
-  return getRandomMessage(messageList, { guessed: guessedCountry });
+  const message = getRandomMessage(messageList, { guessed: guessedCountry });
+  showMessage(message);
 }
 
 function getCountryFact(country) {
@@ -465,42 +481,44 @@ function getCountryFact(country) {
   return funFact;
 }
 
-export function getCorrectGuessMessage(selectedCountry) {
-  return (
-    getRandomMessage(correctMessages, { selected: selectedCountry }) +
-    getCountryFact(selectedCountry)
-  );
+export function setCorrectGuessMessage(selectedCountry) {
+  const messageList = checkDailyChallenge(selectedCountry)
+    ? dailyChallengeMessages
+    : correctMessages;
+
+  const message =
+    getRandomMessage(messageList, { selected: selectedCountry }) +
+    getCountryFact(selectedCountry);
+
+  showMessage(message);
 }
 
-export function getIncorrectGuessMessage(selectedCountry, guessedCountry) {
+export function setIncorrectGuessMessage(selectedCountry, guessedCountry) {
   if (selectedCountry == "Other") {
-    return "I thought I knew all the countries... I guess not!";
+    showMessage("I thought I knew all the countries... I guess not!");
+    return;
   }
-  return getRandomMessage(incorrectMessages, {
+  const message = getRandomMessage(incorrectMessages, {
     selected: selectedCountry,
     guessed: guessedCountry,
   });
+
+  showMessage(message);
 }
 
-export function getDailyChallengeMessage(selectedCountry, streak) {
-  if (streak == goldenStreak) {
-    return (
-      "You're on a daily challenge streak. You have unlocked the golden guess button!" +
-      getCountryFact(selectedCountry)
-    );
-  }
+export function setLeaderboardMessage(rank, total, props) {
+  const scorePercent = Math.round(props.country_score * 100);
+  let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
 
-  if (streak > goldenStreak) {
-    return (
-      getRandomMessage(dailyStreakMessages, {
-        selected: selectedCountry,
-        streak: streak,
-      }) + getCountryFact(selectedCountry)
-    );
-  }
+  const messageList =
+    props.country_score > 0.5
+      ? leaderboardMessagesHigh
+      : leaderboardMessagesLow;
 
-  return (
-    getRandomMessage(dailyChallengeMessages, { selected: selectedCountry }) +
-    getCountryFact(selectedCountry)
-  );
+  message += getRandomMessage(messageList, {
+    selected: props.country_name,
+    guessed: props.country_guess,
+  });
+
+  showMessage(message);
 }

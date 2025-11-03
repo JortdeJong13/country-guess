@@ -9,7 +9,7 @@ from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines
-from webapp.drawing_utils import DrawingStore, save_drawing
+from webapp.drawing_utils import DrawingStore, load_drawing, save_drawing
 
 DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
@@ -72,12 +72,9 @@ def guess():
 
         # Store the drawing and ranking in the session
         drawing_id = str(uuid.uuid4())
-        guess = (ranking["countries"][0], ranking["scores"][0])
-        drawing_store.store(drawing_id, drawing, guess)
+        drawing_store.store(drawing_id, drawing, ranking)
 
-        return jsonify(
-            {"message": "Success", "ranking": ranking, "drawing_id": drawing_id}
-        )
+        return jsonify({"ranking": ranking, "drawing_id": drawing_id})
 
     except (ConnectionError, Timeout) as conn_err:
         # Handle connection errors and timeouts
@@ -94,16 +91,34 @@ def feedback():
     if not data:
         return jsonify({"message": "Invalid input"}), 400
 
+    if "country" not in data:
+        return jsonify({"message": "Country not provided"}), 400
+
     drawing_id = data.get("drawing_id")
     if not drawing_id or not drawing_store.contains(drawing_id):
         return jsonify({"message": "Drawing not found"}), 400
 
-    if country_name := data.get("country"):
-        drawing = drawing_store.get(drawing_id)
-        save_drawing(country_name, drawing, output_dir=DRAWING_DIR)
+    drawing = drawing_store.get(drawing_id)
+    ip_addr = request.remote_addr
+    hashed_ip = hashlib.sha256(ip_addr.encode()).hexdigest() if ip_addr else None
+    save_drawing(data["country"], drawing, hashed_ip, output_dir=DRAWING_DIR)
 
     drawing_store.remove(drawing_id)
     return jsonify({"message": "Feedback received"})
+
+
+@app.route("/drawing")
+def drawing():
+    try:
+        rank = int(request.args.get("rank", 0))
+        drawing = load_drawing(rank, drawing_dir=DRAWING_DIR)
+
+        if drawing is None:
+            return jsonify({"message": f"No drawing found for rank {rank}"}), 404
+
+        return jsonify(drawing)
+    except Exception as e:
+        return jsonify({"message": "Failed to load drawing", "error": str(e)}), 500
 
 
 @app.route("/health")

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Poland",
-        "timestamp": "2025-06-28T18:13:19.854971"
+        "country_score": 0.3087075650691986,
+        "timestamp": "2025-06-28T18:13:19.854971",
+        "country_guess": "Poland"
       },
       "geometry": {
         "type": "MultiLineString",

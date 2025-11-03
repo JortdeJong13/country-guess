@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Laos",
-        "timestamp": "2025-08-09T15:10:47.373202"
+        "country_score": 0.13427993655204773,
+        "timestamp": "2025-08-09T15:10:47.373202",
+        "country_guess": "Laos"
       },
       "geometry": {
         "type": "MultiLineString",

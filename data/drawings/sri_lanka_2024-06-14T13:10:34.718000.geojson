@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Sri Lanka",
-        "timestamp": "2024-06-14T13:10:34.718000"
+        "country_score": 0.8997769355773926,
+        "timestamp": "2024-06-14T13:10:34.718000",
+        "country_guess": "Sri Lanka"
       },
       "geometry": {
         "type": "MultiLineString",

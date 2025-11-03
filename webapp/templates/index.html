@@ -93,22 +93,25 @@
                 style="gap: clamp(1rem, 5vw, 3rem)"
             >
                 <button
-                    id="guess-btn"
-                    class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
+                  id="left-btn"
+                  class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full
+                         hover:bg-gray-700 hover:scale-110 active:scale-100 transition-colors transition-transform duration-300"
                 >
-                    Guess Country
+                  Guess Country
                 </button>
+
                 <button
-                    id="refresh-btn"
-                    class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border border-gray-700 rounded-full hover:bg-gray-700 transition-all hover:scale-110 active:scale-100"
+                  id="right-btn"
+                  class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full
+                         hover:bg-gray-700 hover:scale-110 active:scale-100 transition-colors transition-transform duration-300"
                 >
                     Clear Drawing
                 </button>
             </div>
 
-            <!-- Guess Message -->
+            <!-- Message -->
             <p
-                id="guess-message"
+                id="message"
                 class="mt-5 text-lg text-amber-500 relative z-10 max-w-md mx-auto"
             ></p>
         </div>
@@ -138,6 +141,16 @@
                     </select>
                 </div>
             </div>
+        </div>
+
+        <!-- Leaderboard Button -->
+        <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
+            <button
+                 id="leaderboard-btn"
+                 class="px-5 py-1 text-base min-w-[10rem] w-auto whitespace-nowrap cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full shadow-lg transition-all hover:scale-110 active:scale-100 hover:text-white hover:bg-rose-400 hover:border-rose-400"
+             >
+                 Show Leaderboard
+             </button>
         </div>
 
         <!-- Confetti -->

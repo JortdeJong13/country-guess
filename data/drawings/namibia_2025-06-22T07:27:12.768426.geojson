@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Namibia",
-        "timestamp": "2025-06-22T07:27:12.768426"
+        "country_score": 0.7963003516197205,
+        "timestamp": "2025-06-22T07:27:12.768426",
+        "country_guess": "Namibia"
       },
       "geometry": {
         "type": "MultiLineString",

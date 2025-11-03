@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Saudi Arabia",
-        "timestamp": "2025-07-24T19:00:09.788104"
+        "country_score": 0.16839957237243652,
+        "timestamp": "2025-07-24T19:00:09.788104",
+        "country_guess": "Barbados"
       },
       "geometry": {
         "type": "MultiLineString",

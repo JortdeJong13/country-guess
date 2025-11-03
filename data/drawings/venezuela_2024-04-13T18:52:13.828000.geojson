@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Venezuela",
-        "timestamp": "2024-04-13T18:52:13.828000"
+        "country_score": 0.11719364672899246,
+        "timestamp": "2024-04-13T18:52:13.828000",
+        "country_guess": "Lithuania"
       },
       "geometry": {
         "type": "MultiLineString",

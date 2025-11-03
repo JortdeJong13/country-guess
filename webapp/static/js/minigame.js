@@ -65,23 +65,6 @@ class MiniGame {
     // Handle window resize
     window.addEventListener("resize", () => this.handleResize());
 
-    // Monitor for new lines being drawn to update physics walls
-    this.lastLineCount = 0;
-    this.lineCheckInterval = setInterval(() => {
-      if (this.isActive && window.lines) {
-        const currentLineCount = window.lines.length;
-        if (currentLineCount !== this.lastLineCount) {
-          this.createLineWalls();
-          this.lastLineCount = currentLineCount;
-        }
-      }
-    }, 50); // Check every 50ms
-
-    // Handle clear button to reset everything
-    document.getElementById("refresh-btn").addEventListener("click", () => {
-      this.reset();
-    });
-
     // Set up title transform origin for proper tilting from left side
     this.titleElement.style.transformOrigin = "left center";
     this.titleElement.style.userSelect = "none";

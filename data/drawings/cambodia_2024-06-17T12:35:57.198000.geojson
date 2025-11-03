@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Cambodia",
-        "timestamp": "2024-06-17T12:35:57.198000"
+        "country_score": 0.09819275885820389,
+        "timestamp": "2024-06-17T12:35:57.198000",
+        "country_guess": "Syria"
       },
       "geometry": {
         "type": "MultiLineString",

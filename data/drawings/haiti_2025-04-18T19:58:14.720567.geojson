@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Haiti",
-        "timestamp": "2025-04-18T19:58:14.720567"
+        "country_score": 0.21228104829788208,
+        "timestamp": "2025-04-18T19:58:14.720567",
+        "country_guess": "Haiti"
       },
       "geometry": {
         "type": "MultiLineString",

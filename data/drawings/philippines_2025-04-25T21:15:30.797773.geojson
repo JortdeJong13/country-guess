@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Philippines",
-        "timestamp": "2025-04-25T21:15:30.797773"
+        "country_score": 0.31700757145881653,
+        "timestamp": "2025-04-25T21:15:30.797773",
+        "country_guess": "Philippines"
       },
       "geometry": {
         "type": "MultiLineString",

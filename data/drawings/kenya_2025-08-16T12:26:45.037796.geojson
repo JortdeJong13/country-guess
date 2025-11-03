@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Kenya",
-        "timestamp": "2025-08-16T12:26:45.037796"
+        "country_score": 0.5723721385002136,
+        "timestamp": "2025-08-16T12:26:45.037796",
+        "country_guess": "Kenya"
       },
       "geometry": {
         "type": "MultiLineString",

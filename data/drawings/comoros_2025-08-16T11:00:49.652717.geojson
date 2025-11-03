@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Comoros",
-        "timestamp": "2025-08-16T11:00:49.652717"
+        "country_score": 0.963873565196991,
+        "timestamp": "2025-08-16T11:00:49.652717",
+        "country_guess": "Comoros"
       },
       "geometry": {
         "type": "MultiLineString",

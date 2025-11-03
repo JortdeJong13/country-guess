@@ -112,28 +112,40 @@
     animation-delay: 1s;
 }
 
-/* Golden state */
-#guess-btn.golden {
-    background-color: #fbbf24; /* amber-400 */
-    color: #1e293b; /* slate-800 */
-    border-color: #fcd34d; /* amber-300 */
+/* Golden state: slow fade in, overrides Tailwind colors */
+.golden {
+    background-color: #fbbf24 !important;
+    color: #1e293b !important;
+    border-color: #fcd34d !important;
     transition:
         background-color 1s ease-in-out,
         color 1s ease-in-out,
-        border-color 1s ease-in-out;
+        border-color 1s ease-in-out !important;
+}
+
+.golden:hover {
+    background-color: #fbbf24 !important;
 }
 
 /* Locked state */
-#guess-btn.guess-locked {
+.locked {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-/* Locked but golden */
-#guess-btn.golden.guess-locked {
-    background-color: #ffb300; /* amber-600 */
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
+/* Golden + Locked optional */
+.golden.locked {
+    background-color: #ffb300 !important; /* amber-600 */
+}
+
+/* Leaderboard button active state */
+#leaderboard-btn.active {
+    background-color: #f43f5e; /* rose-500 */
+    color: #ffffff;
+    border-color: #fb7185; /* rose-400 */
+}
+
+#leaderboard-btn.active:hover {
+    background-color: #fb7185; /* rose-400 */
 }

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Netherlands",
-        "timestamp": "2025-06-22T07:23:12.427494"
+        "country_score": 0.16835945844650269,
+        "timestamp": "2025-06-22T07:23:12.427494",
+        "country_guess": "Netherlands"
       },
       "geometry": {
         "type": "MultiLineString",

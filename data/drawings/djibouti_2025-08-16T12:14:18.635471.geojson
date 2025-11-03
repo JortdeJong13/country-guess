@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Djibouti",
-        "timestamp": "2025-08-16T12:14:18.635471"
+        "country_score": 0.013557566329836845,
+        "timestamp": "2025-08-16T12:14:18.635471",
+        "country_guess": "Isle of Man"
       },
       "geometry": {
         "type": "MultiLineString",

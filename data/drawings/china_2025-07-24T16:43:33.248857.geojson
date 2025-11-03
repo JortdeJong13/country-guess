@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "China",
-        "timestamp": "2025-07-24T16:43:33.248857"
+        "country_score": 0.3656501770019531,
+        "timestamp": "2025-07-24T16:43:33.248857",
+        "country_guess": "China"
       },
       "geometry": {
         "type": "MultiLineString",

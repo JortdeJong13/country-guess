@@ -1,44 +1,37 @@
-import { lines, clearCanvas } from "./drawing.js";
+import { lines } from "./drawing.js";
 import * as msg from "./messages.js";
 import { checkDailyChallenge } from "./daily_challenge.js";
 
-document
-  .getElementById("refresh-btn")
-  .addEventListener("click", refreshDrawing);
-
-const guessBtn = document.getElementById("guess-btn");
-guessBtn.addEventListener("click", handleButtonClick);
-
-let isInConfirmMode = false;
-
-function refreshDrawing() {
-  clearCanvas();
-  showGuessMessage("");
-
-  if (isInConfirmMode) {
-    hideConfirmation();
-    if (window.currentDrawingId) {
-      window.currentDrawingId = null;
-    }
-  }
-
-  // Unlock guess button
-  const guessBtn = document.getElementById("guess-btn");
-  guessBtn.classList.remove("guess-locked");
+/**
+ * UI Helper Functions
+ */
+function showMessage(message) {
+  document.getElementById("message").innerText = message;
 }
 
-function handleButtonClick() {
-  if (isInConfirmMode) {
-    confirmCountry();
-  } else {
-    guess();
-  }
+function showLoadingMessage() {
+  document.getElementById("message").innerHTML =
+    `<div class="loader mx-auto"></div>`;
 }
 
-function showGuessMessage(message) {
-  document.getElementById("guess-message").innerText = message;
+function hideConfirmationContainer() {
+  const confirmationContainer = document.getElementById(
+    "confirmation-container",
+  );
+  confirmationContainer.style.display = "none";
 }
 
+function showConfirmationContainer() {
+  const confirmationContainer = document.getElementById(
+    "confirmation-container",
+  );
+  confirmationContainer.style.display = "block";
+  document.getElementById("instruction-message").style.display = "block";
+}
+
+/**
+ * API Functions
+ */
 async function postGuess(lines) {
   const response = await fetch("/guess", {
     method: "POST",
@@ -50,138 +43,6 @@ async function postGuess(lines) {
     throw new Error(errorData.message || "Unknown server error");
   }
   return response.json();
-}
-
-async function guess() {
-  if (lines.length === 0) {
-    const emptyGuessMessage = msg.getEmptyGuessMessage();
-    showGuessMessage(emptyGuessMessage);
-    return;
-  }
-
-  document.getElementById("guess-message").innerHTML =
-    `<div class="loader mx-auto"></div>`;
-  try {
-    const data = await postGuess(lines);
-    const ranking = data.ranking;
-    const firstCountry = ranking.countries[0];
-    const firstScore = ranking.scores[0];
-
-    const message = msg.getConfidenceBasedMessage(firstScore, firstCountry);
-    showGuessMessage(message);
-    window.currentDrawingId = data.drawing_id;
-    showConfirmation(ranking);
-  } catch (error) {
-    console.error("Error:", error);
-
-    // Provide user feedback of the error
-    let message = "An unexpected error occurred.";
-    if (error.message === "Server unreachable") {
-      message = "Could not reach the ML server.";
-    } else if (error.message === "Server error") {
-      message = "There was an error with the ML server response.";
-    }
-    showGuessMessage(message);
-  }
-}
-
-function showConfirmation(ranking) {
-  const confirmationContainer = document.getElementById(
-    "confirmation-container",
-  );
-  const guessBtn = document.getElementById("guess-btn");
-  confirmationContainer.style.display = "block";
-
-  // Update button text and function
-  guessBtn.textContent = "Confirm";
-  isInConfirmMode = true;
-
-  var dropdown = document.getElementById("country-dropdown");
-  dropdown.innerHTML = ""; // Clear previous options
-
-  // Add options for each country in the list
-  ranking.countries.forEach((country, index) => {
-    var option = document.createElement("option");
-    option.value = country;
-    option.text = `${country}${"\u00A0".repeat(4)}${(ranking.scores[index] * 100).toFixed(1)}%`;
-    dropdown.add(option);
-  });
-
-  // Add "Other country" option
-  var otherOption = document.createElement("option");
-  otherOption.value = "Other";
-  otherOption.text = "Other country";
-  dropdown.add(otherOption);
-
-  // Show the instruction message
-  document.getElementById("instruction-message").style.display = "block";
-}
-
-function hideConfirmation() {
-  const confirmationContainer = document.getElementById(
-    "confirmation-container",
-  );
-  const guessBtn = document.getElementById("guess-btn");
-  confirmationContainer.style.display = "none";
-
-  // Reset button text and function
-  guessBtn.textContent = "Guess Country";
-  isInConfirmMode = false;
-}
-
-function getConfirmationMessage(selectedCountry, guessedCountry) {
-  // Guess country is correct
-  if (selectedCountry === guessedCountry) {
-    setTimeout(() => {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        startVelocity: 70,
-        zIndex: 1000,
-        origin: { y: 1, x: 0.5 },
-        resize: true,
-        useWorker: true,
-        ticks: 280,
-      });
-    }, 50);
-
-    const dailyChallenge = checkDailyChallenge(selectedCountry);
-    if (dailyChallenge.challengeCompleted) {
-      return msg.getDailyChallengeMessage(
-        selectedCountry,
-        dailyChallenge.streak,
-      );
-    }
-
-    return msg.getCorrectGuessMessage(selectedCountry);
-  }
-
-  // Guess country is incorrect
-  return msg.getIncorrectGuessMessage(selectedCountry, guessedCountry);
-}
-
-function confirmCountry() {
-  const dropdown = document.getElementById("country-dropdown");
-  const selectedCountry = dropdown.value;
-  const guessedCountry = dropdown.options[0].value;
-
-  const message = getConfirmationMessage(selectedCountry, guessedCountry);
-  showGuessMessage(message);
-  hideConfirmation();
-
-  // Send feedback
-  if (window.currentDrawingId) {
-    // Capture the drawing ID locally before sending
-    const drawingId = window.currentDrawingId;
-    sendFeedback(selectedCountry, drawingId);
-
-    // Clear the global drawing ID
-    window.currentDrawingId = null;
-
-    // Lock the guess button via class
-    const guessBtn = document.getElementById("guess-btn");
-    guessBtn.classList.add("guess-locked");
-  }
 }
 
 async function sendFeedback(countryName, drawingId) {
@@ -212,4 +73,105 @@ async function sendFeedback(countryName, drawingId) {
   }
 }
 
-export { hideConfirmation };
+/**
+ * Core Guess Logic
+ */
+export async function guess() {
+  if (lines.length === 0) {
+    msg.setEmptyGuessMessage();
+    return false;
+  }
+
+  showLoadingMessage();
+
+  try {
+    const data = await postGuess(lines);
+    const ranking = data.ranking;
+    const firstCountry = ranking.countries[0];
+    const firstScore = ranking.scores[0];
+
+    msg.setConfidenceBasedMessage(firstScore, firstCountry);
+    window.currentDrawingId = data.drawing_id;
+
+    populateCountryDropdown(ranking);
+    showConfirmationContainer();
+
+    return true; // Success - state should change to "confirm"
+  } catch (error) {
+    console.error("Error:", error);
+
+    let message = "An unexpected error occurred.";
+    if (error.message === "Server unreachable") {
+      message = "Could not reach the ML server.";
+    } else if (error.message === "Server error") {
+      message = "There was an error with the ML server response.";
+    }
+    showMessage(message);
+    return false;
+  }
+}
+
+function populateCountryDropdown(ranking) {
+  const dropdown = document.getElementById("country-dropdown");
+  dropdown.innerHTML = ""; // Clear previous options
+
+  // Add options for each country in the list
+  ranking.countries.forEach((country, index) => {
+    const option = document.createElement("option");
+    option.value = country;
+    option.text = `${country}${"\u00A0".repeat(4)}${(ranking.scores[index] * 100).toFixed(1)}%`;
+    dropdown.add(option);
+  });
+
+  // Add "Other country" option
+  const otherOption = document.createElement("option");
+  otherOption.value = "Other";
+  otherOption.text = "Other country";
+  dropdown.add(otherOption);
+}
+
+function setConfirmationMessage(selectedCountry, guessedCountry) {
+  // If incorrect, handle and exit early
+  if (selectedCountry !== guessedCountry) {
+    msg.setIncorrectGuessMessage(selectedCountry, guessedCountry);
+    return;
+  }
+
+  // Correct guess → trigger confetti
+  setTimeout(() => {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      startVelocity: 70,
+      zIndex: 1000,
+      origin: { y: 1, x: 0.5 },
+      resize: true,
+      useWorker: true,
+      ticks: 280,
+    });
+  }, 50);
+
+  msg.setCorrectGuessMessage(selectedCountry);
+}
+
+export function confirmCountry() {
+  const dropdown = document.getElementById("country-dropdown");
+  const selectedCountry = dropdown.value;
+  const guessedCountry = dropdown.options[0].value;
+
+  setConfirmationMessage(selectedCountry, guessedCountry);
+  hideConfirmationContainer();
+
+  // Send feedback
+  if (window.currentDrawingId) {
+    const drawingId = window.currentDrawingId;
+    sendFeedback(selectedCountry, drawingId);
+    window.currentDrawingId = null;
+  }
+}
+
+export function refreshGuess() {
+  showMessage("");
+  window.currentDrawingId = null;
+  hideConfirmationContainer();
+}

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Burundi",
-        "timestamp": "2025-04-14T19:44:36.998747"
+        "country_score": 0.8795763850212097,
+        "timestamp": "2025-04-14T19:44:36.998747",
+        "country_guess": "Burundi"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -10,8 +10,10 @@
     {
       "type": "Feature",
       "properties": {
-        "country_name": "Côte d'Ivoire",
-        "timestamp": "2025-04-13T17:02:42.290822"
+        "country_name": "C\u00f4te d'Ivoire",
+        "country_score": 0.061022743582725525,
+        "timestamp": "2025-04-13T17:02:42.290822",
+        "country_guess": "Egypt"
       },
       "geometry": {
         "type": "MultiLineString",

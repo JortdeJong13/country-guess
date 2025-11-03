@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Ethiopia",
-        "timestamp": "2025-10-18T23:23:21.602740"
+        "country_score": 0.07507553696632385,
+        "timestamp": "2025-10-18T23:23:21.602740",
+        "country_guess": "Uruguay"
       },
       "geometry": {
         "type": "MultiLineString",

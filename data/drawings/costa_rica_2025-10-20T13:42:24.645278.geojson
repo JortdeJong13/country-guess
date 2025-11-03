@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Costa Rica",
-        "timestamp": "2025-10-20T13:42:24.645278"
+        "country_score": 0.03994014486670494,
+        "timestamp": "2025-10-20T13:42:24.645278",
+        "country_guess": "Turkmenistan"
       },
       "geometry": {
         "type": "MultiLineString",

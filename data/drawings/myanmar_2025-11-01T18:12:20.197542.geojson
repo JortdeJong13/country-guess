@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Myanmar",
+        "country_score": 0.532948911190033,
         "timestamp": "2025-11-01T18:12:20.197542",
-        "country_guess": "Myanmar",
-        "guess_score": 0.532948911190033
+        "country_guess": "Myanmar"
       },
       "geometry": {
         "type": "MultiLineString",

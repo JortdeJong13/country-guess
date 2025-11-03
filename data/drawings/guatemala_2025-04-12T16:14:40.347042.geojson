@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Guatemala",
-        "timestamp": "2025-04-12T16:14:40.347042"
+        "country_score": 0.8943271636962891,
+        "timestamp": "2025-04-12T16:14:40.347042",
+        "country_guess": "Guatemala"
       },
       "geometry": {
         "type": "MultiLineString",

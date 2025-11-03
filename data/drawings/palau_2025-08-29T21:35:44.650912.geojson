@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Palau",
-        "timestamp": "2025-08-29T21:35:44.650912"
+        "country_score": 0.0050767697393894196,
+        "timestamp": "2025-08-29T21:35:44.650912",
+        "country_guess": "Togo"
       },
       "geometry": {
         "type": "MultiLineString",
