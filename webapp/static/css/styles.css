@@ -149,3 +149,7 @@
 #leaderboard-btn.active:hover {
     background-color: #fb7185; /* rose-400 */
 }
+
+button {
+    touch-action: manipulation;
+}
