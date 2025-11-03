@@ -80,7 +80,8 @@ const incorrectMessages = [
 ];
 
 // Messages for correct user drawings with high confidence
-const correctArchiveMessagesHigh = [
+const leaderboardMessagesHigh = [
+  "This is my favorite drawing of {{selected}}!",
   "Here someone drew a perfect {{selected}}.",
   "Another drawing of {{selected}}.",
   "Someone drew a nice {{selected}}!",
@@ -89,13 +90,12 @@ const correctArchiveMessagesHigh = [
   "Strong details make this clearly {{selected}}.",
   "A very nice submission of {{selected}} from Anonymous42.",
   "Picasso submitted this {{selected}}.",
-  "Thank you Nilay Rinkel from Rijswijk for this drawing of {{selected}}!",
+  "Thank you Nilay Rinkel for this drawing of {{selected}}!",
   "I present to you {{selected}}.",
 ];
 
 // Messages for correct user drawings with low confidence
-const correctArchiveMessagesLow = [
-  "This is my favorite drawing of {{selected}}!",
+const leaderboardMessagesLow = [
   "A simple and nice drawing of {{selected}}.",
   "This {{selected}} was drawn on a Nokia 3310.",
   "A friendly drawing of {{selected}}.",
@@ -507,12 +507,13 @@ export function setIncorrectGuessMessage(selectedCountry, guessedCountry) {
 }
 
 export function setLeaderboardMessage(rank, total, props) {
-  let message = `#${rank + 1}/${total} -- score: ${props.country_score.toFixed(2)}%\n`;
+  const scorePercent = Math.round(props.country_score * 100);
+  let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
 
   const messageList =
     props.country_score > 0.5
-      ? correctArchiveMessagesHigh
-      : correctArchiveMessagesLow;
+      ? leaderboardMessagesHigh
+      : leaderboardMessagesLow;
 
   message += getRandomMessage(messageList, {
     selected: props.country_name,
