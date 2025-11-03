@@ -90,7 +90,7 @@ const leaderboardMessagesHigh = [
   "Strong details make this clearly {{selected}}.",
   "A very nice submission of {{selected}} from Anonymous42.",
   "Picasso submitted this {{selected}}.",
-  "Thank you Nilay Rinkel for this drawing of {{selected}}!",
+  "Thank you Christian for this drawing of {{selected}}!",
   "I present to you {{selected}}.",
 ];
 
