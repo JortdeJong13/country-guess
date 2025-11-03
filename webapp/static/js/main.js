@@ -159,7 +159,7 @@ async function handleShowLeaderboard() {
   const result = await showLeaderboard();
   if (result.success) {
     setState("leaderboard");
-    leaderboardBtn.textContent = "Close Leaderboard";
+    leaderboardBtn.textContent = "Hide Leaderboard";
     updateLeaderboardButtonLocks(result.rank, result.total);
   }
 }

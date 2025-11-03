@@ -91,15 +91,17 @@ def feedback():
     if not data:
         return jsonify({"message": "Invalid input"}), 400
 
+    if "country" not in data:
+        return jsonify({"message": "Country not provided"}), 400
+
     drawing_id = data.get("drawing_id")
     if not drawing_id or not drawing_store.contains(drawing_id):
         return jsonify({"message": "Drawing not found"}), 400
 
-    if country_name := data.get("country"):
-        drawing = drawing_store.get(drawing_id)
-        ip_addr = request.remote_addr
-        hashed_ip = hashlib.sha256(ip_addr.encode()).hexdigest() if ip_addr else None
-        save_drawing(country_name, drawing, hashed_ip, output_dir=DRAWING_DIR)
+    drawing = drawing_store.get(drawing_id)
+    ip_addr = request.remote_addr
+    hashed_ip = hashlib.sha256(ip_addr.encode()).hexdigest() if ip_addr else None
+    save_drawing(data["country"], drawing, hashed_ip, output_dir=DRAWING_DIR)
 
     drawing_store.remove(drawing_id)
     return jsonify({"message": "Feedback received"})
