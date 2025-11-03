@@ -1,4 +1,4 @@
-import { lines, clearCanvas } from "./drawing.js";
+import { lines } from "./drawing.js";
 import * as msg from "./messages.js";
 import { checkDailyChallenge } from "./daily_challenge.js";
 
@@ -151,13 +151,7 @@ function setConfirmationMessage(selectedCountry, guessedCountry) {
     });
   }, 50);
 
-  // Handle daily challenge messaging
-  const dailyChallenge = checkDailyChallenge(selectedCountry);
-  if (dailyChallenge.challengeCompleted) {
-    msg.setDailyChallengeMessage(selectedCountry, dailyChallenge.streak);
-  } else {
-    msg.setCorrectGuessMessage(selectedCountry);
-  }
+  msg.setCorrectGuessMessage(selectedCountry);
 }
 
 export function confirmCountry() {

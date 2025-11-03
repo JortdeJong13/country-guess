@@ -1,4 +1,4 @@
-import { goldenStreak } from "./daily_challenge.js";
+import { checkDailyChallenge } from "./daily_challenge.js";
 
 // Messages for high confidence predictions
 const highConfidenceMessages = [
@@ -110,26 +110,12 @@ const dailyChallengeMessages = [
   "Well done, that’s today’s {{selected}} challenge done.",
   "You wrapped up the daily challenge with {{selected}}.",
   "That’s a solid {{selected}}, daily challenge finished.",
-  "You've drawn a perfect {{selected}}!",
   "Good job, {{selected}} closes out today’s challenge.",
   "Today’s challenge done: {{selected}}.",
   "That’s it for today! New challenge tomorrow.",
   "Challenge complete! Check back tomorrow for another country.",
   "You’re done for today, tomorrow brings a fresh challenge.",
   "Daily challenge cleared. See you tomorrow!",
-];
-
-const dailyStreakMessages = [
-  "Well done {{selected}}, {{streak}} days in a row.",
-  "You got {{selected}}, streak: {{streak}} days.",
-  "Nice {{selected}}, {{streak}} day streak.",
-  "Perfect {{selected}}, {{streak}} days strong.",
-  "Great {{selected}}, your streak is {{streak}}.",
-  "Today’s {{selected}}, {{streak}} days streaking.",
-  "Challenge done {{selected}}, {{streak}} days running.",
-  "Keeping that golden guess button!, streak: {{streak}} days.",
-  "Another {{selected}} complete, {{streak}} days.",
-  "Daily challenge {{selected}}, {{streak}} days streak.",
 ];
 
 const countryFacts = {
@@ -496,8 +482,12 @@ function getCountryFact(country) {
 }
 
 export function setCorrectGuessMessage(selectedCountry) {
+  const messageList = checkDailyChallenge(selectedCountry)
+    ? dailyChallengeMessages
+    : correctMessages;
+
   const message =
-    getRandomMessage(correctMessages, { selected: selectedCountry }) +
+    getRandomMessage(messageList, { selected: selectedCountry }) +
     getCountryFact(selectedCountry);
 
   showMessage(message);
@@ -512,28 +502,6 @@ export function setIncorrectGuessMessage(selectedCountry, guessedCountry) {
     selected: selectedCountry,
     guessed: guessedCountry,
   });
-
-  showMessage(message);
-}
-
-export function setDailyChallengeMessage(selectedCountry, streak) {
-  let message;
-
-  if (streak == goldenStreak) {
-    message =
-      "You're on a daily challenge streak. You have unlocked the golden guess button!" +
-      getCountryFact(selectedCountry);
-  } else if (streak > goldenStreak) {
-    message =
-      getRandomMessage(dailyStreakMessages, {
-        selected: selectedCountry,
-        streak: streak,
-      }) + getCountryFact(selectedCountry);
-  } else {
-    message =
-      getRandomMessage(dailyChallengeMessages, { selected: selectedCountry }) +
-      getCountryFact(selectedCountry);
-  }
 
   showMessage(message);
 }
