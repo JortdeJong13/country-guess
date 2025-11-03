@@ -13,7 +13,7 @@
         "country_name": "Egypt",
         "timestamp": "2025-11-02T09:26:21.380662",
         "country_guess": "Egypt",
-        "guess_score": 0.872164785861969
+        "country_score": 0.872164785861969
       },
       "geometry": {
         "type": "MultiLineString",

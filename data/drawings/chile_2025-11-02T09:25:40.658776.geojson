@@ -13,7 +13,7 @@
         "country_name": "Chile",
         "timestamp": "2025-11-02T09:25:40.658776",
         "country_guess": "Chile",
-        "guess_score": 0.9014668464660645
+        "country_score": 0.9014668464660645
       },
       "geometry": {
         "type": "MultiLineString",

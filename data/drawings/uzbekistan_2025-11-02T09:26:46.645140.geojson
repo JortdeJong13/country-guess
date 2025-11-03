@@ -13,7 +13,7 @@
         "country_name": "Uzbekistan",
         "timestamp": "2025-11-02T09:26:46.645140",
         "country_guess": "Uzbekistan",
-        "guess_score": 0.3661213219165802
+        "country_score": 0.3661213219165802
       },
       "geometry": {
         "type": "MultiLineString",

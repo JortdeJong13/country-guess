@@ -13,7 +13,7 @@
         "country_name": "Argentina",
         "timestamp": "2025-11-02T09:26:05.237793",
         "country_guess": "Togo",
-        "guess_score": 0.1532856971025467
+        "country_score": 0.1532856971025467
       },
       "geometry": {
         "type": "MultiLineString",

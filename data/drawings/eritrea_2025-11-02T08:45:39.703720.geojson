@@ -13,7 +13,7 @@
         "country_name": "Eritrea",
         "timestamp": "2025-11-02T08:45:39.703720",
         "country_guess": "Bahamas",
-        "guess_score": 0.3436865508556366
+        "country_score": 0.3436865508556366
       },
       "geometry": {
         "type": "MultiLineString",

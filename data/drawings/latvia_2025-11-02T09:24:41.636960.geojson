@@ -13,7 +13,7 @@
         "country_name": "Latvia",
         "timestamp": "2025-11-02T09:24:41.636960",
         "country_guess": "Latvia",
-        "guess_score": 0.266752153635025
+        "country_score": 0.266752153635025
       },
       "geometry": {
         "type": "MultiLineString",
