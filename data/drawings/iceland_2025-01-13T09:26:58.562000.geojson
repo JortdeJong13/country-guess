@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Iceland",
+        "country_score": 0.0133516239002347,
         "timestamp": "2025-01-13T09:26:58.562000",
-        "country_guess": "Azerbaijan",
-        "guess_score": 0.1337699592113495
+        "country_guess": "Azerbaijan"
       },
       "geometry": {
         "type": "MultiLineString",

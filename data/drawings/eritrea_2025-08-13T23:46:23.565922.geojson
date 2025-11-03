@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Eritrea",
+        "country_score": 0.0005010106251575053,
         "timestamp": "2025-08-13T23:46:23.565922",
-        "country_guess": "Czech Republic",
-        "guess_score": 0.1265130341053009
+        "country_guess": "Czech Republic"
       },
       "geometry": {
         "type": "MultiLineString",

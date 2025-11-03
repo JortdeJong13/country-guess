@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Isle of Man",
+        "country_score": 0.6038728952407837,
         "timestamp": "2025-08-16T12:16:14.641648",
-        "country_guess": "Isle of Man",
-        "guess_score": 0.6038728952407837
+        "country_guess": "Isle of Man"
       },
       "geometry": {
         "type": "MultiLineString",

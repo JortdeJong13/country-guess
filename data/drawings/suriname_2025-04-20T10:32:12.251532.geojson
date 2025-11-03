@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Suriname",
+        "country_score": 0.38203164935112,
         "timestamp": "2025-04-20T10:32:12.251532",
-        "country_guess": "Suriname",
-        "guess_score": 0.38203164935112
+        "country_guess": "Suriname"
       },
       "geometry": {
         "type": "MultiLineString",

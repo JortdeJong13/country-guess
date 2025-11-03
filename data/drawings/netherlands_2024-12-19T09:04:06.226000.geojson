@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Netherlands",
+        "country_score": 0.005592905916273594,
         "timestamp": "2024-12-19T09:04:06.226000",
-        "country_guess": "Saint Lucia",
-        "guess_score": 0.08726304024457932
+        "country_guess": "Saint Lucia"
       },
       "geometry": {
         "type": "MultiLineString",

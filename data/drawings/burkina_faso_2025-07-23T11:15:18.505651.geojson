@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Burkina Faso",
+        "country_score": 0.28793415427207947,
         "timestamp": "2025-07-23T11:15:18.505651",
-        "country_guess": "Burkina Faso",
-        "guess_score": 0.28793415427207947
+        "country_guess": "Burkina Faso"
       },
       "geometry": {
         "type": "MultiLineString",

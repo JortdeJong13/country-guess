@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Belize",
+        "country_score": 0.004353242460638285,
         "timestamp": "2025-08-29T21:36:40.854891",
-        "country_guess": "Togo",
-        "guess_score": 0.39059820771217346
+        "country_guess": "Togo"
       },
       "geometry": {
         "type": "MultiLineString",

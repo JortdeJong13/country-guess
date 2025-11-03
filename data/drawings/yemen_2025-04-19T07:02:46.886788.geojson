@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Yemen",
+        "country_score": 0.12397205829620361,
         "timestamp": "2025-04-19T07:02:46.886788",
-        "country_guess": "Yemen",
-        "guess_score": 0.12397205829620361
+        "country_guess": "Yemen"
       },
       "geometry": {
         "type": "MultiLineString",

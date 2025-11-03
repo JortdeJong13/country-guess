@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United States of America",
+        "country_score": 0.0007552386377938092,
         "timestamp": "2025-10-20T13:41:35.135954",
-        "country_guess": "North Macedonia",
-        "guess_score": 0.11447492241859436
+        "country_guess": "North Macedonia"
       },
       "geometry": {
         "type": "MultiLineString",

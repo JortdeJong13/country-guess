@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Argentina",
+        "country_score": 0.0018910616636276245,
         "timestamp": "2025-06-20T13:19:11.062858",
-        "country_guess": "Papua New Guinea",
-        "guess_score": 0.07892138510942459
+        "country_guess": "Papua New Guinea"
       },
       "geometry": {
         "type": "MultiLineString",

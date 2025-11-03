@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Malawi",
+        "country_score": 0.0035661784932017326,
         "timestamp": "2025-06-22T08:44:58.082792",
-        "country_guess": "Burundi",
-        "guess_score": 0.06965203583240509
+        "country_guess": "Burundi"
       },
       "geometry": {
         "type": "MultiLineString",

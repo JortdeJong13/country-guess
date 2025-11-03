@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United States of America",
+        "country_score": 0.13251468539237976,
         "timestamp": "2025-10-18T23:27:25.394945",
-        "country_guess": "Turks and Caicos Islands",
-        "guess_score": 0.16150285303592682
+        "country_guess": "Turks and Caicos Islands"
       },
       "geometry": {
         "type": "MultiLineString",

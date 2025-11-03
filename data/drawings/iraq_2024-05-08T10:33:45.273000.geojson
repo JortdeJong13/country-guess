@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Iraq",
+        "country_score": 0.8435463905334473,
         "timestamp": "2024-05-08T10:33:45.273000",
-        "country_guess": "Iraq",
-        "guess_score": 0.8435463905334473
+        "country_guess": "Iraq"
       },
       "geometry": {
         "type": "MultiLineString",

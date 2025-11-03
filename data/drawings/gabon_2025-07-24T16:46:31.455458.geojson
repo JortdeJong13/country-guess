@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Gabon",
+        "country_score": 0.46863511204719543,
         "timestamp": "2025-07-24T16:46:31.455458",
-        "country_guess": "Gabon",
-        "guess_score": 0.46863511204719543
+        "country_guess": "Gabon"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Somalia",
+        "country_score": 0.057548511773347855,
         "timestamp": "2025-06-20T13:28:53.194393",
-        "country_guess": "Somalia",
-        "guess_score": 0.057548511773347855
+        "country_guess": "Somalia"
       },
       "geometry": {
         "type": "MultiLineString",

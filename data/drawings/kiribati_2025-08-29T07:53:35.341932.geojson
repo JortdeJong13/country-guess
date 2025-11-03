@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Kiribati",
+        "country_score": 1.2570928902277956e-06,
         "timestamp": "2025-08-29T07:53:35.341932",
-        "country_guess": "Japan",
-        "guess_score": 0.2646189332008362
+        "country_guess": "Japan"
       },
       "geometry": {
         "type": "MultiLineString",

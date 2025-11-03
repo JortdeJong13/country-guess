@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Niger",
+        "country_score": 0.8166506886482239,
         "timestamp": "2025-06-22T08:42:05.994820",
-        "country_guess": "Niger",
-        "guess_score": 0.8166506886482239
+        "country_guess": "Niger"
       },
       "geometry": {
         "type": "MultiLineString",

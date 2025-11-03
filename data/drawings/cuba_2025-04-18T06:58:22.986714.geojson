@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Cuba",
+        "country_score": 0.45734646916389465,
         "timestamp": "2025-04-18T06:58:22.986714",
-        "country_guess": "Cuba",
-        "guess_score": 0.45734646916389465
+        "country_guess": "Cuba"
       },
       "geometry": {
         "type": "MultiLineString",

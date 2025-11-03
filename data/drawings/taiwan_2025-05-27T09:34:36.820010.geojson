@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Taiwan",
+        "country_score": 0.35940784215927124,
         "timestamp": "2025-05-27T09:34:36.820010",
-        "country_guess": "Taiwan",
-        "guess_score": 0.35940784215927124
+        "country_guess": "Taiwan"
       },
       "geometry": {
         "type": "MultiLineString",

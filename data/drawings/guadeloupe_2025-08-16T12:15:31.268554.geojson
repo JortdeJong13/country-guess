@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Guadeloupe",
+        "country_score": 0.008424579165875912,
         "timestamp": "2025-08-16T12:15:31.268554",
-        "country_guess": "Malawi",
-        "guess_score": 0.06423373520374298
+        "country_guess": "Malawi"
       },
       "geometry": {
         "type": "MultiLineString",

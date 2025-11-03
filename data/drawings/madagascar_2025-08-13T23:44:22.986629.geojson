@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Madagascar",
+        "country_score": 0.5229396820068359,
         "timestamp": "2025-08-13T23:44:22.986629",
-        "country_guess": "Madagascar",
-        "guess_score": 0.5229396820068359
+        "country_guess": "Madagascar"
       },
       "geometry": {
         "type": "MultiLineString",

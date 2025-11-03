@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "C\u00f4te d'Ivoire",
+        "country_score": 0.061022743582725525,
         "timestamp": "2025-04-13T17:02:42.290822",
-        "country_guess": "Egypt",
-        "guess_score": 0.47878652811050415
+        "country_guess": "Egypt"
       },
       "geometry": {
         "type": "MultiLineString",

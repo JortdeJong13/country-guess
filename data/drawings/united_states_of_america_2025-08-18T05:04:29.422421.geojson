@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United States of America",
+        "country_score": 0.00160675635561347,
         "timestamp": "2025-08-18T05:04:29.422421",
-        "country_guess": "Greece",
-        "guess_score": 0.27831321954727173
+        "country_guess": "Greece"
       },
       "geometry": {
         "type": "MultiLineString",

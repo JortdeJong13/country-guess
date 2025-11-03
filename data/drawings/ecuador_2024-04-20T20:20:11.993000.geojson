@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Ecuador",
+        "country_score": 0.9906741976737976,
         "timestamp": "2024-04-20T20:20:11.993000",
-        "country_guess": "Ecuador",
-        "guess_score": 0.9906741976737976
+        "country_guess": "Ecuador"
       },
       "geometry": {
         "type": "MultiLineString",

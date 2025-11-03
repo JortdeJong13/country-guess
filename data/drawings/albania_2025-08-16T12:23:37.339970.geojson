@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Albania",
+        "country_score": 0.3113660216331482,
         "timestamp": "2025-08-16T12:23:37.339970",
-        "country_guess": "Albania",
-        "guess_score": 0.3113660216331482
+        "country_guess": "Albania"
       },
       "geometry": {
         "type": "MultiLineString",

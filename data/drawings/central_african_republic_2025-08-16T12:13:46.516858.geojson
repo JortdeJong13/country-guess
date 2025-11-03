@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Central African Republic",
+        "country_score": 0.7253775596618652,
         "timestamp": "2025-08-16T12:13:46.516858",
-        "country_guess": "Central African Republic",
-        "guess_score": 0.7253775596618652
+        "country_guess": "Central African Republic"
       },
       "geometry": {
         "type": "MultiLineString",

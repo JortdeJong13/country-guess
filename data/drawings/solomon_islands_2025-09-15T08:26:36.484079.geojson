@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Solomon Islands",
+        "country_score": 0.3271811008453369,
         "timestamp": "2025-09-15T08:26:36.484079",
-        "country_guess": "Solomon Islands",
-        "guess_score": 0.3271811008453369
+        "country_guess": "Solomon Islands"
       },
       "geometry": {
         "type": "MultiLineString",

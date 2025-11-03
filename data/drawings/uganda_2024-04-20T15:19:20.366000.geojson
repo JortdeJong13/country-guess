@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Uganda",
+        "country_score": 0.8118180632591248,
         "timestamp": "2024-04-20T15:19:20.366000",
-        "country_guess": "Uganda",
-        "guess_score": 0.8118180632591248
+        "country_guess": "Uganda"
       },
       "geometry": {
         "type": "MultiLineString",

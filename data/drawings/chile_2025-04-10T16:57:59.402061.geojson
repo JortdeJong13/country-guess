@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Chile",
+        "country_score": 0.22973686456680298,
         "timestamp": "2025-04-10T16:57:59.402061",
-        "country_guess": "Chile",
-        "guess_score": 0.22973686456680298
+        "country_guess": "Chile"
       },
       "geometry": {
         "type": "MultiLineString",

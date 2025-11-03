@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Gambia",
+        "country_score": 0.47366681694984436,
         "timestamp": "2025-06-06T13:08:40.506975",
-        "country_guess": "Gambia",
-        "guess_score": 0.47366681694984436
+        "country_guess": "Gambia"
       },
       "geometry": {
         "type": "MultiLineString",

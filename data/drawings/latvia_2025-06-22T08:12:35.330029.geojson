@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Latvia",
+        "country_score": 0.019598012790083885,
         "timestamp": "2025-06-22T08:12:35.330029",
-        "country_guess": "Niger",
-        "guess_score": 0.07989758253097534
+        "country_guess": "Niger"
       },
       "geometry": {
         "type": "MultiLineString",

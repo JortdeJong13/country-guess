@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Guinea",
+        "country_score": 0.0566665381193161,
         "timestamp": "2025-08-29T21:38:26.809177",
-        "country_guess": "Guinea",
-        "guess_score": 0.0566665381193161
+        "country_guess": "Guinea"
       },
       "geometry": {
         "type": "MultiLineString",

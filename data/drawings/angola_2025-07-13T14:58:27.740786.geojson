@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Angola",
+        "country_score": 0.05260399356484413,
         "timestamp": "2025-07-13T14:58:27.740786",
-        "country_guess": "Uruguay",
-        "guess_score": 0.21375299990177155
+        "country_guess": "Uruguay"
       },
       "geometry": {
         "type": "MultiLineString",

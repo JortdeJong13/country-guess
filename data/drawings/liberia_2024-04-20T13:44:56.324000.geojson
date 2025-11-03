@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Liberia",
+        "country_score": 0.7410728931427002,
         "timestamp": "2024-04-20T13:44:56.324000",
-        "country_guess": "Liberia",
-        "guess_score": 0.7410728931427002
+        "country_guess": "Liberia"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Equatorial Guinea",
+        "country_score": 0.8925629258155823,
         "timestamp": "2025-11-01T15:38:18.644523",
-        "country_guess": "Equatorial Guinea",
-        "guess_score": 0.8925629258155823
+        "country_guess": "Equatorial Guinea"
       },
       "geometry": {
         "type": "MultiLineString",

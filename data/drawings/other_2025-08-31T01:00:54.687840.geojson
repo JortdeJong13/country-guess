@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Other",
+        "country_score": null,
         "timestamp": "2025-08-31T01:00:54.687840",
-        "country_guess": "West Bank",
-        "guess_score": 0.10846652090549469
+        "country_guess": "West Bank"
       },
       "geometry": {
         "type": "MultiLineString",

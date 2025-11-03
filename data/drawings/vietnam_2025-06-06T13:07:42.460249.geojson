@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Vietnam",
+        "country_score": 0.3291299641132355,
         "timestamp": "2025-06-06T13:07:42.460249",
-        "country_guess": "Vietnam",
-        "guess_score": 0.3291299641132355
+        "country_guess": "Vietnam"
       },
       "geometry": {
         "type": "MultiLineString",

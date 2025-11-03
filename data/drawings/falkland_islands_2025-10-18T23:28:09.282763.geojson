@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Falkland Islands",
+        "country_score": 0.012694590725004673,
         "timestamp": "2025-10-18T23:28:09.282763",
-        "country_guess": "Papua New Guinea",
-        "guess_score": 0.03662992641329765
+        "country_guess": "Papua New Guinea"
       },
       "geometry": {
         "type": "MultiLineString",

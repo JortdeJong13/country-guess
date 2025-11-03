@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Hungary",
+        "country_score": 0.40334686636924744,
         "timestamp": "2024-06-17T12:50:00.010000",
-        "country_guess": "Hungary",
-        "guess_score": 0.40334686636924744
+        "country_guess": "Hungary"
       },
       "geometry": {
         "type": "MultiLineString",

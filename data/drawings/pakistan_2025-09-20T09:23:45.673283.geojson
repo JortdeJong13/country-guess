@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Pakistan",
+        "country_score": 0.8057169914245605,
         "timestamp": "2025-09-20T09:23:45.673283",
-        "country_guess": "Pakistan",
-        "guess_score": 0.8057169914245605
+        "country_guess": "Pakistan"
       },
       "geometry": {
         "type": "MultiLineString",

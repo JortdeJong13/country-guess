@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Turkmenistan",
+        "country_score": 0.16740189492702484,
         "timestamp": "2025-09-15T08:36:05.843367",
-        "country_guess": "Turkmenistan",
-        "guess_score": 0.16740189492702484
+        "country_guess": "Turkmenistan"
       },
       "geometry": {
         "type": "MultiLineString",

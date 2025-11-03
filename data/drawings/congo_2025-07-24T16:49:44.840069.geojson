@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Congo",
+        "country_score": 0.29893428087234497,
         "timestamp": "2025-07-24T16:49:44.840069",
-        "country_guess": "Congo",
-        "guess_score": 0.29893428087234497
+        "country_guess": "Congo"
       },
       "geometry": {
         "type": "MultiLineString",

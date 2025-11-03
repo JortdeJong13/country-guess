@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Fiji",
+        "country_score": 0.12477663159370422,
         "timestamp": "2024-04-20T19:22:34.361000",
-        "country_guess": "Fiji",
-        "guess_score": 0.12477663159370422
+        "country_guess": "Fiji"
       },
       "geometry": {
         "type": "MultiLineString",

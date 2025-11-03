@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Georgia",
+        "country_score": 0.06988167762756348,
         "timestamp": "2025-06-20T13:24:59.075272",
-        "country_guess": "Madeira Islands",
-        "guess_score": 0.18624259531497955
+        "country_guess": "Madeira Islands"
       },
       "geometry": {
         "type": "MultiLineString",

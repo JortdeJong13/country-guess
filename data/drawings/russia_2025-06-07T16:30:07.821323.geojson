@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Russia",
+        "country_score": 0.0020138707477599382,
         "timestamp": "2025-06-07T16:30:07.821323",
-        "country_guess": "Indonesia",
-        "guess_score": 0.20407798886299133
+        "country_guess": "Indonesia"
       },
       "geometry": {
         "type": "MultiLineString",

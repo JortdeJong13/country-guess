@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Canada",
+        "country_score": 0.011706468649208546,
         "timestamp": "2025-09-11T01:47:19.584849",
-        "country_guess": "Azerbaijan",
-        "guess_score": 0.10413374751806259
+        "country_guess": "Azerbaijan"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Guinea-Bissau",
+        "country_score": 0.11413215100765228,
         "timestamp": "2025-04-20T16:01:35.669043",
-        "country_guess": "Estonia",
-        "guess_score": 0.12264882028102875
+        "country_guess": "Estonia"
       },
       "geometry": {
         "type": "MultiLineString",

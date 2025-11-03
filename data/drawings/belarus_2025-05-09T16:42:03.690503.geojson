@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Belarus",
+        "country_score": 0.0008657290018163621,
         "timestamp": "2025-05-09T16:42:03.690503",
-        "country_guess": "Turks and Caicos Islands",
-        "guess_score": 0.10811927914619446
+        "country_guess": "Turks and Caicos Islands"
       },
       "geometry": {
         "type": "MultiLineString",

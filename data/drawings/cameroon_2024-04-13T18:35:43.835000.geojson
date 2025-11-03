@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Cameroon",
+        "country_score": 0.16959480941295624,
         "timestamp": "2024-04-13T18:35:43.835000",
-        "country_guess": "Cameroon",
-        "guess_score": 0.16959480941295624
+        "country_guess": "Cameroon"
       },
       "geometry": {
         "type": "MultiLineString",

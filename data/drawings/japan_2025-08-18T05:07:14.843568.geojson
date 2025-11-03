@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Japan",
+        "country_score": 0.00757890148088336,
         "timestamp": "2025-08-18T05:07:14.843568",
-        "country_guess": "Latvia",
-        "guess_score": 0.0519978366792202
+        "country_guess": "Latvia"
       },
       "geometry": {
         "type": "MultiLineString",

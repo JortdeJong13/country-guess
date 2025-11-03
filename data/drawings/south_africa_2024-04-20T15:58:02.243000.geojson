@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "South Africa",
+        "country_score": 0.287142276763916,
         "timestamp": "2024-04-20T15:58:02.243000",
-        "country_guess": "South Africa",
-        "guess_score": 0.287142276763916
+        "country_guess": "South Africa"
       },
       "geometry": {
         "type": "MultiLineString",

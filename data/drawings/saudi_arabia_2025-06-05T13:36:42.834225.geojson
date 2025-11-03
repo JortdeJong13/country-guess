@@ -11,9 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Saudi Arabia",
+        "country_score": 0.27535122632980347,
         "timestamp": "2025-06-05T13:36:42.834225",
-        "country_guess": "Saudi Arabia",
-        "guess_score": 0.27535122632980347
+        "country_guess": "Saudi Arabia"
       },
       "geometry": {
         "type": "MultiLineString",
