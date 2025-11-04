@@ -519,8 +519,12 @@ export function setLeaderboardMessage(rank, total, props) {
     return;
   }
 
+  // Add medals for top 3 ranks
+  const medals = ["🥇", "🥈", "🥉"];
+  const medal = medals[rank] || "";
+
   const scorePercent = Math.round(props.country_score * 100);
-  let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
+  let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n${medal} `;
 
   const messageList =
     props.country_score > 0.5
