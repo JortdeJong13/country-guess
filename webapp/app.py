@@ -9,7 +9,7 @@ from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines
-from webapp.drawing_utils import DrawingStore, load_drawing, save_drawing
+from webapp.drawing_utils import DrawingStore, load_ranked_drawing, save_drawing
 
 DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
@@ -111,7 +111,7 @@ def feedback():
 def drawing():
     try:
         rank = int(request.args.get("rank", 0))
-        drawing = load_drawing(rank, drawing_dir=DRAWING_DIR)
+        drawing = load_ranked_drawing(rank, drawing_dir=DRAWING_DIR)
 
         if drawing is None:
             return jsonify({"message": f"No drawing found for rank {rank}"}), 404

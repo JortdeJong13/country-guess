@@ -90,7 +90,6 @@ const leaderboardMessagesHigh = [
   "Strong details make this clearly {{selected}}.",
   "A very nice submission of {{selected}} from Anonymous42.",
   "Picasso submitted this {{selected}}.",
-  "Thank you Christian for this drawing of {{selected}}!",
   "I present to you {{selected}}.",
 ];
 
@@ -506,9 +505,25 @@ export function setIncorrectGuessMessage(selectedCountry, guessedCountry) {
   showMessage(message);
 }
 
+let leaderboardMessageCache = {};
+
+export function clearLeaderboardMessageCache() {
+  leaderboardMessageCache = {};
+}
+
 export function setLeaderboardMessage(rank, total, props) {
+  // Check cache for message
+  if (leaderboardMessageCache[rank]) {
+    showMessage(leaderboardMessageCache[rank]);
+    return;
+  }
+
+  // Add medals for top 3 ranks
+  const medals = ["🥇", "🥈", "🥉"];
+  const medal = medals[rank] || "";
+
   const scorePercent = Math.round(props.country_score * 100);
-  let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
+  let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n${medal} `;
 
   const messageList =
     props.country_score > 0.5
@@ -519,6 +534,9 @@ export function setLeaderboardMessage(rank, total, props) {
     selected: props.country_name,
     guessed: props.country_guess,
   });
+
+  // Cache the message
+  leaderboardMessageCache[rank] = message;
 
   showMessage(message);
 }

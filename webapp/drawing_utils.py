@@ -8,36 +8,60 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+# Store scores for each drawing file
+_SCORE_CACHE = {}
 
-def load_drawing(rank, drawing_dir="./data/drawings/"):
-    """Return a drawing with the given rank."""
+
+def load_drawing_file(drawing_file: Path):
+    """Load and return a drawing file fully parsed."""
+    logger.info(f"Loading {drawing_file}...")
+    with open(drawing_file, "r", encoding="utf-8") as f:
+        drawing = json.load(f)
+
+    feature = drawing["features"][0]
+    props = feature["properties"]
+
+    return {"lines": feature["geometry"]["coordinates"], "properties": props}
+
+
+def get_score(drawing_file: Path):
+    """Return score from cache, loading from disk if missing."""
+    if drawing_file in _SCORE_CACHE:
+        return _SCORE_CACHE[drawing_file]
+
+    # Add to cache
+    drawing = load_drawing_file(drawing_file)
+    props = drawing["properties"]
+    score = props.get("country_score", None)
+    if props["country_name"] != props["country_guess"]:
+        score = None
+
+    _SCORE_CACHE[drawing_file] = score
+
+    return score
+
+
+def load_ranked_drawing(rank, drawing_dir="./data/drawings/"):
+    """Return the drawing with the given rank based on score."""
     drawing_files = list(Path(drawing_dir).glob("*.geojson"))
     if not drawing_files:
-        logger.warning("No drawings found in the drawing directory.")
+        logger.warning("No drawings found.")
         return None
 
-    drawings = []
-    for drawing_file in drawing_files:
-        with open(drawing_file, "r", encoding="utf-8") as f:
-            drawing = json.load(f)
-        feature = drawing["features"][0]
-        props = feature["properties"]
+    # Remove files with no score
+    drawing_files = [f for f in drawing_files if get_score(f) is not None]
 
-        if props["country_name"] == props["country_guess"]:
-            drawings.append(
-                {"lines": feature["geometry"]["coordinates"], "properties": props}
-            )
+    # Sort files by score from highest to lowest
+    drawing_files.sort(key=lambda f: get_score(f) or 0, reverse=True)
 
-    # Sort by score, highest first
-    drawings.sort(key=lambda d: d["properties"]["country_score"], reverse=True)
-    total = len(drawings)
-
+    total = len(drawing_files)
     if not (0 <= rank < total):
         logger.warning(f"Rank {rank} out of range (0 to {total - 1}).")
         return None
 
-    # Insert rank + count into result
-    result = drawings[rank]
+    # Load drawing with rank
+    selected_file = drawing_files[rank]
+    result = load_drawing_file(selected_file)
     result["rank"] = rank
     result["total"] = total
 
