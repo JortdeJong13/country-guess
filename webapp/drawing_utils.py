@@ -31,8 +31,11 @@ def get_score(drawing_file: Path):
 
     # Add to cache
     drawing = load_drawing_file(drawing_file)
-    score = drawing["properties"].get("country_score", 0)
-    score = 0 if score is None else score
+    props = drawing["properties"]
+    score = props.get("country_score", None)
+    if props["country_name"] != props["country_guess"]:
+        score = None
+
     _SCORE_CACHE[drawing_file] = score
 
     return score
@@ -45,8 +48,11 @@ def load_ranked_drawing(rank, drawing_dir="./data/drawings/"):
         logger.warning("No drawings found.")
         return None
 
+    # Remove files with no score
+    drawing_files = [f for f in drawing_files if get_score(f) is not None]
+
     # Sort files by score from highest to lowest
-    drawing_files.sort(key=get_score, reverse=True)
+    drawing_files.sort(key=lambda f: get_score(f) or 0, reverse=True)
 
     total = len(drawing_files)
     if not (0 <= rank < total):
