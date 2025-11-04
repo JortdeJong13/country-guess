@@ -506,7 +506,19 @@ export function setIncorrectGuessMessage(selectedCountry, guessedCountry) {
   showMessage(message);
 }
 
+let leaderboardMessageCache = {};
+
+export function clearLeaderboardMessageCache() {
+  leaderboardMessageCache = {};
+}
+
 export function setLeaderboardMessage(rank, total, props) {
+  // Check cache for message
+  if (leaderboardMessageCache[rank]) {
+    showMessage(leaderboardMessageCache[rank]);
+    return;
+  }
+
   const scorePercent = Math.round(props.country_score * 100);
   let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
 
@@ -519,6 +531,9 @@ export function setLeaderboardMessage(rank, total, props) {
     selected: props.country_name,
     guessed: props.country_guess,
   });
+
+  // Cache the message
+  leaderboardMessageCache[rank] = message;
 
   showMessage(message);
 }

@@ -21,6 +21,7 @@ async function fetchDrawingByRank(rank) {
  */
 export async function showLeaderboard() {
   currentRank = 0;
+  msg.clearLeaderboardMessageCache();
   return showLeaderboardAt(currentRank);
 }
 
