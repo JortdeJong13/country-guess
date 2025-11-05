@@ -152,4 +152,7 @@
 
 button {
     touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10+ */
 }
