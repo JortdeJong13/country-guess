@@ -120,11 +120,8 @@
     transition:
         background-color 1s ease-in-out,
         color 1s ease-in-out,
-        border-color 1s ease-in-out !important;
-}
-
-.golden:hover {
-    background-color: #fbbf24 !important;
+        border-color 1s ease-in-out,
+        transform 0.15s ease-in-out !important;
 }
 
 /* Locked state */
@@ -134,7 +131,7 @@
     pointer-events: none;
 }
 
-/* Golden + Locked optional */
+/* Golden + Locked */
 .golden.locked {
     background-color: #ffb300 !important; /* amber-600 */
 }
@@ -146,13 +143,47 @@
     border-color: #fb7185; /* rose-400 */
 }
 
-#leaderboard-btn.active:hover {
-    background-color: #fb7185; /* rose-400 */
-}
-
 button {
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10+ */
+}
+
+/* Mobile touch effects */
+@media (hover: none) {
+    button.touch-active {
+        background-color: rgb(55, 65, 81) !important; /* gray-700 */
+        transform: scale(1.1);
+    }
+
+    #leaderboard-btn.touch-active {
+        color: white !important;
+        background-color: #fb7185 !important; /* rose-400 */
+        border-color: #fb7185 !important;
+    }
+
+    .golden.touch-active {
+        background-color: #fbbf24 !important;
+    }
+}
+
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+    #left-btn:hover,
+    #right-btn:hover,
+    #leaderboard-btn:hover {
+        background-color: rgb(55, 65, 81); /* gray-700 */
+        transform: scale(1.1);
+    }
+
+    #leaderboard-btn:hover {
+        color: white;
+        background-color: #fb7185; /* rose-400 */
+        border-color: #fb7185;
+    }
+
+    .golden:hover {
+        background-color: #fbbf24 !important;
+    }
 }

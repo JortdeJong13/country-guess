@@ -184,10 +184,34 @@ function initializeEventListeners() {
 }
 
 /**
+ * Prevent sticky hover on mobile
+ */
+function initializeMobileTouchFeedback() {
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.addEventListener("touchstart", function () {
+      this.classList.add("touch-active");
+    });
+
+    button.addEventListener("touchend", function () {
+      setTimeout(() => {
+        this.classList.remove("touch-active");
+      }, 150);
+    });
+
+    // Clean up if touch is cancelled
+    button.addEventListener("touchcancel", function () {
+      this.classList.remove("touch-active");
+    });
+  });
+}
+
+/**
  * Initialize Application
  */
 document.addEventListener("DOMContentLoaded", function () {
   initializeEventListeners();
+  initializeMobileTouchFeedback();
   updateUI(); // Set initial UI state
 });
 
