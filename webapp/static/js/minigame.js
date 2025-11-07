@@ -174,6 +174,16 @@ class MiniGame {
         this.titleElement.style.transition =
           "transform 0.4s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
         this.titleElement.style.transform = "rotate(8deg)";
+
+        // Trigger shake after fall completes
+        setTimeout(() => {
+          document.body.classList.add("screen-shake");
+
+          // Remove shake class once animation completes
+          setTimeout(() => {
+            document.body.classList.remove("screen-shake");
+          }, 550); // matches animation duration
+        }, 380); // delay = fall duration
       }, 50);
     } else if (this.titleTiltCount < 5) {
       // Only do bounce feedback if not close to tilting and not already tilted
