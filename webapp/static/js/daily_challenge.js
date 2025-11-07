@@ -39,13 +39,16 @@ function getHistory() {
   return JSON.parse(localStorage.getItem("dailyChallengeHistory") || "{}");
 }
 
-function setHistory(history) {
-  localStorage.setItem("dailyChallengeHistory", JSON.stringify(history));
+function setHistory(challenge) {
+  // challenge = { date: "YYYY-MM-DD", country: "Country Name" }
+  localStorage.setItem("dailyChallengeHistory", JSON.stringify(challenge));
 }
 
 export function hasCompletedToday() {
   const history = getHistory();
-  return !!history[getTodayISO()];
+  if (!history) return false;
+
+  return history.date === getTodayISO();
 }
 
 /**
@@ -286,9 +289,7 @@ function updateDailyChallenge() {
 
 function onDailyChallengeSuccess() {
   const today = getTodayISO();
-  const history = getHistory();
-  history[today] = dailyCountry;
-  setHistory(history);
+  setHistory({ date: today, country: dailyCountry });
 
   // Stop tempting bounce since challenge is completed
   stopTemptingBounce();
@@ -334,15 +335,13 @@ export function checkDailyChallenge(selectedCountry) {
  * Get daily country from history or fetch it from the server
  */
 async function resolveDailyCountry() {
-  if (hasCompletedToday()) {
-    const history = getHistory();
-    const fromHistory = history[getTodayISO()] || null;
-    if (fromHistory) return fromHistory;
+  const history = getHistory();
+  if (history && history.date === getTodayISO()) {
+    return history.country;
   }
 
   try {
     const response = await fetch("/daily_country");
-
     if (!response.ok) return null;
 
     const data = await response.json();
