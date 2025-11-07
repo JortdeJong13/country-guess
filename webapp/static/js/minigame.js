@@ -31,7 +31,7 @@ class MiniGame {
     this.globe = null;
     this.boundaries = [];
     this.lineWalls = [];
-    this.canvasTopWalls = []; // Top walls with hole for globe entry
+    this.topWallTimeout = null;
 
     // Globe appearance properties
     this.globeRadius = 20;
@@ -174,6 +174,16 @@ class MiniGame {
         this.titleElement.style.transition =
           "transform 0.4s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
         this.titleElement.style.transform = "rotate(8deg)";
+
+        // Trigger shake after fall completes
+        setTimeout(() => {
+          document.body.classList.add("screen-shake");
+
+          // Remove shake class once animation completes
+          setTimeout(() => {
+            document.body.classList.remove("screen-shake");
+          }, 550); // matches animation duration
+        }, 380); // delay = fall duration
       }, 50);
     } else if (this.titleTiltCount < 5) {
       // Only do bounce feedback if not close to tilting and not already tilted
@@ -283,6 +293,12 @@ class MiniGame {
       this.boundaries = [];
     }
 
+    // Clear any pending top wall timeout
+    if (this.topWallTimeout) {
+      clearTimeout(this.topWallTimeout);
+      this.topWallTimeout = null;
+    }
+
     const wallThickness = 50;
 
     // Create invisible walls around the entire viewport to contain the ball
@@ -344,8 +360,22 @@ class MiniGame {
     this.boundaries = walls;
     Matter.World.add(this.world, walls);
 
-    // Create canvas top wall with hole
-    this.createTopWallWithHole(canvasRect);
+    // Add canvas top wall after 1 second delay to allow globe to enter
+    this.topWallTimeout = setTimeout(() => {
+      if (!this.isActive) return;
+
+      const canvasTopWall = Matter.Bodies.rectangle(
+        canvasRect.left + canvasRect.width / 2,
+        canvasRect.top - wallThickness / 2,
+        canvasRect.width,
+        wallThickness,
+        { isStatic: true, restitution: 0.95 },
+      );
+
+      this.boundaries.push(canvasTopWall);
+      Matter.World.add(this.world, canvasTopWall);
+      this.topWallTimeout = null;
+    }, 1000);
   }
 
   createLineWalls() {
@@ -420,68 +450,8 @@ class MiniGame {
     const canvasRect = this.canvas.getBoundingClientRect();
     this.createBoundaries(canvasRect);
 
-    // Recreate line walls and top wall with hole after resize
+    // Recreate line walls after resize
     this.createLineWalls();
-    this.createTopWallWithHole(canvasRect);
-  }
-
-  createTopWallWithHole(canvasRect) {
-    // Remove existing top walls
-    if (this.canvasTopWalls.length > 0) {
-      Matter.World.remove(this.world, this.canvasTopWalls);
-      this.canvasTopWalls = [];
-    }
-
-    const wallThickness = 50;
-    const holeWidth = this.globeRadius * 3; // Small hole for globe to pass through
-
-    // Get globe starting position to center the hole
-    const globeRect = this.globeElement.getBoundingClientRect();
-    const holeCenter = globeRect.left + globeRect.width / 2;
-
-    // Clamp hole position to be within canvas bounds
-    const minHoleCenter = canvasRect.left + holeWidth / 2;
-    const maxHoleCenter = canvasRect.right - holeWidth / 2;
-    const clampedHoleCenter = Math.max(
-      minHoleCenter,
-      Math.min(maxHoleCenter, holeCenter),
-    );
-
-    const walls = [];
-
-    // Left part of top wall (from canvas left to hole start)
-    const leftWallWidth = clampedHoleCenter - holeWidth / 2 - canvasRect.left;
-    if (leftWallWidth > 10) {
-      // Only create if wide enough
-      walls.push(
-        Matter.Bodies.rectangle(
-          canvasRect.left + leftWallWidth / 2,
-          canvasRect.top - wallThickness / 2,
-          leftWallWidth,
-          wallThickness,
-          { isStatic: true, restitution: 0.95 },
-        ),
-      );
-    }
-
-    // Right part of top wall (from hole end to canvas right)
-    const rightWallWidth =
-      canvasRect.right - (clampedHoleCenter + holeWidth / 2);
-    if (rightWallWidth > 10) {
-      // Only create if wide enough
-      walls.push(
-        Matter.Bodies.rectangle(
-          canvasRect.right - rightWallWidth / 2,
-          canvasRect.top - wallThickness / 2,
-          rightWallWidth,
-          wallThickness,
-          { isStatic: true, restitution: 0.95 },
-        ),
-      );
-    }
-
-    this.canvasTopWalls = walls;
-    Matter.World.add(this.world, walls);
   }
 
   gameLoop() {
@@ -608,6 +578,12 @@ class MiniGame {
       this.animationId = null;
     }
 
+    // Clear top wall timeout
+    if (this.topWallTimeout) {
+      clearTimeout(this.topWallTimeout);
+      this.topWallTimeout = null;
+    }
+
     // Remove physics bodies
     if (this.globe) {
       Matter.World.remove(this.world, this.globe);
@@ -622,11 +598,6 @@ class MiniGame {
     if (this.lineWalls.length > 0) {
       Matter.World.remove(this.world, this.lineWalls);
       this.lineWalls = [];
-    }
-
-    if (this.canvasTopWalls.length > 0) {
-      Matter.World.remove(this.world, this.canvasTopWalls);
-      this.canvasTopWalls = [];
     }
 
     // Clear line monitoring interval
