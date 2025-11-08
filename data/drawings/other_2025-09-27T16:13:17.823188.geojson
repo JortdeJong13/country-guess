@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Other",
-        "timestamp": "2025-09-27T16:13:17.823188"
+        "country_score": null,
+        "timestamp": "2025-09-27T16:13:17.823188",
+        "country_guess": "Brunei"
       },
       "geometry": {
         "type": "MultiLineString",

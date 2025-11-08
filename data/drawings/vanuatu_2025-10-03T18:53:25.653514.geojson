@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Vanuatu",
-        "timestamp": "2025-10-03T18:53:25.653514"
+        "country_score": 0.23273783922195435,
+        "timestamp": "2025-10-03T18:53:25.653514",
+        "country_guess": "Vanuatu"
       },
       "geometry": {
         "type": "MultiLineString",

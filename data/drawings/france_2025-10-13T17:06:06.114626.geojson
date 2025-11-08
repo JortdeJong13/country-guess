@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "France",
-        "timestamp": "2025-10-13T17:06:06.114626"
+        "country_score": 0.07064918428659439,
+        "timestamp": "2025-10-13T17:06:06.114626",
+        "country_guess": "Sierra Leone"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Barbados",
-        "timestamp": "2025-10-13T17:09:50.962684"
+        "country_score": 0.7493865489959717,
+        "timestamp": "2025-10-13T17:09:50.962684",
+        "country_guess": "Barbados"
       },
       "geometry": {
         "type": "MultiLineString",

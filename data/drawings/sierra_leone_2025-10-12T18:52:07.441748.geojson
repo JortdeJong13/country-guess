@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Sierra Leone",
-        "timestamp": "2025-10-12T18:52:07.441748"
+        "country_score": 0.05854519084095955,
+        "timestamp": "2025-10-12T18:52:07.441748",
+        "country_guess": "Eswatini"
       },
       "geometry": {
         "type": "MultiLineString",

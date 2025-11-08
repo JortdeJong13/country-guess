@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Benin",
-        "timestamp": "2025-10-12T19:04:44.641262"
+        "country_score": 0.2768557369709015,
+        "timestamp": "2025-10-12T19:04:44.641262",
+        "country_guess": "Benin"
       },
       "geometry": {
         "type": "MultiLineString",

@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Ukraine",
-        "timestamp": "2025-10-15T21:51:22.531980"
+        "country_score": 0.0027947165071964264,
+        "timestamp": "2025-10-15T21:51:22.531980",
+        "country_guess": "Jamaica"
       },
       "geometry": {
         "type": "MultiLineString",

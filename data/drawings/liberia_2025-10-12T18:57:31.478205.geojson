@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Liberia",
-        "timestamp": "2025-10-12T18:57:31.478205"
+        "country_score": 0.07524900138378143,
+        "timestamp": "2025-10-12T18:57:31.478205",
+        "country_guess": "Martinique"
       },
       "geometry": {
         "type": "MultiLineString",

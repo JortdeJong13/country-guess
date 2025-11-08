@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Portugal",
-        "timestamp": "2025-10-12T18:53:43.581700"
+        "country_score": 0.07627065479755402,
+        "timestamp": "2025-10-12T18:53:43.581700",
+        "country_guess": "West Bank"
       },
       "geometry": {
         "type": "MultiLineString",

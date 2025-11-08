@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Lesotho",
-        "timestamp": "2025-10-12T18:51:28.801658"
+        "country_score": 0.32290711998939514,
+        "timestamp": "2025-10-12T18:51:28.801658",
+        "country_guess": "Lesotho"
       },
       "geometry": {
         "type": "MultiLineString",

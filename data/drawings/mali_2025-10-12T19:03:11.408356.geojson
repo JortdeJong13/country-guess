@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Mali",
-        "timestamp": "2025-10-12T19:03:11.408356"
+        "country_score": 0.046079546213150024,
+        "timestamp": "2025-10-12T19:03:11.408356",
+        "country_guess": "Mali"
       },
       "geometry": {
         "type": "MultiLineString",

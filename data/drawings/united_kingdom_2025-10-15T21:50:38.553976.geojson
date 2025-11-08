@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "United Kingdom",
-        "timestamp": "2025-10-15T21:50:38.553976"
+        "country_score": 0.019727973267436028,
+        "timestamp": "2025-10-15T21:50:38.553976",
+        "country_guess": "Guyana"
       },
       "geometry": {
         "type": "MultiLineString",

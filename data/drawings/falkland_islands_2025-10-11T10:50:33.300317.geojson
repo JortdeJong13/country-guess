@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Falkland Islands",
-        "timestamp": "2025-10-11T10:50:33.300317"
+        "country_score": 0.11100499331951141,
+        "timestamp": "2025-10-11T10:50:33.300317",
+        "country_guess": "Falkland Islands"
       },
       "geometry": {
         "type": "MultiLineString",

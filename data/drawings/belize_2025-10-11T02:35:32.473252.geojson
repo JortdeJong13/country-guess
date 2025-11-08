@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Belize",
-        "timestamp": "2025-10-11T02:35:32.473252"
+        "country_score": 0.23279516398906708,
+        "timestamp": "2025-10-11T02:35:32.473252",
+        "country_guess": "Belize"
       },
       "geometry": {
         "type": "MultiLineString",

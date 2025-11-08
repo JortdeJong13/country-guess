@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Guyana",
-        "timestamp": "2025-09-22T09:13:02.242195"
+        "country_score": 0.3386640250682831,
+        "timestamp": "2025-09-22T09:13:02.242195",
+        "country_guess": "Guyana"
       },
       "geometry": {
         "type": "MultiLineString",

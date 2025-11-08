@@ -11,7 +11,9 @@
       "type": "Feature",
       "properties": {
         "country_name": "Mauritania",
-        "timestamp": "2025-10-11T02:36:23.352594"
+        "country_score": 0.0818944200873375,
+        "timestamp": "2025-10-11T02:36:23.352594",
+        "country_guess": "Mauritania"
       },
       "geometry": {
         "type": "MultiLineString",
