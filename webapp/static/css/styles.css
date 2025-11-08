@@ -180,7 +180,6 @@ button {
 @media (hover: none) {
     button.touch-active {
         background-color: rgb(55, 65, 81) !important; /* gray-700 */
-        transform: scale(1.1);
     }
 
     #leaderboard-btn.touch-active {
@@ -190,7 +189,8 @@ button {
     }
 
     .golden.touch-active {
-        background-color: #fbbf24 !important;
+        background-color: #fcd34d !important; /* amber-300 - lighter golden */
+        border-color: #fde68a !important; /* amber-200 */
     }
 }
 
@@ -201,6 +201,7 @@ button {
     #leaderboard-btn:hover {
         background-color: rgb(55, 65, 81); /* gray-700 */
         transform: scale(1.1);
+        transition: all 0.2s ease; /* Smooth hover transition */
     }
 
     #leaderboard-btn:hover {
@@ -210,6 +211,7 @@ button {
     }
 
     .golden:hover {
-        background-color: #fbbf24 !important;
+        background-color: #fcd34d !important; /* amber-300 - lighter golden */
+        border-color: #fde68a !important; /* amber-200 */
     }
 }
