@@ -3,15 +3,15 @@ import { checkDailyChallenge } from "./daily_challenge.js";
 // Messages for high confidence predictions
 const highConfidenceMessages = [
   "I'm absolutely sure this is {{guessed}}!",
-  "No doubt about it — this is {{guessed}}.",
-  "This is definitely {{guessed}} — I'm certain.",
+  "No doubt about it, this is {{guessed}}.",
+  "This is definitely {{guessed}}. I'm certain.",
   "I'd bet anything this is {{guessed}}.",
   "{{guessed}} for sure! It’s unmistakable.",
-  "This is classic {{guessed}} — crystal clear.",
-  "Zero hesitation — this has to be {{guessed}}.",
+  "This is classic {{guessed}}, crystal clear.",
+  "Zero hesitation. This has to be {{guessed}}.",
   "I’d recognize {{guessed}} anywhere. No question.",
-  "It’s obvious — this is {{guessed}}.",
-  "Undeniably {{guessed}}. Couldn’t be anything else.",
+  "It’s obvious. This is {{guessed}}.",
+  "Undeniably {{guessed}}. Couldn't be anything else.",
 ];
 
 // Messages for medium confidence predictions
