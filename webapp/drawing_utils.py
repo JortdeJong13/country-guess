@@ -82,8 +82,11 @@ def save_drawing(country_name, drawing, hashed_ip, output_dir="./data/drawings/"
 
     # Get the score of the correct country
     countries = drawing["ranking"]["countries"]
-    idx = countries.index(country_name)
-    score = drawing["ranking"]["scores"][idx]
+    if country_name in countries:
+        idx = countries.index(country_name)
+        score = drawing["ranking"]["scores"][idx]
+    else:
+        score = None
 
     # Create GeoJSON feature, including CRS information
     geojson = {
