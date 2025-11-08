@@ -16,22 +16,13 @@ help:
 # Push new drawings to GitHub
 .PHONY: push-drawings
 push-drawings:
-	@echo "Pushing new drawings to GitHub..."
-	@if git status --porcelain | grep -q "data/drawings/"; then \
+	@echo "Checking for new drawings..."
+	@git fetch
+	@if git status --porcelain -- data/drawings | grep -q .; then \
+		echo "Pushing new drawings to GitHub..."; \
 		git add data/drawings/*; \
 		git commit -m "New drawings $$(date -I)"; \
-		echo "Syncing with origin/drawings..."; \
-		git fetch origin drawings || true; \
-		git rebase origin/drawings; \
-		git push origin HEAD:drawings; \
-		echo "Checking for non-drawings commits before reset..."; \
-		if [ -z "$$(git diff --name-only origin/main..main | grep -v '^data/drawings/')" ]; then \
-			echo "Only drawings changed. Resetting main to origin/main..."; \
-			git fetch origin main; \
-			git reset --hard origin/main; \
-		else \
-			echo "WARNING: Non-drawings commits exist. Skipping reset!"; \
-		fi; \
+		git push; \
 	else \
 		echo "No new drawings to push."; \
 	fi
