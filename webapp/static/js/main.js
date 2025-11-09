@@ -1,5 +1,5 @@
 import { hasCompletedToday } from "./daily_challenge.js";
-import { clearCanvas } from "./drawing.js";
+import { clearCanvas, undoLine, lines } from "./drawing.js";
 import { confirmCountry, guess, refreshGuess } from "./guess.js";
 import {
   showLeaderboard,
@@ -15,6 +15,7 @@ let appState = "home"; // "home", "confirm", "leaderboard"
 const leftBtn = document.getElementById("left-btn");
 const rightBtn = document.getElementById("right-btn");
 const leaderboardBtn = document.getElementById("leaderboard-btn");
+const undoBtn = document.getElementById("undo-btn");
 
 /**
  * State Management
@@ -46,6 +47,22 @@ function setLeaderboardButtonVisibility(visible) {
   }
 }
 
+function showUndoBtn() {
+  rightBtn.classList.remove("w-full", "px-4");
+  rightBtn.classList.add("px-3");
+  rightBtn.style.width = "calc(100% - 3rem)"; // 100% minus (w-10 + gap-2)
+
+  undoBtn.classList.remove("hidden");
+}
+
+function hideUndoBtn() {
+  rightBtn.classList.add("w-full", "px-4");
+  rightBtn.classList.remove("px-3");
+  rightBtn.style.width = "";
+
+  undoBtn.classList.add("hidden");
+}
+
 /**
  * UI Updates based on state
  */
@@ -64,6 +81,7 @@ function updateUI() {
 }
 
 function updateHomeUI() {
+  hideUndoBtn(); // ?
   leftBtn.textContent = "Guess Country";
   rightBtn.textContent = "Clear";
   leftBtn.classList.remove("locked");
@@ -78,6 +96,7 @@ function updateConfirmUI() {
   leftBtn.textContent = "Confirm";
   rightBtn.textContent = "Clear";
   setLeaderboardButtonVisibility(false);
+  hideUndoBtn();
 }
 
 function updateLeaderboardUI() {
@@ -86,6 +105,7 @@ function updateLeaderboardUI() {
   setLeaderboardButtonVisibility(true);
   leaderboardBtn.classList.add("active");
   leftBtn.classList.remove("golden");
+  hideUndoBtn();
 }
 
 /**
@@ -109,7 +129,7 @@ function handleRightButtonClick() {
   if (appState === "leaderboard") {
     handleNextLeaderboard();
   } else {
-    handleRefresh(); // "Clear" - reset the canvas
+    handleRefresh();
   }
 }
 
@@ -144,6 +164,7 @@ function handleRefresh() {
   refreshGuess();
   clearCanvas();
   setState("home");
+  hideUndoBtn();
   leaderboardBtn.textContent = "Show Leaderboard";
   if (window.miniGame) {
     window.miniGame.reset();
@@ -180,6 +201,7 @@ async function handlePrevLeaderboard() {
 function initializeEventListeners() {
   leftBtn.addEventListener("click", handleLeftButtonClick);
   rightBtn.addEventListener("click", handleRightButtonClick);
+  undoBtn.addEventListener("click", undoLine);
   leaderboardBtn.addEventListener("click", handleLeaderboardButtonClick);
 }
 
@@ -250,4 +272,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Export state management functions for use by other modules
-export { getState, setState };
+export { getState, setState, hideUndoBtn, showUndoBtn };

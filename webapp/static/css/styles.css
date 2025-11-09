@@ -176,6 +176,13 @@ button {
     -ms-user-select: none; /* IE 10+ */
 }
 
+.undo-icon {
+    filter: brightness(0) saturate(100%) invert(87%) sepia(6%) saturate(219%)
+        hue-rotate(178deg) brightness(92%) contrast(87%);
+    transform: rotate(30);
+    transition: transform 0.3s ease-in-out;
+}
+
 /* Mobile touch effects */
 @media (hover: none) {
     button.touch-active {
@@ -188,6 +195,14 @@ button {
         border-color: #fb7185 !important;
     }
 
+    #undo-btn.touch-active {
+        background-color: rgb(55, 65, 81) !important; /* gray-700 */
+    }
+
+    #undo-btn.touch-active .undo-icon {
+        transform: rotate(-20deg);
+    }
+
     .golden.touch-active {
         background-color: #fcd34d !important; /* amber-300 - lighter golden */
         border-color: #fde68a !important; /* amber-200 */
@@ -198,10 +213,16 @@ button {
 @media (hover: hover) and (pointer: fine) {
     #left-btn:hover,
     #right-btn:hover,
-    #leaderboard-btn:hover {
+    #leaderboard-btn:hover,
+    #undo-btn:hover {
         background-color: rgb(55, 65, 81); /* gray-700 */
         transform: scale(1.1);
         transition: all 0.2s ease; /* Smooth hover transition */
+    }
+
+    #undo-btn:hover .undo-icon {
+        transform: rotate(-20deg);
+        transition: transform 0.3s ease-in-out;
     }
 
     #leaderboard-btn:hover {

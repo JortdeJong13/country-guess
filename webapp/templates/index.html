@@ -99,12 +99,22 @@
                   Guess Country
                 </button>
 
-                <button
-                  id="right-btn"
-                  class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full transition-colors transition-transform duration-150"
-                >
-                  Clear Drawing
-                </button>
+                <!-- Right Button Group - always w-40 -->
+                <div class="flex items-center justify-start w-40 gap-2">
+                    <button
+                        id="right-btn"
+                        class="w-full px-4 py-1.5 text-base bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full cursor-pointer transition-all duration-150"
+                    >
+                        Clear
+                    </button>
+
+                    <button
+                        id="undo-btn"
+                        class="hidden w-10 h-10 rounded-full bg-zinc-800 border-2 border-gray-700 cursor-pointer transition-all duration-150 hover:bg-zinc-700 flex items-center justify-center text-gray-300 shrink-0"
+                    >
+                        <img src="static/undo-icon.svg" alt="Undo" class="undo-icon w-5 h-5">
+                    </button>
+                </div>
             </div>
 
             <!-- Message -->
