@@ -287,93 +287,95 @@ class MiniGame {
   }
 
   createBoundaries(canvasRect) {
-    // Clear existing boundaries
-    if (this.boundaries.length > 0) {
+    // Remove existing walls
+    if (this.boundaries.length) {
       Matter.World.remove(this.world, this.boundaries);
-      this.boundaries = [];
+      this.boundaries.length = 0;
     }
 
-    // Clear any pending top wall timeout
+    // Cancel any pending delayed wall creation
     if (this.topWallTimeout) {
       clearTimeout(this.topWallTimeout);
       this.topWallTimeout = null;
     }
 
     const wallThickness = 50;
+    const restitution = 0.95;
 
-    // Create invisible walls around the entire viewport to contain the ball
-    // wherever it starts (title could be above canvas)
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const { Bodies, World } = Matter;
 
-    const walls = [
-      // Left wall (full viewport height)
-      Matter.Bodies.rectangle(
+    const vpW = window.innerWidth;
+    const vpH = window.innerHeight;
+
+    const createWall = (x, y, width, height) =>
+      Bodies.rectangle(x, y, width, height, {
+        isStatic: true,
+        restitution,
+      });
+
+    // Viewport walls — ensures ball is always contained
+    const viewportWalls = [
+      createWall(
         -wallThickness / 2,
-        viewportHeight / 2,
+        vpH / 2,
         wallThickness,
-        viewportHeight + wallThickness * 2,
-        { isStatic: true, restitution: 0.95 },
+        vpH + wallThickness * 2,
       ),
-      // Right wall (full viewport height)
-      Matter.Bodies.rectangle(
-        viewportWidth + wallThickness / 2,
-        viewportHeight / 2,
+      createWall(
+        vpW + wallThickness / 2,
+        vpH / 2,
         wallThickness,
-        viewportHeight + wallThickness * 2,
-        { isStatic: true, restitution: 0.95 },
+        vpH + wallThickness * 2,
       ),
-      // Top wall (full viewport width)
-      Matter.Bodies.rectangle(
-        viewportWidth / 2,
+      createWall(
+        vpW / 2,
         -wallThickness / 2,
-        viewportWidth + wallThickness * 2,
+        vpW + wallThickness * 2,
         wallThickness,
-        { isStatic: true, restitution: 0.95 },
       ),
-      // Canvas bottom wall (only canvas width, positioned at canvas bottom)
-      Matter.Bodies.rectangle(
+    ];
+
+    // Canvas perimeter walls (bottom + sides)
+    const canvasWalls = [
+      createWall(
         canvasRect.left + canvasRect.width / 2,
         canvasRect.bottom + wallThickness / 2,
         canvasRect.width,
         wallThickness,
-        { isStatic: true, restitution: 0.95 },
       ),
-      // Canvas left wall
-      Matter.Bodies.rectangle(
+      createWall(
         canvasRect.left - wallThickness / 2,
         canvasRect.top + canvasRect.height / 2,
         wallThickness,
         canvasRect.height,
-        { isStatic: true, restitution: 0.95 },
       ),
-      // Canvas right wall
-      Matter.Bodies.rectangle(
+      createWall(
         canvasRect.right + wallThickness / 2,
         canvasRect.top + canvasRect.height / 2,
         wallThickness,
         canvasRect.height,
-        { isStatic: true, restitution: 0.95 },
       ),
     ];
 
-    this.boundaries = walls;
-    Matter.World.add(this.world, walls);
+    const walls = [...viewportWalls, ...canvasWalls];
 
-    // Add canvas top wall after 1 second delay to allow globe to enter
+    this.boundaries = walls;
+    World.add(this.world, walls);
+
+    // Delay top canvas wall so the ball can fall into view first
     this.topWallTimeout = setTimeout(() => {
       if (!this.isActive) return;
 
-      const canvasTopWall = Matter.Bodies.rectangle(
+      const topCanvasWall = createWall(
         canvasRect.left + canvasRect.width / 2,
         canvasRect.top - wallThickness / 2,
         canvasRect.width,
         wallThickness,
-        { isStatic: true, restitution: 0.95 },
       );
 
-      this.boundaries.push(canvasTopWall);
-      Matter.World.add(this.world, canvasTopWall);
+      this.boundaries.push(topCanvasWall);
+      World.add(this.world, topCanvasWall);
+
       this.topWallTimeout = null;
     }, 1000);
   }

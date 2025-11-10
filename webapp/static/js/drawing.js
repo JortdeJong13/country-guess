@@ -1,3 +1,5 @@
+import { hideUndoBtn, showUndoBtn } from "./main.js";
+
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -142,7 +144,7 @@ function stopDrawing() {
   if (currentLine.length > 1) {
     lines.push(currentLine);
     window.lines = lines;
-
+    showUndoBtn();
     updateMiniGame();
   }
   currentLine = [];
@@ -214,4 +216,16 @@ function clearCanvas() {
 // Make lines globally accessible for minigame
 window.lines = lines;
 
-export { lines, clearCanvas, renderUserDrawing };
+function undoLine() {
+  if (lines.length > 0) {
+    lines.pop();
+    window.lines = lines;
+    redrawCanvas();
+    updateMiniGame();
+  }
+  if (lines.length === 0) {
+    hideUndoBtn();
+  }
+}
+
+export { lines, clearCanvas, undoLine, renderUserDrawing };
