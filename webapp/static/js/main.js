@@ -52,25 +52,74 @@ function showUndoBtn() {
   if (!(appState == "home")) return;
   if (undoVisible) return;
 
-  rightBtn.classList.remove("w-full", "px-4");
-  rightBtn.classList.add("px-3");
-  rightBtn.style.width = "calc(100% - 3rem)"; // 100% minus (w-10 + gap-2)
-
-  undoBtn.classList.remove("hidden");
-
   undoVisible = true;
+
+  // Animate the right button shrinking
+  anime({
+    targets: rightBtn,
+    width: "calc(100% - 3rem)",
+    paddingLeft: "0.75rem",
+    paddingRight: "0.75rem",
+    duration: 300,
+    easing: "easeOutCubic",
+    begin: function () {
+      rightBtn.classList.remove("w-full", "px-4");
+      rightBtn.classList.add("px-3");
+    },
+  });
+
+  // Animate the undo button appearing
+  anime({
+    targets: undoBtn,
+    opacity: [0, 1],
+    scale: [0.5, 1],
+    duration: 300,
+    easing: "easeInElastic",
+    begin: function () {
+      undoBtn.classList.remove("hidden");
+      undoBtn.style.opacity = 0;
+      undoBtn.style.transform = "scale(0.5)";
+    },
+    complete: function () {
+      undoBtn.style.opacity = "";
+      undoBtn.style.transform = "";
+    },
+  });
 }
 
 function hideUndoBtn() {
   if (!undoVisible) return;
 
-  rightBtn.classList.add("w-full", "px-4");
-  rightBtn.classList.remove("px-3");
-  rightBtn.style.width = "";
-
-  undoBtn.classList.add("hidden");
-
   undoVisible = false;
+
+  // Animate the undo button disappearing
+  anime({
+    targets: undoBtn,
+    opacity: [1, 0],
+    scale: [1, 0.5],
+    duration: 250,
+    easing: "easeInElastic",
+    complete: function () {
+      undoBtn.classList.add("hidden");
+      undoBtn.style.opacity = "";
+      undoBtn.style.transform = "";
+    },
+  });
+
+  // Animate the right button expanding
+  anime({
+    targets: rightBtn,
+    width: "100%",
+    paddingLeft: "1rem",
+    paddingRight: "1rem",
+    duration: 300,
+    easing: "easeOutQuad",
+    complete: function () {
+      rightBtn.classList.add("w-full", "px-4");
+      rightBtn.classList.remove("px-3");
+      rightBtn.style.width = "";
+    },
+  });
 }
 
 /**
