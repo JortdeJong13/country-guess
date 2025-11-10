@@ -1,5 +1,5 @@
 import { hasCompletedToday } from "./daily_challenge.js";
-import { clearCanvas } from "./drawing.js";
+import { clearCanvas, undoLine } from "./drawing.js";
 import { confirmCountry, guess, refreshGuess } from "./guess.js";
 import {
   showLeaderboard,
@@ -10,11 +10,13 @@ import "./minigame.js";
 
 // Application State
 let appState = "home"; // "home", "confirm", "leaderboard"
+let undoVisible = false;
 
 // UI Elements
 const leftBtn = document.getElementById("left-btn");
 const rightBtn = document.getElementById("right-btn");
 const leaderboardBtn = document.getElementById("leaderboard-btn");
+const undoBtn = document.getElementById("undo-btn");
 
 /**
  * State Management
@@ -46,6 +48,80 @@ function setLeaderboardButtonVisibility(visible) {
   }
 }
 
+function showUndoBtn() {
+  if (!(appState == "home")) return;
+  if (undoVisible) return;
+
+  undoVisible = true;
+
+  // Animate the right button shrinking
+  anime({
+    targets: rightBtn,
+    width: "calc(100% - 3rem)",
+    paddingLeft: "0.75rem",
+    paddingRight: "0.75rem",
+    duration: 300,
+    easing: "easeOutCubic",
+    begin: function () {
+      rightBtn.classList.remove("w-full", "px-4");
+      rightBtn.classList.add("px-3");
+    },
+  });
+
+  // Animate the undo button appearing
+  anime({
+    targets: undoBtn,
+    opacity: [0, 1],
+    scale: [0.5, 1],
+    duration: 300,
+    easing: "easeInElastic",
+    begin: function () {
+      undoBtn.classList.remove("hidden");
+      undoBtn.style.opacity = 0;
+      undoBtn.style.transform = "scale(0.5)";
+    },
+    complete: function () {
+      undoBtn.style.opacity = "";
+      undoBtn.style.transform = "";
+    },
+  });
+}
+
+function hideUndoBtn() {
+  if (!undoVisible) return;
+
+  undoVisible = false;
+
+  // Animate the undo button disappearing
+  anime({
+    targets: undoBtn,
+    opacity: [1, 0],
+    scale: [1, 0.5],
+    duration: 250,
+    easing: "easeInElastic",
+    complete: function () {
+      undoBtn.classList.add("hidden");
+      undoBtn.style.opacity = "";
+      undoBtn.style.transform = "";
+    },
+  });
+
+  // Animate the right button expanding
+  anime({
+    targets: rightBtn,
+    width: "100%",
+    paddingLeft: "1rem",
+    paddingRight: "1rem",
+    duration: 300,
+    easing: "easeOutQuad",
+    complete: function () {
+      rightBtn.classList.add("w-full", "px-4");
+      rightBtn.classList.remove("px-3");
+      rightBtn.style.width = "";
+    },
+  });
+}
+
 /**
  * UI Updates based on state
  */
@@ -64,6 +140,7 @@ function updateUI() {
 }
 
 function updateHomeUI() {
+  hideUndoBtn(); // ?
   leftBtn.textContent = "Guess Country";
   rightBtn.textContent = "Clear";
   leftBtn.classList.remove("locked");
@@ -78,9 +155,11 @@ function updateConfirmUI() {
   leftBtn.textContent = "Confirm";
   rightBtn.textContent = "Clear";
   setLeaderboardButtonVisibility(false);
+  hideUndoBtn();
 }
 
 function updateLeaderboardUI() {
+  hideUndoBtn();
   leftBtn.textContent = "Previous";
   rightBtn.textContent = "Next";
   setLeaderboardButtonVisibility(true);
@@ -109,7 +188,7 @@ function handleRightButtonClick() {
   if (appState === "leaderboard") {
     handleNextLeaderboard();
   } else {
-    handleRefresh(); // "Clear" - reset the canvas
+    handleRefresh();
   }
 }
 
@@ -144,6 +223,7 @@ function handleRefresh() {
   refreshGuess();
   clearCanvas();
   setState("home");
+  hideUndoBtn();
   leaderboardBtn.textContent = "Show Leaderboard";
   if (window.miniGame) {
     window.miniGame.reset();
@@ -180,6 +260,7 @@ async function handlePrevLeaderboard() {
 function initializeEventListeners() {
   leftBtn.addEventListener("click", handleLeftButtonClick);
   rightBtn.addEventListener("click", handleRightButtonClick);
+  undoBtn.addEventListener("click", undoLine);
   leaderboardBtn.addEventListener("click", handleLeaderboardButtonClick);
 }
 
@@ -250,4 +331,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Export state management functions for use by other modules
-export { getState, setState };
+export { getState, setState, hideUndoBtn, showUndoBtn };
