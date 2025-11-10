@@ -10,6 +10,7 @@ import "./minigame.js";
 
 // Application State
 let appState = "home"; // "home", "confirm", "leaderboard"
+let undoVisible = false;
 
 // UI Elements
 const leftBtn = document.getElementById("left-btn");
@@ -48,19 +49,28 @@ function setLeaderboardButtonVisibility(visible) {
 }
 
 function showUndoBtn() {
+  if (!(appState == "home")) return;
+  if (undoVisible) return;
+
   rightBtn.classList.remove("w-full", "px-4");
   rightBtn.classList.add("px-3");
   rightBtn.style.width = "calc(100% - 3rem)"; // 100% minus (w-10 + gap-2)
 
   undoBtn.classList.remove("hidden");
+
+  undoVisible = true;
 }
 
 function hideUndoBtn() {
+  if (!undoVisible) return;
+
   rightBtn.classList.add("w-full", "px-4");
   rightBtn.classList.remove("px-3");
   rightBtn.style.width = "";
 
   undoBtn.classList.add("hidden");
+
+  undoVisible = false;
 }
 
 /**
@@ -100,12 +110,12 @@ function updateConfirmUI() {
 }
 
 function updateLeaderboardUI() {
+  hideUndoBtn();
   leftBtn.textContent = "Previous";
   rightBtn.textContent = "Next";
   setLeaderboardButtonVisibility(true);
   leaderboardBtn.classList.add("active");
   leftBtn.classList.remove("golden");
-  hideUndoBtn();
 }
 
 /**

@@ -221,6 +221,7 @@ function undoLine() {
     lines.pop();
     window.lines = lines;
     redrawCanvas();
+    updateMiniGame();
   }
   if (lines.length === 0) {
     hideUndoBtn();
