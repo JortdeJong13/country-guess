@@ -51,7 +51,6 @@ function setLeaderboardButtonVisibility(visible) {
 function showUndoBtn() {
   if (!(appState == "home")) return;
   if (undoVisible) return;
-
   undoVisible = true;
 
   // Animate the right button shrinking
@@ -63,16 +62,14 @@ function showUndoBtn() {
     duration: 300,
     easing: "easeOutCubic",
     begin: function () {
-      rightBtn.classList.remove("w-full", "px-4");
-      rightBtn.classList.add("px-3");
+      rightBtn.classList.remove("w-full");
     },
   });
 
   // Animate the undo button appearing
   anime({
     targets: undoBtn,
-    opacity: [0, 1],
-    scale: [0.5, 1],
+    scale: [0.2, 1],
     duration: 300,
     easing: "easeInElastic",
     begin: function () {
@@ -89,15 +86,13 @@ function showUndoBtn() {
 
 function hideUndoBtn() {
   if (!undoVisible) return;
-
   undoVisible = false;
 
   // Animate the undo button disappearing
   anime({
     targets: undoBtn,
-    opacity: [1, 0],
-    scale: [1, 0.5],
-    duration: 250,
+    scale: [1, 0.2],
+    duration: 300,
     easing: "easeInElastic",
     complete: function () {
       undoBtn.classList.add("hidden");
@@ -115,8 +110,7 @@ function hideUndoBtn() {
     duration: 300,
     easing: "easeOutQuad",
     complete: function () {
-      rightBtn.classList.add("w-full", "px-4");
-      rightBtn.classList.remove("px-3");
+      rightBtn.classList.add("w-full");
       rightBtn.style.width = "";
     },
   });
