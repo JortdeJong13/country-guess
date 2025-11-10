@@ -1,5 +1,5 @@
 import { hasCompletedToday } from "./daily_challenge.js";
-import { clearCanvas, undoLine, lines } from "./drawing.js";
+import { clearCanvas, undoLine } from "./drawing.js";
 import { confirmCountry, guess, refreshGuess } from "./guess.js";
 import {
   showLeaderboard,
