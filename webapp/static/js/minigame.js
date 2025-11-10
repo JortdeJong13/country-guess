@@ -177,11 +177,11 @@ class MiniGame {
 
         // Trigger shake after fall completes
         setTimeout(() => {
-          document.body.classList.add("screen-shake");
-
+          const shaker = document.getElementById("shake-screen");
+          shaker.classList.add("shake-active");
           // Remove shake class once animation completes
           setTimeout(() => {
-            document.body.classList.remove("screen-shake");
+            shaker.classList.remove("shake-active");
           }, 550); // matches animation duration
         }, 380); // delay = fall duration
       }, 50);

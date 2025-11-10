@@ -36,7 +36,7 @@ const lowConfidenceMessages = [
   "I just don't know, I'm guessing {{guessed}}.",
   "Hmm… possibly {{guessed}}?",
   "It’s hard to tell, but I’ll say {{guessed}}.",
-  "Best guess: {{guessed}} — though I'm not confident.",
+  "Best guess: {{guessed}}, though I'm not confident.",
   "I’m unsure, but it slightly resembles {{guessed}}.",
   "Could be {{guessed}}, but that's a stretch.",
 ];

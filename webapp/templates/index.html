@@ -26,153 +26,155 @@
     <body
         class="min-h-screen bg-neutral-900 text-rose-400 relative m-0 p-0 font-sans text-center"
     >
-        <!-- Title Container -->
-        <div class="relative flex items-center justify-center px-10 mt-4">
-            <!-- Title -->
-            <h1
-                id="title-text"
-                class="text-3xl sm:text-4xl font-bold cursor-pointer select-none"
-            >
-                Draw a Country
-            </h1>
-
-            <!-- Separate Globe Emoji -->
-            <span
-                id="globe-emoji"
-                class="text-4xl sm:text-4xl cursor-pointer select-none ml-2"
-                >🌍</span
-            >
-
-            <!-- GitHub Link -->
-            <a
-                href="https://github.com/JortdeJong13/country-guess"
-                class="flex absolute right-10 text-gray-300 no-underline items-center hover:text-gray-400 z-10 transform hover:scale-110 active:scale-100"
-                target="_blank"
-            >
-                <span class="hidden md:inline">source</span>
-                <img
-                    src="{{ url_for('static', filename='github.png') }}"
-                    alt="GitHub"
-                    class="w-5 h-5 ml-2 sm:block hidden"
-                />
-            </a>
-        </div>
-
-        <!-- Daily Challenge Pill -->
-        <div id="daily-challenge-pill" class="daily-challenge-pill">
-            <div class="daily-challenge-icon">🏆</div>
-            <div class="daily-challenge-content">
-                <div style="font-size: 16px; font-weight: 700">
-                    Daily Challenge
-                </div>
-                <div
-                    id="daily-country-name"
-                    style="
-                        font-weight: 600;
-                        font-size: 14px;
-                        margin-top: 1px;
-                        line-height: 1.2;
-                    "
-                ></div>
-            </div>
-        </div>
-
-        <!-- Canvas -->
-        <div id="canvas-container" class="relative inline-block mx-auto my-4">
-            <canvas
-                id="canvas"
-                class="absolute top-0 left-1/2 transform -translate-x-1/2 border-2 border-neutral-600 cursor-crosshair bg-zinc-800 rounded-xl"
-            >
-            </canvas>
-        </div>
-
-        <div class="px-8 sm:px-0">
-            <!-- Buttons -->
-            <div
-                class="relative z-10 my-0 flex justify-center"
-                style="gap: clamp(1rem, 5vw, 3rem)"
-            >
-                <button
-                  id="left-btn"
-                  class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full transition-colors transition-transform duration-150"
+        <div id="shake-screen" class="shake-wrapper">
+            <!-- Title Container -->
+            <div class="relative flex items-center justify-center px-10 mt-4">
+                <!-- Title -->
+                <h1
+                    id="title-text"
+                    class="text-3xl sm:text-4xl font-bold cursor-pointer select-none"
                 >
-                  Guess Country
-                </button>
+                    Draw a Country
+                </h1>
 
-                <!-- Right Button Group - always w-40 -->
-                <div class="flex items-center justify-start w-40 gap-2">
-                    <button
-                        id="right-btn"
-                        class="w-full px-4 py-1.5 text-base bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full cursor-pointer transition-all duration-150"
-                    >
-                        Clear
-                    </button>
+                <!-- Separate Globe Emoji -->
+                <span
+                    id="globe-emoji"
+                    class="text-4xl sm:text-4xl cursor-pointer select-none ml-2"
+                    >🌍</span
+                >
 
-                    <button
-                        id="undo-btn"
-                        class="hidden w-10 h-10 rounded-full bg-zinc-800 border-2 border-gray-700 cursor-pointer transition-all duration-150 hover:bg-zinc-700 flex items-center justify-center text-gray-300 shrink-0"
-                    >
-                        <img src="static/undo-icon.svg" alt="Undo" class="undo-icon w-5 h-5">
-                    </button>
-                </div>
+                <!-- GitHub Link -->
+                <a
+                    href="https://github.com/JortdeJong13/country-guess"
+                    class="flex absolute right-10 text-gray-300 no-underline items-center hover:text-gray-400 z-10 transform hover:scale-110 active:scale-100"
+                    target="_blank"
+                >
+                    <span class="hidden md:inline">source</span>
+                    <img
+                        src="{{ url_for('static', filename='github.png') }}"
+                        alt="GitHub"
+                        class="w-5 h-5 ml-2 sm:block hidden"
+                    />
+                </a>
             </div>
 
-            <!-- Message -->
-            <p
-                id="message"
-                class="mt-5 text-lg text-amber-500 relative z-10 max-w-md mx-auto"
-            ></p>
-        </div>
-
-        <!-- Confirmation Container -->
-        <div id="confirmation-container" class="hidden mt-5 relative z-10">
-            <div class="flex items-center justify-center gap-3">
-                <div>
-                    <div
-                        id="instruction-message"
-                        class="italic text-gray-400 mb-2"
-                    >
-                        Select the country you've drawn:
+            <!-- Daily Challenge Pill -->
+            <div id="daily-challenge-pill" class="daily-challenge-pill">
+                <div class="daily-challenge-icon">🏆</div>
+                <div class="daily-challenge-content">
+                    <div style="font-size: 16px; font-weight: 700">
+                        Daily Challenge
                     </div>
-                    <select
-                        id="country-dropdown"
-                        class="px-4 py-1.5 text-base bg-gray-800 text-gray-300 border border-gray-700 rounded-full max-w-[18rem]"
-                    >
-                        {% for country in countries %}
-                        <option
-                            value="{{ country }}"
-                            class="bg-gray-800 text-gray-300"
-                        >
-                            {{ country }}
-                        </option>
-                        {% endfor %}
-                    </select>
+                    <div
+                        id="daily-country-name"
+                        style="
+                            font-weight: 600;
+                            font-size: 14px;
+                            margin-top: 1px;
+                            line-height: 1.2;
+                        "
+                    ></div>
                 </div>
             </div>
+
+            <!-- Canvas -->
+            <div id="canvas-container" class="relative inline-block mx-auto my-4">
+                <canvas
+                    id="canvas"
+                    class="absolute top-0 left-1/2 transform -translate-x-1/2 border-2 border-neutral-600 cursor-crosshair bg-zinc-800 rounded-xl"
+                >
+                </canvas>
+            </div>
+
+            <div class="px-8 sm:px-0">
+                <!-- Buttons -->
+                <div
+                    class="relative z-10 my-0 flex justify-center"
+                    style="gap: clamp(1rem, 5vw, 3rem)"
+                >
+                    <button
+                    id="left-btn"
+                    class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full transition-colors transition-transform duration-150"
+                    >
+                    Guess Country
+                    </button>
+
+                    <!-- Right Button Group - always w-40 -->
+                    <div class="flex items-center justify-start w-40 gap-2">
+                        <button
+                            id="right-btn"
+                            class="w-full px-4 py-1.5 text-base bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full cursor-pointer transition-all duration-150"
+                        >
+                            Clear
+                        </button>
+
+                        <button
+                            id="undo-btn"
+                            class="hidden w-10 h-10 rounded-full bg-zinc-800 border-2 border-gray-700 cursor-pointer transition-all duration-150 hover:bg-zinc-700 flex items-center justify-center text-gray-300 shrink-0"
+                        >
+                            <img src="static/undo-icon.svg" alt="Undo" class="undo-icon w-5 h-5">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <p
+                    id="message"
+                    class="mt-5 text-lg text-amber-500 relative z-10 max-w-md mx-auto"
+                ></p>
+            </div>
+
+            <!-- Confirmation Container -->
+            <div id="confirmation-container" class="hidden mt-5 relative z-10">
+                <div class="flex items-center justify-center gap-3">
+                    <div>
+                        <div
+                            id="instruction-message"
+                            class="italic text-gray-400 mb-2"
+                        >
+                            Select the country you've drawn:
+                        </div>
+                        <select
+                            id="country-dropdown"
+                            class="px-4 py-1.5 text-base bg-gray-800 text-gray-300 border border-gray-700 rounded-full max-w-[18rem]"
+                        >
+                            {% for country in countries %}
+                            <option
+                                value="{{ country }}"
+                                class="bg-gray-800 text-gray-300"
+                            >
+                                {{ country }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Button -->
+            <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
+                <button
+                    id="leaderboard-btn"
+                    class="w-48 px-5 py-1 text-base whitespace-nowrap cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full shadow-lg transition-all"
+                >
+                    Show Leaderboard
+                </button>
+            </div>
+
+            <!-- Confetti -->
+            <div
+                id="tsparticles-confetti-container"
+                class="fixed inset-0 w-full h-full pointer-events-none z-50"
+            ></div>
+
+            <script>
+                document.addEventListener("touchstart", function () {}, true);
+            </script>
+            <script
+                type="module"
+                src="{{ url_for('static', filename='js/main.js') }}"
+            ></script>
         </div>
-
-        <!-- Leaderboard Button -->
-        <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
-            <button
-                 id="leaderboard-btn"
-                 class="w-48 px-5 py-1 text-base whitespace-nowrap cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full shadow-lg transition-all"
-             >
-                 Show Leaderboard
-             </button>
-        </div>
-
-        <!-- Confetti -->
-        <div
-            id="tsparticles-confetti-container"
-            class="fixed inset-0 w-full h-full pointer-events-none z-50"
-        ></div>
-
-        <script>
-            document.addEventListener("touchstart", function () {}, true);
-        </script>
-        <script
-            type="module"
-            src="{{ url_for('static', filename='js/main.js') }}"
-        ></script>
     </body>
 </html>

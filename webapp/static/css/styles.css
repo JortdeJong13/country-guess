@@ -14,7 +14,7 @@
         transform: translate(0, 0);
     }
     20% {
-        transform: translate(-1px, 1px);
+        transform: translate(-2px, 2px);
     }
     40% {
         transform: translate(1px, -1px);
@@ -30,8 +30,18 @@
     }
 }
 
-.screen-shake {
-    animation: screen-shake 0.65s ease-out;
+.shake-wrapper {
+    position: fixed;
+    inset: 0;
+    pointer-events: none; /* keeps buttons clickable */
+}
+
+.shake-wrapper > * {
+    pointer-events: auto; /* restore interactivity to contents */
+}
+
+.shake-active {
+    animation: screen-shake 0.55s ease-in-out;
 }
 
 /* Spinner styles */
