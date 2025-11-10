@@ -1,6 +1,5 @@
 import { lines } from "./drawing.js";
 import * as msg from "./messages.js";
-import { checkDailyChallenge } from "./daily_challenge.js";
 
 /**
  * UI Helper Functions
