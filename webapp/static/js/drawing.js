@@ -129,6 +129,7 @@ function draw(event) {
 
     [lastX, lastY] = [coords.x, coords.y];
     currentLine.push([coords.x, coords.y]);
+    showUndoBtn();
   }
 }
 
@@ -144,7 +145,6 @@ function stopDrawing() {
   if (currentLine.length > 1) {
     lines.push(currentLine);
     window.lines = lines;
-    showUndoBtn();
     updateMiniGame();
   }
   currentLine = [];
