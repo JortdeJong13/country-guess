@@ -134,7 +134,8 @@ function updateUI() {
 }
 
 function updateHomeUI() {
-  hideUndoBtn(); // ?
+  hideUndoBtn();
+  canvas.style.cursor = "crosshair";
   leftBtn.textContent = "Guess Country";
   rightBtn.textContent = "Clear";
   leftBtn.classList.remove("locked");
@@ -146,6 +147,7 @@ function updateHomeUI() {
 }
 
 function updateConfirmUI() {
+  canvas.style.cursor = "default";
   leftBtn.textContent = "Confirm";
   rightBtn.textContent = "Clear";
   setLeaderboardButtonVisibility(false);
@@ -154,6 +156,7 @@ function updateConfirmUI() {
 
 function updateLeaderboardUI() {
   hideUndoBtn();
+  canvas.style.cursor = "default";
   leftBtn.textContent = "Previous";
   rightBtn.textContent = "Next";
   setLeaderboardButtonVisibility(true);

@@ -1,4 +1,4 @@
-import { hideUndoBtn, showUndoBtn } from "./main.js";
+import { getState, hideUndoBtn, showUndoBtn } from "./main.js";
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
@@ -105,6 +105,7 @@ function getCoordinates(event) {
 }
 
 function startDrawing(event) {
+  if (getState() !== "home") return;
   isDrawing = true;
   const coords = getCoordinates(event);
   [lastX, lastY] = [coords.x, coords.y];
