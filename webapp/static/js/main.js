@@ -7,10 +7,10 @@ import {
   showLeaderboardPrevious,
 } from "./leaderboard.js";
 import "./minigame.js";
+import * as ani from "./animations.js";
 
 // Application State
 let appState = "home"; // "home", "confirm", "leaderboard"
-let undoVisible = false;
 
 // UI Elements
 const leftBtn = document.getElementById("left-btn");
@@ -39,74 +39,6 @@ function setState(newState) {
 }
 
 /**
- * UI Helper Functions
- */
-function setLeaderboardButtonVisibility(visible) {
-  const leaderboardBtnContainer = leaderboardBtn.parentElement;
-  if (leaderboardBtnContainer) {
-    leaderboardBtnContainer.style.display = visible ? "block" : "none";
-  }
-}
-
-function showUndoBtn() {
-  if (!(appState == "home")) return;
-  if (undoVisible) return;
-  undoVisible = true;
-
-  // 1. Animate the right button shrinking
-  anime({
-    targets: rightBtn,
-    width: "calc(100% - 3rem)",
-    duration: 300,
-    easing: "easeOutElastic(1, .7)",
-    begin: function () {
-      rightBtn.classList.remove("w-full");
-    },
-    complete: function () {
-      // 2. Animate the undo button appearing AFTER the right button has shrunk
-      anime({
-        targets: undoBtn,
-        opacity: [0, 1],
-        scale: [0, 1],
-        duration: 400,
-        begin: function () {
-          undoBtn.classList.remove("hidden");
-        },
-      });
-    },
-  });
-}
-
-function hideUndoBtn() {
-  if (!undoVisible) return;
-  undoVisible = false;
-
-  // 1. Animate the undo button disappearing
-  anime({
-    targets: undoBtn,
-    opacity: 0.3,
-    scale: 0.2,
-    duration: 300,
-    easing: "easeInOutQuad",
-    complete: function () {
-      undoBtn.classList.add("hidden");
-    },
-  });
-
-  // 2. Animate the right button expanding
-  anime({
-    targets: rightBtn,
-    width: "100%",
-    duration: 300,
-    easing: "easeOutQuint",
-    complete: function () {
-      rightBtn.classList.add("w-full");
-      rightBtn.style.width = "";
-    },
-  });
-}
-
-/**
  * UI Updates based on state
  */
 function updateUI() {
@@ -124,12 +56,12 @@ function updateUI() {
 }
 
 function updateHomeUI() {
-  hideUndoBtn();
+  ani.hideUndoBtn();
+  ani.showLeaderboardButton();
   canvas.style.cursor = "crosshair";
   leftBtn.textContent = "Guess Country";
   rightBtn.textContent = "Clear";
   leftBtn.classList.remove("locked");
-  setLeaderboardButtonVisibility(true);
   leaderboardBtn.classList.remove("active");
   if (hasCompletedToday()) {
     leftBtn.classList.add("golden");
@@ -137,19 +69,19 @@ function updateHomeUI() {
 }
 
 function updateConfirmUI() {
+  ani.hideLeaderboardButton();
   canvas.style.cursor = "default";
   leftBtn.textContent = "Confirm";
   rightBtn.textContent = "Clear";
-  setLeaderboardButtonVisibility(false);
-  hideUndoBtn();
+  ani.hideUndoBtn();
 }
 
 function updateLeaderboardUI() {
-  hideUndoBtn();
+  ani.hideUndoBtn();
   canvas.style.cursor = "default";
   leftBtn.textContent = "Previous";
   rightBtn.textContent = "Next";
-  setLeaderboardButtonVisibility(true);
+  ani.showLeaderboardButton();
   leaderboardBtn.classList.add("active");
   leftBtn.classList.remove("golden");
 }
@@ -210,7 +142,7 @@ function handleRefresh() {
   refreshGuess();
   clearCanvas();
   setState("home");
-  hideUndoBtn();
+  ani.hideUndoBtn();
   leaderboardBtn.textContent = "Show Leaderboard";
   if (window.miniGame) {
     window.miniGame.reset();
@@ -318,4 +250,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Export state management functions for use by other modules
-export { getState, setState, hideUndoBtn, showUndoBtn };
+export { getState, setState };

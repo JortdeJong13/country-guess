@@ -1,4 +1,5 @@
-import { getState, hideUndoBtn, showUndoBtn } from "./main.js";
+import { getState } from "./main.js";
+import { hideUndoBtn, showUndoBtn } from "./animations.js";
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
