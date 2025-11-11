@@ -86,21 +86,22 @@ function hideUndoBtn() {
     targets: undoBtn,
     opacity: 0.3,
     scale: 0.2,
-    duration: 400,
+    duration: 300,
     easing: "easeInOutQuad",
     complete: function () {
       undoBtn.classList.add("hidden");
-      // 2. Animate the right button expanding AFTER the undo button is gone
-      anime({
-        targets: rightBtn,
-        width: "100%",
-        duration: 300,
-        easing: "easeOutQuint",
-        complete: function () {
-          rightBtn.classList.add("w-full");
-          rightBtn.style.width = "";
-        },
-      });
+    },
+  });
+
+  // 2. Animate the right button expanding
+  anime({
+    targets: rightBtn,
+    width: "100%",
+    duration: 300,
+    easing: "easeOutQuint",
+    complete: function () {
+      rightBtn.classList.add("w-full");
+      rightBtn.style.width = "";
     },
   });
 }
