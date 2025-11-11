@@ -53,35 +53,26 @@ function showUndoBtn() {
   if (undoVisible) return;
   undoVisible = true;
 
-  // Animate the right button shrinking
+  // 1. Animate the right button shrinking
   anime({
     targets: rightBtn,
     width: "calc(100% - 3rem)",
-    paddingLeft: "0.75rem",
-    paddingRight: "0.75rem",
     duration: 300,
-    easing: "easeInElastic",
-    complete: function () {
+    easing: "easeOutElastic(1, .7)",
+    begin: function () {
       rightBtn.classList.remove("w-full");
     },
-  });
-
-  // Animate the undo button appearing
-  anime({
-    targets: undoBtn,
-    width: ["0rem", "2.5rem"],
-    opacity: [0, 1],
-    scale: [0, 1],
-    duration: 300,
-    easing: "easeInElastic",
-    begin: function () {
-      undoBtn.classList.remove("hidden");
-      undoBtn.classList.remove("w-10");
-      undoBtn.style.width = "0rem";
-    },
     complete: function () {
-      undoBtn.classList.add("w-10");
-      undoBtn.style.width = "";
+      // 2. Animate the undo button appearing AFTER the right button has shrunk
+      anime({
+        targets: undoBtn,
+        opacity: [0, 1],
+        scale: [0, 1],
+        duration: 400,
+        begin: function () {
+          undoBtn.classList.remove("hidden");
+        },
+      });
     },
   });
 }
@@ -90,30 +81,26 @@ function hideUndoBtn() {
   if (!undoVisible) return;
   undoVisible = false;
 
-  // Animate the undo button disappearing
+  // 1. Animate the undo button disappearing
   anime({
     targets: undoBtn,
-    scale: [1, 0.2],
-    duration: 300,
-    easing: "easeInElastic",
+    opacity: 0.3,
+    scale: 0.2,
+    duration: 400,
+    easing: "easeInOutQuad",
     complete: function () {
       undoBtn.classList.add("hidden");
-      undoBtn.style.opacity = "";
-      undoBtn.style.transform = "";
-    },
-  });
-
-  // Animate the right button expanding
-  anime({
-    targets: rightBtn,
-    width: "100%",
-    paddingLeft: "1rem",
-    paddingRight: "1rem",
-    duration: 300,
-    easing: "easeOutQuad",
-    complete: function () {
-      rightBtn.classList.add("w-full");
-      rightBtn.style.width = "";
+      // 2. Animate the right button expanding AFTER the undo button is gone
+      anime({
+        targets: rightBtn,
+        width: "100%",
+        duration: 300,
+        easing: "easeOutQuint",
+        complete: function () {
+          rightBtn.classList.add("w-full");
+          rightBtn.style.width = "";
+        },
+      });
     },
   });
 }
