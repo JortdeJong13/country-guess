@@ -60,8 +60,8 @@ function showUndoBtn() {
     paddingLeft: "0.75rem",
     paddingRight: "0.75rem",
     duration: 300,
-    easing: "easeOutCubic",
-    begin: function () {
+    easing: "easeInElastic",
+    complete: function () {
       rightBtn.classList.remove("w-full");
     },
   });
@@ -69,17 +69,19 @@ function showUndoBtn() {
   // Animate the undo button appearing
   anime({
     targets: undoBtn,
-    scale: [0.2, 1],
+    width: ["0rem", "2.5rem"],
+    opacity: [0, 1],
+    scale: [0, 1],
     duration: 300,
     easing: "easeInElastic",
     begin: function () {
       undoBtn.classList.remove("hidden");
-      undoBtn.style.opacity = 0;
-      undoBtn.style.transform = "scale(0.5)";
+      undoBtn.classList.remove("w-10");
+      undoBtn.style.width = "0rem";
     },
     complete: function () {
-      undoBtn.style.opacity = "";
-      undoBtn.style.transform = "";
+      undoBtn.classList.add("w-10");
+      undoBtn.style.width = "";
     },
   });
 }
