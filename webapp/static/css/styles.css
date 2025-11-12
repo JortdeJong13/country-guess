@@ -269,7 +269,7 @@ button {
     }
 
     #right-btn:not(.green).touch-active,
-    #undo-btn:not(.green).touch-active {
+    #undo-btn.touch-active {
         background-color: var(--color-rose-hover) !important;
     }
 
@@ -313,7 +313,7 @@ button {
     }
 
     #undo-btn:hover .undo-icon {
-        transform: rotate(-20deg);
+        transform: rotate(-45deg);
         transition: transform 0.3s ease-in-out;
     }
 
@@ -331,6 +331,7 @@ button {
 
     .golden:hover {
         background-color: var(--color-amber-light) !important;
+        transform: scale(1.1);
     }
 
     .github-link:hover {
