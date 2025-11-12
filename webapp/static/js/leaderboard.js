@@ -22,6 +22,7 @@ async function fetchDrawingByRank(rank) {
 export async function showLeaderboard() {
   currentRank = 0;
   msg.clearLeaderboardMessageCache();
+  msg.showLoadingMessage();
   return showLeaderboardAt(currentRank);
 }
 
@@ -48,6 +49,7 @@ export async function showLeaderboardAt(rank) {
     return { success: true, rank: currentRank, total: totalDrawings };
   } catch (error) {
     console.error("Error loading leaderboard drawing:", error);
+    msg.setLeaderboardMessage(null, null, null);
     return { success: false };
   }
 }

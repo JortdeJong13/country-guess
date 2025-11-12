@@ -61,7 +61,7 @@ function updateHomeUI() {
   canvas.style.cursor = "crosshair";
   leftBtn.textContent = "Guess Country";
   rightBtn.textContent = "Clear";
-  rightBtn.classList.remove("green");
+  rightBtn.classList.remove("green", "locked");
   leftBtn.classList.remove("locked");
   leaderboardBtn.classList.remove("active");
   if (hasCompletedToday()) {
@@ -157,10 +157,14 @@ function updateLeaderboardButtonLocks(rank, total) {
 }
 
 async function handleShowLeaderboard() {
+  // Update UI
+  setState("leaderboard");
+  leaderboardBtn.textContent = "Hide Leaderboard";
+  updateLeaderboardButtonLocks(0, 1);
+
+  // Fetch leaderboard data and update button locks
   const result = await showLeaderboard();
   if (result.success) {
-    setState("leaderboard");
-    leaderboardBtn.textContent = "Hide Leaderboard";
     updateLeaderboardButtonLocks(result.rank, result.total);
   }
 }

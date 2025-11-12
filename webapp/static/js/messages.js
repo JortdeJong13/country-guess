@@ -435,8 +435,13 @@ const countryFacts = {
     "Zimbabwe shares Victoria Falls, one of the world's largest waterfalls.",
 };
 
-function showMessage(message) {
+export function showMessage(message) {
   document.getElementById("message").innerText = message;
+}
+
+export function showLoadingMessage() {
+  document.getElementById("message").innerHTML =
+    `<div class="loader mx-auto"></div>`;
 }
 
 export function setEmptyGuessMessage() {
@@ -512,6 +517,10 @@ export function clearLeaderboardMessageCache() {
 }
 
 export function setLeaderboardMessage(rank, total, props) {
+  if (rank == null) {
+    showMessage("Failed to load leaderboard..");
+    return;
+  }
   // Check cache for message
   if (leaderboardMessageCache[rank]) {
     showMessage(leaderboardMessageCache[rank]);

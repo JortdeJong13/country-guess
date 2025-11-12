@@ -4,15 +4,6 @@ import * as msg from "./messages.js";
 /**
  * UI Helper Functions
  */
-function showMessage(message) {
-  document.getElementById("message").innerText = message;
-}
-
-function showLoadingMessage() {
-  document.getElementById("message").innerHTML =
-    `<div class="loader mx-auto"></div>`;
-}
-
 function hideConfirmationContainer() {
   const confirmationContainer = document.getElementById(
     "confirmation-container",
@@ -81,7 +72,7 @@ export async function guess() {
     return false;
   }
 
-  showLoadingMessage();
+  msg.showLoadingMessage();
 
   try {
     const data = await postGuess(lines);
@@ -105,7 +96,7 @@ export async function guess() {
     } else if (error.message === "Server error") {
       message = "There was an error with the ML server response.";
     }
-    showMessage(message);
+    msg.showMessage(message);
     return false;
   }
 }
@@ -170,7 +161,7 @@ export function confirmCountry() {
 }
 
 export function refreshGuess() {
-  showMessage("");
+  msg.showMessage("");
   window.currentDrawingId = null;
   hideConfirmationContainer();
 }
