@@ -252,8 +252,8 @@ button {
 }
 
 .undo-icon {
-    filter: brightness(0) saturate(100%) invert(87%) sepia(6%) saturate(219%)
-        hue-rotate(178deg) brightness(92%) contrast(87%);
+    filter: brightness(0) saturate(100%) invert(92%) sepia(3%) saturate(25%)
+        hue-rotate(174deg) brightness(98%) contrast(92%);
     transform: rotate(30);
     transition: transform 0.3s ease-in-out;
 }
