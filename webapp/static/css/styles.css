@@ -213,7 +213,18 @@
     animation-delay: 1s;
 }
 
-/* Golden state: slow fade in, overrides Tailwind colors */
+/* Locked state */
+.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.green {
+    background-color: var(--color-green-primary) !important;
+}
+
+/* Golden state - comes after green to take priority */
 .golden {
     background-color: var(--color-amber-primary) !important;
     color: var(--color-amber-text) !important;
@@ -223,20 +234,9 @@
         transform 0.15s ease-in-out !important;
 }
 
-/* Locked state */
-.locked {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
 /* Golden + Locked */
 .golden.locked {
     background-color: var(--color-amber-primary) !important;
-}
-
-.green {
-    background-color: var(--color-green-primary) !important;
 }
 
 /* Leaderboard button active state */
@@ -273,7 +273,7 @@ button {
         background-color: var(--color-rose-hover) !important;
     }
 
-    .green.touch-active {
+    .green:not(.golden).touch-active {
         background-color: var(--color-green-hover) !important;
     }
 
@@ -306,7 +306,7 @@ button {
         transition: all 0.2s ease;
     }
 
-    .green:hover {
+    .green:not(.golden):hover {
         background-color: var(--color-green-hover) !important;
         transform: scale(1.1);
         transition: all 0.2s ease;
@@ -317,7 +317,7 @@ button {
         transition: transform 0.3s ease-in-out;
     }
 
-    #undo-btn.green:hover {
+    #undo-btn.green:not(.golden):hover {
         background-color: var(--color-green-hover) !important;
         transform: scale(1.1) !important;
         transition: all 0.2s ease;
