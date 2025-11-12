@@ -95,7 +95,7 @@
                 >
                     <button
                     id="left-btn"
-                    class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full transition-colors transition-transform duration-150"
+                    class="w-40 px-4 py-2 text-base cursor-pointer bg-[#72978E] text-gray-100 rounded-full transition-colors transition-transform duration-150"
                     >
                     Guess Country
                     </button>
@@ -104,14 +104,14 @@
                     <div class="relative flex items-center justify-start w-40 gap-2">
                         <button
                             id="right-btn"
-                            class="w-full px-4 py-1.5 text-base bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full cursor-pointer transition-all duration-150"
+                            class="w-full px-4 py-2 text-base bg-[#E46B62] text-gray-100 rounded-full cursor-pointer transition-all duration-150"
                         >
                             Clear
                         </button>
 
                         <button
                             id="undo-btn"
-                            class="absolute right-0 hidden w-10 h-10 rounded-full bg-zinc-800 border-2 border-gray-700 cursor-pointer transition-all duration-150 hover:bg-zinc-700 flex items-center justify-center text-gray-300"
+                            class="absolute right-0 hidden w-10 h-10 rounded-full bg-[#E46B62] cursor-pointer transition-all duration-150 flex items-center justify-center"
                         >
                             <img src="static/undo-icon.svg" alt="Undo" class="undo-icon w-5 h-5">
                         </button>
@@ -138,12 +138,12 @@
                         </div>
                         <select
                             id="country-dropdown"
-                            class="px-4 py-1.5 text-base bg-gray-800 text-gray-300 border border-gray-700 rounded-full max-w-[18rem]"
+                            class="px-4 py-1.5 text-base bg-gray-800 text-gray-100 rounded-full max-w-[18rem]"
                         >
                             {% for country in countries %}
                             <option
                                 value="{{ country }}"
-                                class="bg-gray-800 text-gray-300"
+                                class="bg-gray-800 text-gray-100"
                             >
                                 {{ country }}
                             </option>
@@ -157,7 +157,7 @@
             <div class="fixed bottom-6 left-0 right-0 flex justify-center z-40 translate-y-24 opacity-0" id="leaderboard-container">
                 <button
                     id="leaderboard-btn"
-                    class="w-56 px-5 py-2 text-base whitespace-nowrap cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full shadow-lg transition-all"
+                    class="w-52 px-5 py-2.5 text-base whitespace-nowrap cursor-pointer bg-zinc-800 text-gray-200 rounded-full shadow-lg transition-all"
                 >
                     Show Leaderboard
                 </button>

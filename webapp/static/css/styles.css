@@ -152,11 +152,9 @@
 .golden {
     background-color: #fbbf24 !important;
     color: #1e293b !important;
-    border-color: #fcd34d !important;
     transition:
         background-color 1s ease-in-out,
         color 1s ease-in-out,
-        border-color 1s ease-in-out,
         transform 0.15s ease-in-out !important;
 }
 
@@ -172,11 +170,14 @@
     background-color: #ffb300 !important; /* amber-600 */
 }
 
+.green {
+    background-color: #72978e !important;
+}
+
 /* Leaderboard button active state */
 #leaderboard-btn.active {
-    background-color: #f43f5e; /* rose-500 */
+    background-color: #e46b62 !important; /* rose-400 */
     color: #ffffff;
-    border-color: #fb7185; /* rose-400 */
 }
 
 button {
@@ -195,18 +196,23 @@ button {
 
 /* Mobile touch effects */
 @media (hover: none) {
-    button.touch-active {
-        background-color: rgb(55, 65, 81) !important; /* gray-700 */
-    }
-
     #leaderboard-btn.touch-active {
         color: white !important;
-        background-color: #fb7185 !important; /* rose-400 */
-        border-color: #fb7185 !important;
+        background-color: #e77b73 !important; /* rose-300 */
     }
 
+    #left-btn,
+    .green.touch-active {
+        background-color: rgb(132, 165, 157) !important; /* Cambridge blue */
+    }
+
+    #right-btn,
     #undo-btn.touch-active {
-        background-color: rgb(55, 65, 81) !important; /* gray-700 */
+        background-color: #e77b73 !important; /* rose-300 */
+    }
+
+    .green.touch-active {
+        background-color: rgb(132, 165, 157) !important;
     }
 
     #undo-btn.touch-active .undo-icon {
@@ -215,19 +221,28 @@ button {
 
     .golden.touch-active {
         background-color: #fcd34d !important; /* amber-300 - lighter golden */
-        border-color: #fde68a !important; /* amber-200 */
     }
 }
 
 /* Desktop hover effects */
 @media (hover: hover) and (pointer: fine) {
-    #left-btn:hover,
-    #right-btn:hover,
-    #leaderboard-btn:hover,
-    #undo-btn:hover {
-        background-color: rgb(55, 65, 81); /* gray-700 */
+    #left-btn:hover {
+        background-color: rgb(132, 165, 157); /* Cambridge blue */
         transform: scale(1.1);
-        transition: all 0.2s ease; /* Smooth hover transition */
+        transition: all 0.2s ease;
+    }
+
+    #right-btn:hover,
+    #undo-btn:hover {
+        background-color: #e77b73 !important; /* rose-300 */
+        transform: scale(1.1);
+        transition: all 0.2s ease;
+    }
+
+    .green:hover {
+        background-color: rgb(132, 165, 157) !important; /* Cambridge blue */
+        transform: scale(1.1);
+        transition: all 0.2s ease;
     }
 
     #undo-btn:hover .undo-icon {
@@ -237,12 +252,12 @@ button {
 
     #leaderboard-btn:hover {
         color: white;
-        background-color: #fb7185; /* rose-400 */
-        border-color: #fb7185;
+        background-color: #e77b73 !important; /* rose-300 */
+        transform: scale(1.1);
+        transition: all 0.2s ease;
     }
 
     .golden:hover {
         background-color: #fcd34d !important; /* amber-300 - lighter golden */
-        border-color: #fde68a !important; /* amber-200 */
     }
 }
