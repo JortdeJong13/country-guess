@@ -24,7 +24,7 @@
 
     </head>
     <body
-        class="min-h-screen bg-neutral-900 text-rose-400 relative m-0 p-0 font-sans text-center"
+        class="min-h-screen main-body relative m-0 p-0 font-sans text-center"
     >
         <div id="shake-screen" class="shake-wrapper">
             <!-- Title Container -->
@@ -32,7 +32,7 @@
                 <!-- Title -->
                 <h1
                     id="title-text"
-                    class="text-3xl sm:text-4xl font-bold cursor-pointer select-none"
+                    class="title text-3xl sm:text-4xl font-bold cursor-pointer select-none"
                 >
                     Draw a Country
                 </h1>
@@ -47,7 +47,7 @@
                 <!-- GitHub Link -->
                 <a
                     href="https://github.com/JortdeJong13/country-guess"
-                    class="flex absolute right-10 text-gray-300 no-underline items-center hover:text-gray-400 z-10 transform hover:scale-110 active:scale-100"
+                    class="flex absolute right-10 github-link no-underline items-center z-10"
                     target="_blank"
                 >
                     <span class="hidden md:inline">source</span>
@@ -82,7 +82,7 @@
             <div id="canvas-container" class="relative inline-block mx-auto my-4">
                 <canvas
                     id="canvas"
-                    class="absolute top-0 left-1/2 transform -translate-x-1/2 border-2 border-neutral-600 cursor-crosshair bg-zinc-800 rounded-xl"
+                    class="absolute top-0 left-1/2 transform -translate-x-1/2 border-4 canvas-element cursor-crosshair rounded-xl"
                 >
                 </canvas>
             </div>
@@ -95,7 +95,7 @@
                 >
                     <button
                     id="left-btn"
-                    class="w-40 px-4 py-1.5 text-base cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full transition-colors transition-transform duration-150"
+                    class="green w-40 px-4 py-2 text-base cursor-pointer primary-button rounded-full transition-colors transition-transform duration-150"
                     >
                     Guess Country
                     </button>
@@ -104,14 +104,14 @@
                     <div class="relative flex items-center justify-start w-40 gap-2">
                         <button
                             id="right-btn"
-                            class="w-full px-4 py-1.5 text-base bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full cursor-pointer transition-all duration-150"
+                            class="w-full px-4 py-2 text-base secondary-button rounded-full cursor-pointer transition-all duration-150"
                         >
                             Clear
                         </button>
 
                         <button
                             id="undo-btn"
-                            class="absolute right-0 hidden w-10 h-10 rounded-full bg-zinc-800 border-2 border-gray-700 cursor-pointer transition-all duration-150 hover:bg-zinc-700 flex items-center justify-center text-gray-300"
+                            class="absolute right-0 hidden w-10 h-10 rounded-full secondary-button cursor-pointer transition-all duration-150 flex items-center justify-center"
                         >
                             <img src="static/undo-icon.svg" alt="Undo" class="undo-icon w-5 h-5">
                         </button>
@@ -122,7 +122,7 @@
                 <!-- Message -->
                 <p
                     id="message"
-                    class="mt-5 text-lg text-amber-500 relative z-10 max-w-md mx-auto"
+                    class="mt-5 text-lg message-text relative z-10 max-w-md mx-auto"
                 ></p>
             </div>
 
@@ -132,18 +132,18 @@
                     <div>
                         <div
                             id="instruction-message"
-                            class="italic text-gray-400 mb-2"
+                            class="italic instruction-text mb-2"
                         >
                             Select the country you've drawn:
                         </div>
                         <select
                             id="country-dropdown"
-                            class="px-4 py-1.5 text-base bg-gray-800 text-gray-300 border border-gray-700 rounded-full max-w-[18rem]"
+                            class="px-4 py-1.5 text-base dropdown-element rounded-full max-w-[18rem]"
                         >
                             {% for country in countries %}
                             <option
                                 value="{{ country }}"
-                                class="bg-gray-800 text-gray-300"
+                                class="dropdown-element"
                             >
                                 {{ country }}
                             </option>
@@ -154,10 +154,10 @@
             </div>
 
             <!-- Leaderboard Button -->
-            <div class="fixed bottom-6 left-0 right-0 flex justify-center z-40 translate-y-24 opacity-0" id="leaderboard-container">
+            <div class="fixed bottom-4 left-0 right-0 flex justify-center z-40 translate-y-24 opacity-0" id="leaderboard-container">
                 <button
                     id="leaderboard-btn"
-                    class="w-48 px-5 py-1 text-base whitespace-nowrap cursor-pointer bg-zinc-800 text-gray-300 border-2 border-gray-700 rounded-full shadow-lg transition-all"
+                    class="w-52 px-5 py-2.5 text-base whitespace-nowrap cursor-pointer leaderboard-button rounded-full shadow-lg transition-all"
                 >
                     Show Leaderboard
                 </button>

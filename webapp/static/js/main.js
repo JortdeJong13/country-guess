@@ -61,6 +61,7 @@ function updateHomeUI() {
   canvas.style.cursor = "crosshair";
   leftBtn.textContent = "Guess Country";
   rightBtn.textContent = "Clear";
+  rightBtn.classList.remove("green");
   leftBtn.classList.remove("locked");
   leaderboardBtn.classList.remove("active");
   if (hasCompletedToday()) {
@@ -81,6 +82,7 @@ function updateLeaderboardUI() {
   canvas.style.cursor = "default";
   leftBtn.textContent = "Previous";
   rightBtn.textContent = "Next";
+  rightBtn.classList.add("green");
   ani.showLeaderboardButton();
   leaderboardBtn.classList.add("active");
   leftBtn.classList.remove("golden");

@@ -1,3 +1,68 @@
+:root {
+    /* Amber Family */
+    --color-amber-primary: #f4ae3e; /* Daily challenge pill, golden states */
+    --color-amber-light: #f5b651; /* Hover states for golden elements */
+    --color-amber-text: #283547; /* Dark blue text against gold backgrounds */
+
+    /* Green Family */
+    --color-green-primary: #72978e; /* Primary action buttons */
+    --color-green-hover: #84a59d; /* Cambridge blue hover state */
+
+    /* Rose Family */
+    --color-rose-primary: #e16563; /* Clear/Undo buttons, active states */
+    --color-rose-hover: #e77b73; /* Hover states for rose buttons */
+
+    /* Neutral/Gray Family */
+    --color-neutral-bg-dark: #171717; /* Main background (neutral-900) */
+    --color-neutral-bg-medium: #27272a; /* Canvas, dropdowns, secondary bg (zinc-800) */
+    --color-neutral-border: #525252; /* Canvas borders (neutral-600) */
+    --color-neutral-text: #e5e7eb; /* Leaderboard button text (gray-200) */
+    --color-neutral-text-muted: #9ca3af; /* GitHub link hover, instructions (gray-400) */
+
+    /* Utilities */
+    --shadow: rgba(0, 0, 0, 0.4); /* Shadows */
+}
+
+/* Component Classes */
+.main-body {
+    background-color: var(--color-neutral-bg-dark);
+    color: var(--color-neutral-text);
+}
+
+.title {
+    color: var(--color-rose-primary);
+}
+
+.canvas-element {
+    background-color: var(--color-neutral-bg-medium);
+    border-color: var(--color-neutral-border);
+}
+
+.primary-button {
+    background-color: var(--color-green-primary);
+}
+
+.secondary-button {
+    background-color: var(--color-rose-primary);
+}
+
+.message-text {
+    color: var(--color-amber-primary);
+}
+
+.instruction-text {
+    color: var(--color-neutral-text-muted);
+}
+
+.dropdown-element {
+    background-color: var(--color-neutral-bg-medium);
+}
+
+.leaderboard-button {
+    background-color: var(--color-neutral-bg-medium);
+    color: var(--color-neutral-text-medium);
+}
+
 /* Animation keyframes */
 @keyframes slideDown {
     0% {
@@ -50,9 +115,9 @@
     height: 15px;
     border-radius: 15px;
     background:
-        radial-gradient(farthest-side, #f59e42 94%, #0000) left/15px 15px
-            no-repeat,
-        #27272a;
+        radial-gradient(farthest-side, var(--color-amber-primary) 94%, #0000)
+            left/15px 15px no-repeat,
+        var(--color-neutral-bg-medium);
     animation: l2 1s infinite linear;
 }
 @keyframes l2 {
@@ -68,11 +133,11 @@
     left: -240px;
     width: 300px;
     height: 50px;
-    background: #fbbf24;
+    background: var(--color-amber-primary);
     border-radius: 25px;
     cursor: pointer;
     z-index: 20;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 10px var(--shadow);
     transition: box-shadow 0.3s ease;
     opacity: 0;
     touch-action: manipulation;
@@ -80,7 +145,7 @@
 }
 
 .daily-challenge-pill:hover {
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 15px var(--shadow);
 }
 
 .daily-challenge-content {
@@ -88,7 +153,7 @@
     left: 70px;
     top: 50%;
     transform: translateY(-50%);
-    color: #283547;
+    color: var(--color-amber-text);
     font-weight: 600;
     font-size: 14px;
     opacity: 1;
@@ -148,18 +213,6 @@
     animation-delay: 1s;
 }
 
-/* Golden state: slow fade in, overrides Tailwind colors */
-.golden {
-    background-color: #fbbf24 !important;
-    color: #1e293b !important;
-    border-color: #fcd34d !important;
-    transition:
-        background-color 1s ease-in-out,
-        color 1s ease-in-out,
-        border-color 1s ease-in-out,
-        transform 0.15s ease-in-out !important;
-}
-
 /* Locked state */
 .locked {
     opacity: 0.5;
@@ -167,16 +220,28 @@
     pointer-events: none;
 }
 
+.green {
+    background-color: var(--color-green-primary) !important;
+}
+
+/* Golden state - comes after green to take priority */
+.golden {
+    background-color: var(--color-amber-primary) !important;
+    color: var(--color-amber-text) !important;
+    transition:
+        background-color 1s ease-in-out,
+        color 1s ease-in-out,
+        transform 0.15s ease-in-out !important;
+}
+
 /* Golden + Locked */
 .golden.locked {
-    background-color: #ffb300 !important; /* amber-600 */
+    background-color: var(--color-amber-primary) !important;
 }
 
 /* Leaderboard button active state */
 #leaderboard-btn.active {
-    background-color: #f43f5e; /* rose-500 */
-    color: #ffffff;
-    border-color: #fb7185; /* rose-400 */
+    background-color: var(--color-rose-primary) !important;
 }
 
 button {
@@ -195,18 +260,21 @@ button {
 
 /* Mobile touch effects */
 @media (hover: none) {
-    button.touch-active {
-        background-color: rgb(55, 65, 81) !important; /* gray-700 */
-    }
-
     #leaderboard-btn.touch-active {
-        color: white !important;
-        background-color: #fb7185 !important; /* rose-400 */
-        border-color: #fb7185 !important;
+        background-color: var(--color-rose-hover) !important;
     }
 
-    #undo-btn.touch-active {
-        background-color: rgb(55, 65, 81) !important; /* gray-700 */
+    #left-btn:not(.green).touch-active {
+        background-color: var(--color-green-hover) !important;
+    }
+
+    #right-btn:not(.green).touch-active,
+    #undo-btn:not(.green).touch-active {
+        background-color: var(--color-rose-hover) !important;
+    }
+
+    .green:not(.golden).touch-active {
+        background-color: var(--color-green-hover) !important;
     }
 
     #undo-btn.touch-active .undo-icon {
@@ -214,20 +282,34 @@ button {
     }
 
     .golden.touch-active {
-        background-color: #fcd34d !important; /* amber-300 - lighter golden */
-        border-color: #fde68a !important; /* amber-200 */
+        background-color: var(--color-amber-light) !important;
     }
 }
 
 /* Desktop hover effects */
 @media (hover: hover) and (pointer: fine) {
-    #left-btn:hover,
-    #right-btn:hover,
-    #leaderboard-btn:hover,
-    #undo-btn:hover {
-        background-color: rgb(55, 65, 81); /* gray-700 */
+    #left-btn:not(.green):hover {
+        background-color: var(--color-green-hover); /* Cambridge blue */
         transform: scale(1.1);
-        transition: all 0.2s ease; /* Smooth hover transition */
+        transition: all 0.2s ease;
+    }
+
+    #right-btn:not(.green):hover {
+        background-color: var(--color-rose-hover) !important; /* rose-300 */
+        transform: scale(1.1);
+        transition: all 0.2s ease;
+    }
+
+    #undo-btn:not(.green):hover {
+        background-color: var(--color-rose-hover) !important; /* rose-300 */
+        transform: scale(1.1) !important;
+        transition: all 0.2s ease;
+    }
+
+    .green:not(.golden):hover {
+        background-color: var(--color-green-hover) !important;
+        transform: scale(1.1);
+        transition: all 0.2s ease;
     }
 
     #undo-btn:hover .undo-icon {
@@ -235,14 +317,25 @@ button {
         transition: transform 0.3s ease-in-out;
     }
 
+    #undo-btn.green:not(.golden):hover {
+        background-color: var(--color-green-hover) !important;
+        transform: scale(1.1) !important;
+        transition: all 0.2s ease;
+    }
+
     #leaderboard-btn:hover {
-        color: white;
-        background-color: #fb7185; /* rose-400 */
-        border-color: #fb7185;
+        background-color: var(--color-rose-hover) !important;
+        transform: scale(1.1);
+        transition: all 0.2s ease;
     }
 
     .golden:hover {
-        background-color: #fcd34d !important; /* amber-300 - lighter golden */
-        border-color: #fde68a !important; /* amber-200 */
+        background-color: var(--color-amber-light) !important;
+    }
+
+    .github-link:hover {
+        color: var(--color-neutral-text-muted) !important;
+        transform: scale(1.1);
+        transition: all 0.2s ease-in-out;
     }
 }
