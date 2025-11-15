@@ -522,8 +522,9 @@ export function setLeaderboardMessage(rank, total, props) {
     return;
   }
   // Check cache for message
-  if (leaderboardMessageCache[rank]) {
-    showMessage(leaderboardMessageCache[rank]);
+  const cache_key = `${rank}-${total}-${props.country_name}`;
+  if (leaderboardMessageCache[cache_key]) {
+    showMessage(leaderboardMessageCache[cache_key]);
     return;
   }
 
