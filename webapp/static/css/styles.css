@@ -58,6 +58,10 @@
     background-color: var(--color-neutral-bg-medium);
 }
 
+.author-element {
+    background-color: var(--color-neutral-bg-medium);
+}
+
 .leaderboard-button {
     background-color: var(--color-neutral-bg-medium);
     color: var(--color-neutral-text-medium);

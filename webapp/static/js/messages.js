@@ -516,13 +516,18 @@ export function clearLeaderboardMessageCache() {
   leaderboardMessageCache = {};
 }
 
-export function setLeaderboardMessage(rank, total, props) {
+export function setLeaderboardMessage(
+  rank,
+  total,
+  country_name,
+  country_score,
+) {
   if (rank == null) {
     showMessage("Failed to load leaderboard..");
     return;
   }
   // Check cache for message
-  const cache_key = `${rank}-${total}-${props.country_name}`;
+  const cache_key = `${rank}-${total}-${country_name}`;
   if (leaderboardMessageCache[cache_key]) {
     showMessage(leaderboardMessageCache[cache_key]);
     return;
@@ -532,17 +537,14 @@ export function setLeaderboardMessage(rank, total, props) {
   const medals = ["🥇", "🥈", "🥉"];
   const medal = medals[rank] || "";
 
-  const scorePercent = Math.round(props.country_score * 100);
+  const scorePercent = Math.round(country_score * 100);
   let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n${medal} `;
 
   const messageList =
-    props.country_score > 0.5
-      ? leaderboardMessagesHigh
-      : leaderboardMessagesLow;
+    country_score > 0.5 ? leaderboardMessagesHigh : leaderboardMessagesLow;
 
   message += getRandomMessage(messageList, {
-    selected: props.country_name,
-    guessed: props.country_guess,
+    selected: country_name,
   });
 
   // Cache the message

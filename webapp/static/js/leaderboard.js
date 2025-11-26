@@ -44,7 +44,12 @@ export async function showLeaderboardAt(rank) {
   try {
     const data = await fetchDrawingByRank(rank);
     totalDrawings = data.total;
-    msg.setLeaderboardMessage(data.rank, data.total, data.properties);
+    msg.setLeaderboardMessage(
+      data.rank,
+      data.total,
+      data.country_name,
+      data.country_score,
+    );
     renderUserDrawing(data.lines);
     return { success: true, rank: currentRank, total: totalDrawings };
   } catch (error) {
