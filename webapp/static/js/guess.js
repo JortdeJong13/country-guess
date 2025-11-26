@@ -4,19 +4,14 @@ import * as msg from "./messages.js";
 /**
  * UI Helper Functions
  */
+const confirmationContainer = document.getElementById("confirmation-container");
+
 function hideConfirmationContainer() {
-  const confirmationContainer = document.getElementById(
-    "confirmation-container",
-  );
   confirmationContainer.style.display = "none";
 }
 
 function showConfirmationContainer() {
-  const confirmationContainer = document.getElementById(
-    "confirmation-container",
-  );
   confirmationContainer.style.display = "block";
-  document.getElementById("instruction-message").style.display = "block";
 }
 
 /**

@@ -2,8 +2,9 @@
 
 import json
 import logging
-from datetime import datetime
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -12,16 +13,52 @@ logger.setLevel(logging.INFO)
 _SCORE_CACHE = {}
 
 
-def load_drawing_file(drawing_file: Path):
+@dataclass
+class Drawing:
+    geometry: str
+    timestamp: str
+    ranking: dict[str, list]
+    country_name: Optional[str] = None
+    author: Optional[str] = None
+    hashed_ip: Optional[str] = None
+
+    @property
+    def country_score(self) -> Optional[float]:
+        """Return the score for the correct country."""
+        if not self.country_name:
+            return None
+
+        countries = self.ranking["countries"]
+        if self.country_name in countries:
+            idx = countries.index(self.country_name)
+            return self.ranking["scores"][idx]
+        return None
+
+    @property
+    def country_guess(self) -> str:
+        """Return the guessed country."""
+        return self.ranking["countries"][0]
+
+
+def load_drawing(drawing_file: Path) -> Drawing:
     """Load and return a drawing file fully parsed."""
     logger.info(f"Loading {drawing_file}...")
     with open(drawing_file, "r", encoding="utf-8") as f:
-        drawing = json.load(f)
+        geojson = json.load(f)
 
-    feature = drawing["features"][0]
+    # Extract the drawing properties
+    feature = geojson["features"][0]
     props = feature["properties"]
+    geometry = json.dumps(feature["geometry"])
 
-    return {"lines": feature["geometry"]["coordinates"], "properties": props}
+    return Drawing(
+        geometry=geometry,
+        timestamp=props.get("timestamp"),
+        ranking=props.get("ranking"),
+        country_name=props.get("country_name"),
+        author=props.get("author"),
+        hashed_ip=props.get("hashed_ip"),
+    )
 
 
 def get_score(drawing_file: Path):
@@ -30,10 +67,10 @@ def get_score(drawing_file: Path):
         return _SCORE_CACHE[drawing_file]
 
     # Add to cache
-    drawing = load_drawing_file(drawing_file)
-    props = drawing["properties"]
-    score = props.get("country_score", None)
-    if props["country_name"] != props["country_guess"]:
+    drawing = load_drawing(drawing_file)
+    score = drawing.country_score
+    if drawing.country_name != drawing.country_guess:
+        # Return None for incorrect guesses
         score = None
 
     _SCORE_CACHE[drawing_file] = score
@@ -61,32 +98,29 @@ def load_ranked_drawing(rank, drawing_dir="./data/drawings/"):
 
     # Load drawing with rank
     selected_file = drawing_files[rank]
-    result = load_drawing_file(selected_file)
-    result["rank"] = rank
-    result["total"] = total
+    drawing = load_drawing(selected_file)
+    lines = json.loads(drawing.geometry)["coordinates"]
+    result = {
+        "lines": lines,
+        "rank": rank,
+        "total": total,
+        "country_name": drawing.country_name,
+        "country_score": drawing.country_score,
+    }
 
     return result
 
 
-def save_drawing(country_name, drawing, hashed_ip, output_dir="./data/drawings/"):
+def save_drawing(drawing, output_dir="./data/drawings/"):
     """Saves a country drawing as a GeoJSON file with metadata."""
     output_dir = Path(output_dir)
-    logger.info("Saving drawing of %s to %s", country_name, output_dir)
-
-    # Create output directory if it doesn't exist
     output_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().isoformat()
+    logger.info("Saving drawing of %s to %s", drawing.country_name, output_dir)
 
     # Create filename for new drawing
-    filename = f"{country_name.lower().replace(' ', '_')}_{timestamp}.geojson"
-
-    # Get the score of the correct country
-    countries = drawing["ranking"]["countries"]
-    if country_name in countries:
-        idx = countries.index(country_name)
-        score = drawing["ranking"]["scores"][idx]
-    else:
-        score = None
+    filename = (
+        f"{drawing.country_name.lower().replace(' ', '_')}_{drawing.timestamp}.geojson"
+    )
 
     # Create GeoJSON feature, including CRS information
     geojson = {
@@ -99,13 +133,13 @@ def save_drawing(country_name, drawing, hashed_ip, output_dir="./data/drawings/"
             {
                 "type": "Feature",
                 "properties": {
-                    "country_name": country_name,
-                    "country_score": score,
-                    "timestamp": timestamp,
-                    "country_guess": countries[0],
-                    "hashed_ip": hashed_ip,
+                    "timestamp": drawing.timestamp,
+                    "country_name": drawing.country_name,
+                    "author": drawing.author,
+                    "hashed_ip": drawing.hashed_ip,
+                    "ranking": drawing.ranking,
                 },
-                "geometry": json.loads(drawing["geometry"]),
+                "geometry": json.loads(drawing.geometry),
             }
         ],
     }
@@ -119,16 +153,16 @@ class DrawingStore:
     """Stores and manages user drawings."""
 
     def __init__(self, max_drawings: int = 10):
-        self.drawings = {}
+        self.drawings: dict[str, Drawing] = {}
         self.max_drawings = max_drawings
 
-    def store(self, drawing_id: str, drawing: str, ranking: dict[str, list]):
+    def store(self, drawing_id: str, drawing: Drawing):
         """Stores a drawing with the given ID, removing oldest if at capacity."""
         if len(self.drawings) >= self.max_drawings:
             first_key = next(iter(self.drawings))
             self.drawings.pop(first_key)
 
-        self.drawings[drawing_id] = {"geometry": drawing, "ranking": ranking}
+        self.drawings[drawing_id] = drawing
 
     def get(self, drawing_id: str):
         """Retrieves a drawing by its ID."""
@@ -137,7 +171,3 @@ class DrawingStore:
     def remove(self, drawing_id: str):
         """Removes a drawing with the given ID if it exists."""
         self.drawings.pop(drawing_id, None)
-
-    def contains(self, drawing_id: str):
-        """Checks if a drawing with the given ID exists in the store."""
-        return drawing_id in self.drawings

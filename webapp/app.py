@@ -9,7 +9,12 @@ from flask import Flask, jsonify, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines
-from webapp.drawing_utils import DrawingStore, load_ranked_drawing, save_drawing
+from webapp.drawing_utils import (
+    Drawing,
+    DrawingStore,
+    load_ranked_drawing,
+    save_drawing,
+)
 
 DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
@@ -62,17 +67,24 @@ def guess():
     if not data or "lines" not in data:
         return jsonify({"message": "Invalid input"}), 400
     lines = data["lines"]
-    drawing = proces_lines(lines)
+    geometry = proces_lines(lines)
 
     try:
         # Request prediction from ML server
-        response = requests.post(f"{MLSERVER_URL}/predict", json=drawing, timeout=10)
+        response = requests.post(f"{MLSERVER_URL}/predict", json=geometry, timeout=10)
         response.raise_for_status()
         ranking = response.json()
 
+        # Create the drawing
+        drawing = Drawing(
+            geometry=geometry,
+            timestamp=datetime.datetime.now().isoformat(),
+            ranking=ranking,
+        )
+
         # Store the drawing and ranking in the session
         drawing_id = str(uuid.uuid4())
-        drawing_store.store(drawing_id, drawing, ranking)
+        drawing_store.store(drawing_id, drawing)
 
         return jsonify({"ranking": ranking, "drawing_id": drawing_id})
 
@@ -95,13 +107,17 @@ def feedback():
         return jsonify({"message": "Country not provided"}), 400
 
     drawing_id = data.get("drawing_id")
-    if not drawing_id or not drawing_store.contains(drawing_id):
+    drawing = drawing_store.get(drawing_id)
+    if not drawing:
         return jsonify({"message": "Drawing not found"}), 400
 
-    drawing = drawing_store.get(drawing_id)
+    # Add metadata to drawing
+    drawing.country_name = data["country"]
     ip_addr = request.remote_addr
     hashed_ip = hashlib.sha256(ip_addr.encode()).hexdigest() if ip_addr else None
-    save_drawing(data["country"], drawing, hashed_ip, output_dir=DRAWING_DIR)
+    drawing.hashed_ip = hashed_ip
+
+    save_drawing(drawing, output_dir=DRAWING_DIR)
 
     drawing_store.remove(drawing_id)
     return jsonify({"message": "Feedback received"})
