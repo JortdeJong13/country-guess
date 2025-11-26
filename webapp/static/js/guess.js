@@ -87,14 +87,11 @@ function saveAuthorInput(author) {
   const value = author.trim();
   if (!value) return;
   localStorage.setItem("author", value);
-  console.log("Saved author input:", value);
 }
 
 function loadAuthorInput() {
   const saved = localStorage.getItem("author");
   if (!saved) return;
-
-  console.log("Loaded author input:", saved);
 
   authorInput.value = saved;
   resizeAuthorInput();
