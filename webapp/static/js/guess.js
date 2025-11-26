@@ -17,7 +17,7 @@ function showConfirmationContainer() {
 }
 
 function resizeAuthorInput() {
-  const charWidth = 8;
+  const charWidth = 10;
   const minWidth = 80;
   const contentWidth = (authorInput.value.length + 1) * charWidth;
   const finalWidth = Math.max(minWidth, contentWidth);
