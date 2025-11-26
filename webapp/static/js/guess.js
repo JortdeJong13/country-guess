@@ -24,6 +24,14 @@ function resizeAuthorInput() {
   authorInput.style.width = finalWidth + "px";
 }
 
+function formatScorePercent(score) {
+  const percent = score * 100;
+  if (percent < 1 && percent > 0) {
+    return "<1%";
+  }
+  return `${percent.toFixed(0)}%`;
+}
+
 /**
  * API Functions
  */
@@ -135,7 +143,7 @@ function populateCountryDropdown(ranking) {
   ranking.countries.forEach((country, index) => {
     const option = document.createElement("option");
     option.value = country;
-    option.text = `${country}${"\u00A0".repeat(4)}${(ranking.scores[index] * 100).toFixed(1)}%`;
+    option.text = `${country}${"\u00A0".repeat(4)}${formatScorePercent(ranking.scores[index])}`;
     dropdown.add(option);
   });
 
