@@ -4,7 +4,9 @@ import * as msg from "./messages.js";
 /**
  * UI Helper Functions
  */
+const dropdown = document.getElementById("country-dropdown");
 const confirmationContainer = document.getElementById("confirmation-container");
+const authorInput = document.getElementById("author-input");
 
 function hideConfirmationContainer() {
   confirmationContainer.style.display = "none";
@@ -12,6 +14,14 @@ function hideConfirmationContainer() {
 
 function showConfirmationContainer() {
   confirmationContainer.style.display = "block";
+}
+
+function resizeAuthorInput() {
+  const charWidth = 8;
+  const minWidth = 80;
+  const contentWidth = (authorInput.value.length + 1) * charWidth;
+  const finalWidth = Math.max(minWidth, contentWidth);
+  authorInput.style.width = finalWidth + "px";
 }
 
 /**
@@ -30,7 +40,7 @@ async function postGuess(lines) {
   return response.json();
 }
 
-async function sendFeedback(countryName, drawingId) {
+async function sendFeedback(drawingId, countryName, author) {
   if (!countryName || !drawingId) {
     console.warn("Missing country name or drawing ID. Feedback not sent.");
     return;
@@ -42,7 +52,11 @@ async function sendFeedback(countryName, drawingId) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ country: countryName, drawing_id: drawingId }),
+      body: JSON.stringify({
+        drawing_id: drawingId,
+        country: countryName,
+        author: author || "",
+      }),
     });
 
     if (!response.ok) {
@@ -61,6 +75,23 @@ async function sendFeedback(countryName, drawingId) {
 /**
  * Core Guess Logic
  */
+function saveAuthorInput(author) {
+  const value = author.trim();
+  if (!value) return;
+  localStorage.setItem("author", value);
+  console.log("Saved author input:", value);
+}
+
+function loadAuthorInput() {
+  const saved = localStorage.getItem("author");
+  if (!saved) return;
+
+  console.log("Loaded author input:", saved);
+
+  authorInput.value = saved;
+  resizeAuthorInput();
+}
+
 export async function guess() {
   if (lines.length === 0) {
     msg.setEmptyGuessMessage();
@@ -79,6 +110,7 @@ export async function guess() {
     window.currentDrawingId = data.drawing_id;
 
     populateCountryDropdown(ranking);
+    loadAuthorInput();
     showConfirmationContainer();
 
     return true; // Success - state should change to "confirm"
@@ -97,7 +129,6 @@ export async function guess() {
 }
 
 function populateCountryDropdown(ranking) {
-  const dropdown = document.getElementById("country-dropdown");
   dropdown.innerHTML = ""; // Clear previous options
 
   // Add options for each country in the list
@@ -140,9 +171,11 @@ function setConfirmationMessage(selectedCountry, guessedCountry) {
 }
 
 export function confirmCountry() {
-  const dropdown = document.getElementById("country-dropdown");
   const selectedCountry = dropdown.value;
   const guessedCountry = dropdown.options[0].value;
+  const author = authorInput ? authorInput.value : "";
+
+  saveAuthorInput(author);
 
   setConfirmationMessage(selectedCountry, guessedCountry);
   hideConfirmationContainer();
@@ -150,7 +183,7 @@ export function confirmCountry() {
   // Send feedback
   if (window.currentDrawingId) {
     const drawingId = window.currentDrawingId;
-    sendFeedback(selectedCountry, drawingId);
+    sendFeedback(drawingId, selectedCountry, author);
     window.currentDrawingId = null;
   }
 }
@@ -160,3 +193,9 @@ export function refreshGuess() {
   window.currentDrawingId = null;
   hideConfirmationContainer();
 }
+
+// Adjust author input field width based on input
+document.addEventListener("DOMContentLoaded", () => {
+  authorInput.style.width = "120px"; // initial width
+  authorInput.addEventListener("input", () => resizeAuthorInput());
+});
