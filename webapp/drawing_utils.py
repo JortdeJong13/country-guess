@@ -106,6 +106,8 @@ def load_ranked_drawing(rank, drawing_dir="./data/drawings/"):
         "total": total,
         "country_name": drawing.country_name,
         "country_score": drawing.country_score,
+        "author": drawing.author,
+        "timestamp": drawing.timestamp,
     }
 
     return result

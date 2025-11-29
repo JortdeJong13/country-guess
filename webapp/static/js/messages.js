@@ -82,26 +82,26 @@ const incorrectMessages = [
 // Messages for correct user drawings with high confidence
 const leaderboardMessagesHigh = [
   "This is my favorite drawing of {{selected}}!",
-  "Here someone drew a perfect {{selected}}.",
-  "Another drawing of {{selected}}.",
+  "Here {{author}} drew a perfect {{selected}}.",
+  "Another drawing of {{selected}} by {{author}}.",
   "Someone drew a nice {{selected}}!",
   "Very clear drawing of {{selected}}.",
   "A correct and recognizable {{selected}} drawing.",
   "Strong details make this clearly {{selected}}.",
   "A very nice submission of {{selected}}.",
   "Picasso submitted this {{selected}}.",
-  "I present to you {{selected}}.",
+  "I present to you {{selected}} by {{author}}.",
 ];
 
 // Messages for correct user drawings with low confidence
 const leaderboardMessagesLow = [
   "A simple and nice drawing of {{selected}}.",
   "This {{selected}} was drawn on a Nokia 3310.",
-  "A friendly drawing of {{selected}}.",
+  "A friendly drawing of {{selected}} by {{author}}.",
   "The idea of {{selected}} comes through nicely here.",
   "This shows {{selected}} in a softer style.",
   "A calm and thoughtful drawing of {{selected}}.",
-  "This is a recognizable interpretation of {{selected}}.",
+  "Thanks {{author}} for {{selected}}.",
   "My notes say this is {{selected}}.",
 ];
 
@@ -516,18 +516,13 @@ export function clearLeaderboardMessageCache() {
   leaderboardMessageCache = {};
 }
 
-export function setLeaderboardMessage(
-  rank,
-  total,
-  country_name,
-  country_score,
-) {
-  if (rank == null) {
+export function setLeaderboardMessage(data) {
+  if (data.rank == null) {
     showMessage("Failed to load leaderboard..");
     return;
   }
   // Check cache for message
-  const cache_key = `${rank}-${total}-${country_name}`;
+  const cache_key = `${data.rank}-${data.total}-${data.country_name}`;
   if (leaderboardMessageCache[cache_key]) {
     showMessage(leaderboardMessageCache[cache_key]);
     return;
@@ -535,20 +530,23 @@ export function setLeaderboardMessage(
 
   // Add medals for top 3 ranks
   const medals = ["🥇", "🥈", "🥉"];
-  const medal = medals[rank] || "";
+  const medal = medals[data.rank] || `#${data.rank + 1}`;
 
-  const scorePercent = Math.round(country_score * 100);
-  let message = `#${rank + 1} / ${total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n${medal} `;
+  // Fist line
+  const scorePercent = Math.round(data.country_score * 100);
+  let message = `${medal} / ${data.total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
 
+  // Second line
   const messageList =
-    country_score > 0.5 ? leaderboardMessagesHigh : leaderboardMessagesLow;
+    data.country_score > 0.5 ? leaderboardMessagesHigh : leaderboardMessagesLow;
 
   message += getRandomMessage(messageList, {
-    selected: country_name,
+    selected: data.country_name,
+    author: data.author?.trim() || "Anonymous",
   });
 
   // Cache the message
-  leaderboardMessageCache[rank] = message;
+  leaderboardMessageCache[data.rank] = message;
 
   showMessage(message);
 }
