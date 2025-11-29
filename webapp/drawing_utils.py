@@ -17,7 +17,7 @@ _SCORE_CACHE = {}
 class Drawing:
     geometry: str
     timestamp: str
-    ranking: dict[str, list]
+    ranking: list[tuple[str, float]]
     country_name: Optional[str] = None
     author: Optional[str] = None
     hashed_ip: Optional[str] = None
@@ -28,16 +28,16 @@ class Drawing:
         if not self.country_name:
             return None
 
-        countries = self.ranking["countries"]
-        if self.country_name in countries:
-            idx = countries.index(self.country_name)
-            return self.ranking["scores"][idx]
+        for country, score in self.ranking:
+            print(country, score)
+            if country == self.country_name:
+                return score
         return None
 
     @property
     def country_guess(self) -> str:
         """Return the guessed country."""
-        return self.ranking["countries"][0]
+        return self.ranking[0][0]
 
 
 def load_drawing(drawing_file: Path) -> Drawing:

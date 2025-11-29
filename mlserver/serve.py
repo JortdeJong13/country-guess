@@ -24,8 +24,9 @@ def predict():
 
     # Get ranking of countries
     countries, scores = model.rank_countries(drawing)
+    ranking = list(zip(countries[0].tolist(), scores[0].tolist()))
 
-    return jsonify({"countries": countries[0].tolist(), "scores": scores[0].tolist()})
+    return jsonify({"ranking": ranking})
 
 
 @app.route("/countries")

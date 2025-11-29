@@ -107,11 +107,9 @@ export async function guess() {
 
   try {
     const data = await postGuess(lines);
-    const ranking = data.ranking;
-    const firstCountry = ranking.countries[0];
-    const firstScore = ranking.scores[0];
+    const ranking = data.ranking.ranking;
 
-    msg.setConfidenceBasedMessage(firstScore, firstCountry);
+    msg.setConfidenceBasedMessage(...ranking[0]);
     window.currentDrawingId = data.drawing_id;
 
     populateCountryDropdown(ranking);
@@ -136,11 +134,10 @@ export async function guess() {
 function populateCountryDropdown(ranking) {
   dropdown.innerHTML = ""; // Clear previous options
 
-  // Add options for each country in the list
-  ranking.countries.forEach((country, index) => {
+  ranking.forEach(([country, score]) => {
     const option = document.createElement("option");
     option.value = country;
-    option.text = `${country}${"\u00A0".repeat(4)}${formatScorePercent(ranking.scores[index])}`;
+    option.text = `${country}${"\u00A0".repeat(4)}${formatScorePercent(score)}`;
     dropdown.add(option);
   });
 

@@ -88,7 +88,7 @@ const leaderboardMessagesHigh = [
   "Very clear drawing of {{selected}}.",
   "A correct and recognizable {{selected}} drawing.",
   "Strong details make this clearly {{selected}}.",
-  "A very nice submission of {{selected}} from Anonymous42.",
+  "A very nice submission of {{selected}}.",
   "Picasso submitted this {{selected}}.",
   "I present to you {{selected}}.",
 ];
@@ -467,7 +467,7 @@ function getRandomMessage(messageList, variables) {
   return template;
 }
 
-export function setConfidenceBasedMessage(score, guessedCountry) {
+export function setConfidenceBasedMessage(guessedCountry, score) {
   const messageList =
     score > 0.28
       ? highConfidenceMessages
