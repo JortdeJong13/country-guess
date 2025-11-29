@@ -18,6 +18,8 @@ help:
 push-drawings:
 	@echo "Checking for new drawings..."
 	@git fetch
+	@git rebase origin/$(git rev-parse --abbrev-ref HEAD)
+	@git push
 	@if git status --porcelain -- data/drawings | grep -q .; then \
 		echo "Pushing new drawings to GitHub..."; \
 		git add data/drawings/*; \
