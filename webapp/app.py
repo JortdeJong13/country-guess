@@ -73,7 +73,7 @@ def guess():
         # Request prediction from ML server
         response = requests.post(f"{MLSERVER_URL}/predict", json=geometry, timeout=10)
         response.raise_for_status()
-        ranking = response.json()
+        ranking = response.json()["ranking"]
 
         # Create the drawing
         drawing = Drawing(

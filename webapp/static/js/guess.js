@@ -107,7 +107,7 @@ export async function guess() {
 
   try {
     const data = await postGuess(lines);
-    const ranking = data.ranking.ranking;
+    const ranking = data.ranking;
 
     msg.setConfidenceBasedMessage(...ranking[0]);
     window.currentDrawingId = data.drawing_id;
