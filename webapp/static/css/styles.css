@@ -1,7 +1,7 @@
 :root {
     /* Amber Family */
-    --color-amber-primary: #f4ae3e; /* Daily challenge pill, golden states */
-    --color-amber-light: #f5b651; /* Hover states for golden elements */
+    --color-amber-primary: #f4ae3e; /* Daily challenge pill */
+    --color-amber-light: #f5b651; /* Unused */
     --color-amber-text: #283547; /* Dark blue text against gold backgrounds */
 
     /* Green Family */
@@ -228,21 +228,6 @@
     background-color: var(--color-green-primary) !important;
 }
 
-/* Golden state - comes after green to take priority */
-.golden {
-    background-color: var(--color-amber-primary) !important;
-    color: var(--color-amber-text) !important;
-    transition:
-        background-color 1s ease-in-out,
-        color 1s ease-in-out,
-        transform 0.15s ease-in-out !important;
-}
-
-/* Golden + Locked */
-.golden.locked {
-    background-color: var(--color-amber-primary) !important;
-}
-
 /* Leaderboard button active state */
 #leaderboard-btn.active {
     background-color: var(--color-rose-primary) !important;
@@ -277,16 +262,12 @@ button {
         background-color: var(--color-rose-hover) !important;
     }
 
-    .green:not(.golden).touch-active {
+    .green.touch-active {
         background-color: var(--color-green-hover) !important;
     }
 
     #undo-btn.touch-active .undo-icon {
         transform: rotate(-20deg);
-    }
-
-    .golden.touch-active {
-        background-color: var(--color-amber-light) !important;
     }
 }
 
@@ -310,7 +291,7 @@ button {
         transition: all 0.2s ease;
     }
 
-    .green:not(.golden):hover {
+    .green:hover {
         background-color: var(--color-green-hover) !important;
         transform: scale(1.1);
         transition: all 0.2s ease;
@@ -321,7 +302,7 @@ button {
         transition: transform 0.3s ease-in-out;
     }
 
-    #undo-btn.green:not(.golden):hover {
+    #undo-btn.green:hover {
         background-color: var(--color-green-hover) !important;
         transform: scale(1.1) !important;
         transition: all 0.2s ease;
@@ -331,11 +312,6 @@ button {
         background-color: var(--color-rose-hover) !important;
         transform: scale(1.1);
         transition: all 0.2s ease;
-    }
-
-    .golden:hover {
-        background-color: var(--color-amber-light) !important;
-        transform: scale(1.1);
     }
 
     .github-link:hover {

@@ -1,4 +1,3 @@
-import { hasCompletedToday } from "./daily_challenge.js";
 import { clearCanvas, undoLine } from "./drawing.js";
 import { confirmCountry, guess, refreshGuess } from "./guess.js";
 import {
@@ -7,6 +6,7 @@ import {
   showLeaderboardPrevious,
 } from "./leaderboard.js";
 import "./minigame.js";
+import "./daily_challenge.js";
 import * as ani from "./animations.js";
 
 // Application State
@@ -64,9 +64,6 @@ function updateHomeUI() {
   rightBtn.classList.remove("green", "locked");
   leftBtn.classList.remove("locked");
   leaderboardBtn.classList.remove("active");
-  if (hasCompletedToday()) {
-    leftBtn.classList.add("golden");
-  }
 }
 
 function updateConfirmUI() {
@@ -85,7 +82,6 @@ function updateLeaderboardUI() {
   rightBtn.classList.add("green");
   ani.showLeaderboardButton();
   leaderboardBtn.classList.add("active");
-  leftBtn.classList.remove("golden");
 }
 
 /**
@@ -135,9 +131,6 @@ function handleConfirm() {
   confirmCountry();
   // Lock the button after confirmation
   leftBtn.classList.add("locked");
-  if (hasCompletedToday()) {
-    leftBtn.classList.add("golden");
-  }
 }
 
 function handleRefresh() {
