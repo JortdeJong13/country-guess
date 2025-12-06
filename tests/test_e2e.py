@@ -83,9 +83,8 @@ class TestEndToEnd(unittest.TestCase):
 
         # Assert country is top 3 prediction
         ranking = result["ranking"]
-        self.assertIn("countries", ranking)
-        self.assertIn("scores", ranking)
-        self.assertIn(country_name, ranking["countries"][:3])
+        top_countries = [country for country, score in ranking[:3]]
+        self.assertIn(country_name, top_countries)
 
         drawing_id = result["drawing_id"]
 

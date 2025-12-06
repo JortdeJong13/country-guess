@@ -113,7 +113,7 @@ def feedback():
 
     # Add metadata to drawing
     drawing.country_name = data["country"]
-    drawing.author = data["author"]
+    drawing.author = data.get("author")
     ip_addr = request.remote_addr
     hashed_ip = hashlib.sha256(ip_addr.encode()).hexdigest() if ip_addr else None
     drawing.hashed_ip = hashed_ip
