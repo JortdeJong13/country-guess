@@ -17,9 +17,11 @@ help:
 .PHONY: push-drawings
 push-drawings:
 	@echo "Checking for new drawings..."
-	@git fetch
-	@git rebase origin/$(git rev-parse --abbrev-ref HEAD)
-	@git push
+	@git fetch origin main
+	@! git merge --ff--only origin/main >/dev/null 2>&1 || true
+	@if [ $$? -eq 0 ]; then \
+		echo "Already up-to-date or fast-forwarded to origin/main."; \
+	fi
 	@if git status --porcelain -- data/drawings | grep -q .; then \
 		echo "Pushing new drawings to GitHub..."; \
 		git add data/drawings/*; \
