@@ -521,9 +521,8 @@ export function setLeaderboardMessage(data) {
     return;
   }
   // Check cache for message
-  const cache_key = `${data.rank}-${data.total}-${data.country_name}`;
-  if (leaderboardMessageCache[cache_key]) {
-    showMessage(leaderboardMessageCache[cache_key]);
+  if (leaderboardMessageCache[data.rank]) {
+    showMessage(leaderboardMessageCache[data.rank]);
     return;
   }
 

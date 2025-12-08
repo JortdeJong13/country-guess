@@ -29,7 +29,6 @@ class Drawing:
             return None
 
         for country, score in self.ranking:
-            print(country, score)
             if country == self.country_name:
                 return score
         return None
