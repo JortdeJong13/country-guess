@@ -21,10 +21,11 @@ def unvalidated_drawing():
     try:
         drawing = load_unvalidated_drawing(drawing_dir=DRAWING_DIR)
         if drawing is None:
-            return jsonify({"message": "No unvalidated drawing found"}), 404
+            return jsonify({"message": "No unvalidated drawings found"})
 
         return jsonify(
             {
+                "message": "Drawing loaded successfully",
                 "lines": json.loads(drawing.geometry)["coordinates"],
                 "timestamp": drawing.timestamp,
                 "country_name": drawing.country_name,
