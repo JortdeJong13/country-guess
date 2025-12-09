@@ -12,6 +12,7 @@ help:
 	@echo "  run-mlserver        Start the ML server"
 	@echo "  run-webapp          Start the web app"
 	@echo "  run-app             Start both the ML server and web app"
+	@echo "  run-admin           Start the admin app"
 
 # Push new drawings to GitHub
 .PHONY: push-drawings
@@ -65,3 +66,9 @@ run-app:
 		DEBUG=$(DEBUG) MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app; \
 		kill $$ML_PID; \
 	)
+
+# Start the admin app
+.PHONY: run-admin
+run-admin:
+	@echo "Starting admin app..."
+	python -m webapp.admin

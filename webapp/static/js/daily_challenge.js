@@ -353,10 +353,7 @@ async function resolveDailyCountry() {
   }
 }
 
-/**
- * Initialization
- */
-document.addEventListener("DOMContentLoaded", async function () {
+export async function initializeDailyChallenge() {
   dailyCountry = await resolveDailyCountry();
 
   if (dailyCountry) {
@@ -364,4 +361,4 @@ document.addEventListener("DOMContentLoaded", async function () {
     updateDailyChallenge();
     addEntranceAnimation();
   }
-});
+}

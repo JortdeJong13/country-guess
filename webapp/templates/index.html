@@ -183,7 +183,11 @@
             </script>
             <script
                 type="module"
+                {% if is_admin %}
+                src="{{ url_for('static', filename='js/admin.js') }}"
+                {% else %}
                 src="{{ url_for('static', filename='js/main.js') }}"
+                {% endif %}
             ></script>
         </div>
     </body>

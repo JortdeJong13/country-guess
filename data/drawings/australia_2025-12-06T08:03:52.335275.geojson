@@ -14,6 +14,7 @@
         "country_name": "Australia",
         "author": "",
         "hashed_ip": "5c2a3f8f4c6f5559f3df13f4c2497729623d823fafba70ba7aa909a82c99e843",
+        "validated": true,
         "ranking": [
           [
             "Libya",
@@ -108,7 +109,7 @@
             0.008538651280105114
           ],
           [
-            "C\u00f4te d'Ivoire",
+            "Côte d'Ivoire",
             0.008154712617397308
           ],
           [

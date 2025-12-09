@@ -1,5 +1,3 @@
-import { getState } from "./main.js";
-
 // UI Elements
 const rightBtn = document.getElementById("right-btn");
 const leaderboardBtn = document.getElementById("leaderboard-btn");
@@ -9,7 +7,6 @@ let undoVisible = false;
 let leaderboardVisible = false;
 
 export function showUndoBtn() {
-  if (!(getState() == "home")) return;
   if (undoVisible) return;
   undoVisible = true;
 
@@ -101,5 +98,38 @@ export function hideLeaderboardButton() {
     complete: function () {
       leaderboardContainer.style.display = "none";
     },
+  });
+}
+
+export function initializeButtonBounce() {
+  const buttons = document.querySelectorAll("button");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", function (e) {
+      // Don't animate locked buttons
+      if (this.classList.contains("locked")) {
+        return;
+      }
+
+      // Use anime.js for smooth bounce
+      anime({
+        targets: this,
+        scale: [
+          { value: 0.92, duration: 80, easing: "easeOutQuad" },
+          { value: 1, duration: 150, easing: "easeOutQuad" },
+        ],
+        duration: 230,
+        complete: () => {
+          // Add transition before clearing transform for smooth hover
+          this.style.transition = "transform 0.15s ease-out";
+          this.style.transform = "";
+
+          // Remove inline transition after it completes so CSS takes over
+          setTimeout(() => {
+            this.style.transition = "";
+          }, 150);
+        },
+      });
+    });
   });
 }
