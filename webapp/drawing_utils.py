@@ -21,6 +21,8 @@ class Drawing:
     country_name: Optional[str] = None
     author: Optional[str] = None
     hashed_ip: Optional[str] = None
+    validated: bool = False
+    filename: Optional[str] = None
 
     @property
     def country_score(self) -> Optional[float]:
@@ -57,6 +59,8 @@ def load_drawing(drawing_file: Path) -> Drawing:
         country_name=props.get("country_name"),
         author=props.get("author"),
         hashed_ip=props.get("hashed_ip"),
+        validated=props.get("validated", False),
+        filename=drawing_file.name,
     )
 
 
@@ -112,16 +116,31 @@ def load_ranked_drawing(rank, drawing_dir="./data/drawings/"):
     return result
 
 
-def save_drawing(drawing, output_dir="./data/drawings/"):
+def load_unvalidated_drawing(drawing_dir="./data/drawings/"):
+    """Load a drawing that has not been validated."""
+    drawing_files = list(Path(drawing_dir).glob("*.geojson"))
+    if not drawing_files:
+        logger.warning("No drawings found.")
+        return None
+
+    for drawing_file in drawing_files:
+        drawing = load_drawing(drawing_file)
+        if not drawing.validated:
+            return drawing
+
+    logger.info("No unvalidated drawings found.")
+    return None
+
+
+def save_drawing(drawing, filename=None, output_dir="./data/drawings/"):
     """Saves a country drawing as a GeoJSON file with metadata."""
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Saving drawing of %s to %s", drawing.country_name, output_dir)
 
     # Create filename for new drawing
-    filename = (
-        f"{drawing.country_name.lower().replace(' ', '_')}_{drawing.timestamp}.geojson"
-    )
+    if filename is None:
+        filename = f"{drawing.country_name.lower().replace(' ', '_')}_{drawing.timestamp}.geojson"
 
     # Create GeoJSON feature, including CRS information
     geojson = {
@@ -138,6 +157,7 @@ def save_drawing(drawing, output_dir="./data/drawings/"):
                     "country_name": drawing.country_name,
                     "author": drawing.author,
                     "hashed_ip": drawing.hashed_ip,
+                    "validated": drawing.validated,
                     "ranking": drawing.ranking,
                 },
                 "geometry": json.loads(drawing.geometry),
@@ -147,7 +167,7 @@ def save_drawing(drawing, output_dir="./data/drawings/"):
 
     # Save to file
     with open(output_dir / filename, "w", encoding="utf-8") as f:
-        json.dump(geojson, f, indent=2)
+        json.dump(geojson, f, indent=2, ensure_ascii=False)
 
 
 class DrawingStore:

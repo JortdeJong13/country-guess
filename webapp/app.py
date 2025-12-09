@@ -138,24 +138,6 @@ def drawing():
         return jsonify({"message": "Failed to load drawing", "error": str(e)}), 500
 
 
-@app.route("/drawing/<path:filename>", methods=["DELETE"])
-def delete_drawing(filename):
-    file_path = os.path.join(DRAWING_DIR, filename)
-
-    if not os.path.exists(file_path):
-        return jsonify({"message": f"Drawing '{filename}' not found."}), 404
-
-    # Prevent directory traversal
-    if not os.path.abspath(file_path).startswith(os.path.abspath(DRAWING_DIR)):
-        return jsonify({"message": "File outside the drawing directory."}), 403
-
-    try:
-        os.remove(file_path)
-        return jsonify({"message": f"Drawing '{filename}' deleted successfully."}), 200
-    except Exception as e:
-        return jsonify({"message": "Failed to delete drawing", "error": str(e)}), 500
-
-
 @app.route("/health")
 def health():
     return jsonify({"status": "healthy"}), 200
