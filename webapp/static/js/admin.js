@@ -62,6 +62,7 @@ async function showDrawing() {
 
   renderUserDrawing(data.lines);
   filename = data.filename;
+  console.log("Drawing:", filename);
 
   // Message
   const scorePercent = Math.round(data.country_score * 100);
