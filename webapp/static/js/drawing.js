@@ -1,4 +1,3 @@
-import { getState } from "./main.js";
 import { hideUndoBtn, showUndoBtn } from "./animations.js";
 
 var canvas = document.getElementById("canvas");
@@ -12,16 +11,34 @@ var lastX, lastY;
 var lines = [];
 var currentLine = [];
 
-// Mouse events
-canvas.addEventListener("mousedown", startDrawing);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", stopDrawing);
-canvas.addEventListener("mouseout", stopDrawing);
+function enableDrawing() {
+  // Mouse events
+  canvas.addEventListener("mousedown", startDrawing);
+  canvas.addEventListener("mousemove", draw);
+  canvas.addEventListener("mouseup", stopDrawing);
+  canvas.addEventListener("mouseout", stopDrawing);
 
-// Touch events
-canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
-canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
-canvas.addEventListener("touchend", handleTouchEnd);
+  // Touch events
+  canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
+  canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+  canvas.addEventListener("touchend", handleTouchEnd);
+}
+
+function disableDrawing() {
+  // Mouse events
+  canvas.removeEventListener("mousedown", startDrawing);
+  canvas.removeEventListener("mousemove", draw);
+  canvas.removeEventListener("mouseup", stopDrawing);
+  canvas.removeEventListener("mouseout", stopDrawing);
+
+  // Touch events
+  canvas.removeEventListener("touchstart", handleTouchStart);
+  canvas.removeEventListener("touchmove", handleTouchMove);
+  canvas.removeEventListener("touchend", handleTouchEnd);
+
+  // Also ensure drawing stops immediately if disabled mid-draw
+  isDrawing = false;
+}
 
 // Function to resize canvas
 function resizeCanvas() {
@@ -106,7 +123,6 @@ function getCoordinates(event) {
 }
 
 function startDrawing(event) {
-  if (getState() !== "home") return;
   isDrawing = true;
   const coords = getCoordinates(event);
   [lastX, lastY] = [coords.x, coords.y];
@@ -230,4 +246,11 @@ function undoLine() {
   }
 }
 
-export { lines, clearCanvas, undoLine, renderUserDrawing };
+export {
+  lines,
+  clearCanvas,
+  undoLine,
+  renderUserDrawing,
+  enableDrawing,
+  disableDrawing,
+};

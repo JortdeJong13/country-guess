@@ -1,12 +1,17 @@
-import { clearCanvas, undoLine } from "./drawing.js";
 import { confirmCountry, guess, refreshGuess } from "./guess.js";
+import { initializeDailyChallenge } from "./daily_challenge.js";
+import {
+  clearCanvas,
+  undoLine,
+  enableDrawing,
+  disableDrawing,
+} from "./drawing.js";
 import {
   showLeaderboard,
   showLeaderboardNext,
   showLeaderboardPrevious,
 } from "./leaderboard.js";
 import "./minigame.js";
-import "./daily_challenge.js";
 import * as ani from "./animations.js";
 
 // Application State
@@ -58,6 +63,7 @@ function updateUI() {
 function updateHomeUI() {
   ani.hideUndoBtn();
   ani.showLeaderboardButton();
+  enableDrawing();
   canvas.style.cursor = "crosshair";
   leftBtn.textContent = "Guess Country";
   rightBtn.textContent = "Clear";
@@ -68,6 +74,7 @@ function updateHomeUI() {
 
 function updateConfirmUI() {
   ani.hideLeaderboardButton();
+  disableDrawing();
   canvas.style.cursor = "default";
   leftBtn.textContent = "Confirm";
   rightBtn.textContent = "Clear";
@@ -76,6 +83,7 @@ function updateConfirmUI() {
 
 function updateLeaderboardUI() {
   ani.hideUndoBtn();
+  disableDrawing();
   canvas.style.cursor = "default";
   leftBtn.textContent = "Previous";
   rightBtn.textContent = "Next";
@@ -208,43 +216,11 @@ function initializeMobileTouchFeedback() {
 /**
  * Initialize Application
  */
-function initializeButtonBounce() {
-  const buttons = document.querySelectorAll("button");
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", function (e) {
-      // Don't animate locked buttons
-      if (this.classList.contains("locked")) {
-        return;
-      }
-
-      // Use anime.js for smooth bounce
-      anime({
-        targets: this,
-        scale: [
-          { value: 0.92, duration: 80, easing: "easeOutQuad" },
-          { value: 1, duration: 150, easing: "easeOutQuad" },
-        ],
-        duration: 230,
-        complete: () => {
-          // Add transition before clearing transform for smooth hover
-          this.style.transition = "transform 0.15s ease-out";
-          this.style.transform = "";
-
-          // Remove inline transition after it completes so CSS takes over
-          setTimeout(() => {
-            this.style.transition = "";
-          }, 150);
-        },
-      });
-    });
-  });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   initializeEventListeners();
   initializeMobileTouchFeedback();
-  initializeButtonBounce();
+  ani.initializeButtonBounce();
+  initializeDailyChallenge();
   updateUI(); // Set initial UI state
 });
 
