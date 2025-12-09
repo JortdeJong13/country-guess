@@ -14,6 +14,7 @@
         "country_name": "New Zealand",
         "author": "",
         "hashed_ip": "5c2a3f8f4c6f5559f3df13f4c2497729623d823fafba70ba7aa909a82c99e843",
+        "validated": true,
         "ranking": [
           [
             "Japan",
@@ -672,7 +673,7 @@
             6.627102266065776e-05
           ],
           [
-            "C\u00f4te d'Ivoire",
+            "Côte d'Ivoire",
             6.518698501167819e-05
           ],
           [

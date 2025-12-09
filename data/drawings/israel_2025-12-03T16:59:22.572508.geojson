@@ -14,6 +14,7 @@
         "country_name": "Israel",
         "author": "",
         "hashed_ip": "5c2a3f8f4c6f5559f3df13f4c2497729623d823fafba70ba7aa909a82c99e843",
+        "validated": true,
         "ranking": [
           [
             "Sweden",
@@ -788,7 +789,7 @@
             1.4513690075546037e-05
           ],
           [
-            "C\u00f4te d'Ivoire",
+            "Côte d'Ivoire",
             1.2533461813291069e-05
           ],
           [
