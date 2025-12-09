@@ -31,6 +31,7 @@ def unvalidated_drawing():
                 "country_name": drawing.country_name,
                 "country_score": drawing.country_score,
                 "country_guess": drawing.country_guess,
+                "guess_score": drawing.guess_score,
                 "author": drawing.author,
                 "filename": drawing.filename,
             }

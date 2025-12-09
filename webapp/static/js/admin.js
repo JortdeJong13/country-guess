@@ -65,12 +65,13 @@ async function showDrawing() {
 
   // Message
   const scorePercent = Math.round(data.country_score * 100);
+  const guessScorePercent = Math.round(data.guess_score * 100);
   const date = new Date(data.timestamp).toISOString().split("T")[0];
   const authorSuffix = data.author?.trim() ? ` by ${data.author.trim()}` : "";
 
-  showMessage(`${data.country_name}
-  Drawn on ${date}${authorSuffix}
-  Prediction: ${data.country_guess} -- ${scorePercent}%`);
+  showMessage(`${data.country_name} (${scorePercent}%)
+  Prediction: ${data.country_guess} (${guessScorePercent}%)
+  Drawn on ${date}${authorSuffix}`);
 }
 
 function approveDrawing() {

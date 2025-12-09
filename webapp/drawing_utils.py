@@ -40,6 +40,11 @@ class Drawing:
         """Return the guessed country."""
         return self.ranking[0][0]
 
+    @property
+    def guess_score(self) -> float:
+        """Return the score for the guessed country."""
+        return self.ranking[0][1]
+
 
 def load_drawing(drawing_file: Path) -> Drawing:
     """Load and return a drawing file fully parsed."""
