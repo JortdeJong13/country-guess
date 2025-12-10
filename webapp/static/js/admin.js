@@ -1,4 +1,4 @@
-import { renderUserDrawing } from "./drawing.js";
+import { renderUserDrawing, clearCanvas } from "./drawing.js";
 import { showMessage, showLoadingMessage } from "./messages.js";
 import { initializeButtonBounce } from "./animations.js";
 
@@ -46,6 +46,7 @@ async function deleteDrawingAPI(filename) {
  * UI Functions
  */
 async function showDrawing() {
+  clearCanvas();
   rightBtn.classList.add("locked");
   leftBtn.classList.add("locked");
 
