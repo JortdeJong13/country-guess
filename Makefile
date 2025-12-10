@@ -53,6 +53,7 @@ run-mlserver:
 # Start the web app
 .PHONY: run-webapp
 run-webapp:
+	@python -m webbrowser http://127.0.0.1:5002
 	@echo "Starting web app..."
 	DEBUG=$(DEBUG) MLSERVER_URL=$(MLSERVER_URL) python -m webapp.app
 
@@ -70,5 +71,6 @@ run-app:
 # Start the admin app
 .PHONY: run-admin
 run-admin:
+	@python -m webbrowser http://127.0.0.1:5003
 	@echo "Starting admin app..."
 	python -m webapp.admin
