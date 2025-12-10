@@ -11,9 +11,10 @@
       "type": "Feature",
       "properties": {
         "timestamp": "2025-09-04T01:03:33.894235",
-        "country_name": "French Guiana",
+        "country_name": "Germany",
         "author": "",
         "hashed_ip": "",
+        "validated": true,
         "ranking": [
           [
             "French Guiana",

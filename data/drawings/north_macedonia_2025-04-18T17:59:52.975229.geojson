@@ -11,9 +11,10 @@
       "type": "Feature",
       "properties": {
         "timestamp": "2025-04-18T17:59:52.975229",
-        "country_name": "Macedonia",
+        "country_name": "North Macedonia",
         "author": "",
         "hashed_ip": "",
+        "validated": true,
         "ranking": [
           [
             "North Macedonia",
