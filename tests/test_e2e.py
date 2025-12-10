@@ -56,8 +56,7 @@ class TestEndToEnd(unittest.TestCase):
 
     @staticmethod
     def _wait_for_service(url, timeout=10):
-        deadline = time.time() + timeout
-        while time.time() < deadline:
+        for _ in range(timeout):
             try:
                 if requests.get(url, timeout=1).status_code == 200:
                     return
