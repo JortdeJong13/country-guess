@@ -85,10 +85,8 @@ class TestEndToEnd(unittest.TestCase):
         top_countries = [country for country, score in ranking[:3]]
         self.assertIn(country_name, top_countries)
 
-        drawing_id = result["drawing_id"]
-
         # Step 2: Submit feedback
-        feedback_data = {"country": country_name, "drawing_id": drawing_id}
+        feedback_data = {"country": country_name, "drawing_id": result["drawing_id"]}
         response = requests.post(
             f"{self.webapp_url}/feedback", json=feedback_data, timeout=10
         )
@@ -108,7 +106,7 @@ class TestEndToEnd(unittest.TestCase):
             country_name = test_drawing["name"]
 
             with self.subTest(country_name=country_name):
-                print(f"Testing country: {country_name}")
+                print(f"\nTesting country: {country_name}")
                 self._run_country_guess_test(country_name, test_drawing)
 
 
