@@ -11,9 +11,10 @@
       "type": "Feature",
       "properties": {
         "timestamp": "2025-08-12T15:03:47.091063",
-        "country_name": "Taiwan",
+        "country_name": "Israel",
         "author": "",
         "hashed_ip": "",
+        "validated": true,
         "ranking": [
           [
             "Taiwan",
