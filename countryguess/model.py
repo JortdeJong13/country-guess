@@ -151,9 +151,9 @@ def fetch_model(model_name):
         raise RuntimeError(f"Failed to fetch model version or source for {model_name}")
 
     # Load the model
-    model_path = "/".join(model_version.source.split("/")[-5:])
     device = get_device()
-    logger.info("Loading model from path: %s on device: %s...", model_path, device)
+    logger.info("Loading model on device: %s...", device)
+    model_path = "/".join(model_version.source.split("/")[-5:])
     model = load_model(model_path, map_location=device)
 
     # Load reference data
