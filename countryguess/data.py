@@ -148,6 +148,7 @@ class TestDataset(Dataset):
         # Drop countries without a reference
         reference_countries = set(self.ref_gdf["country_name"])
         self.gdf = self.gdf[self.gdf["country_name"].isin(reference_countries)].copy()  # type: ignore
+        self.gdf = self.gdf[self.gdf["validated"]].copy()
 
         # Normalize test data
         self.gdf = self.add_normal_geom(self.gdf)
