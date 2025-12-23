@@ -5,7 +5,6 @@ import unittest
 from pathlib import Path
 
 import requests
-from requests.sessions import PreparedRequest
 
 from tests.test_e2e import wait_for_service
 
