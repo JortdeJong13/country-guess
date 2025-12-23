@@ -16,10 +16,23 @@ from pathlib import Path
 import requests
 
 
+def wait_for_service(url, timeout=10):
+    for _ in range(timeout):
+        try:
+            if requests.get(url, timeout=1).status_code == 200:
+                return
+        except requests.exceptions.RequestException:
+            pass
+        time.sleep(1)
+    raise RuntimeError(f"Service at {url} is unhealthy")
+
+
 class TestEndToEnd(unittest.TestCase):
     """Test the Country Guess App end-to-end."""
 
-    DRAWING_DIR = Path("tests/data/drawings")
+    MLSERVER_URL = "http://localhost:5001"
+    WEBAPP_URL = "http://localhost:5002"
+    DRAWING_DIR = Path("tests/data/drawings_tmp")
 
     @classmethod
     def setUpClass(cls):
@@ -36,8 +49,8 @@ class TestEndToEnd(unittest.TestCase):
         )
 
         # Wait for services
-        cls._wait_for_service("http://localhost:5001/health", timeout=20)
-        cls._wait_for_service("http://localhost:5002/health", timeout=20)
+        wait_for_service(f"{cls.MLSERVER_URL}/health", timeout=20)
+        wait_for_service(f"{cls.WEBAPP_URL}/health", timeout=20)
 
         # Discover test files
         cls.test_files = sorted(Path("tests/data/lines").glob("*.json"))
@@ -54,25 +67,11 @@ class TestEndToEnd(unittest.TestCase):
         if cls.DRAWING_DIR.exists():
             shutil.rmtree(cls.DRAWING_DIR)
 
-    @staticmethod
-    def _wait_for_service(url, timeout=10):
-        for _ in range(timeout):
-            try:
-                if requests.get(url, timeout=1).status_code == 200:
-                    return
-            except requests.exceptions.RequestException:
-                pass
-            time.sleep(1)
-        raise RuntimeError(f"Service at {url} is unhealthy")
-
-    def setUp(self):
-        self.webapp_url = "http://localhost:5002"
-
     def _run_country_guess_test(self, country_name, test_drawing):
         """Walk through the country guess flow on the webapp"""
         # Step 1: Send drawing and get prediction
         response = requests.post(
-            f"{self.webapp_url}/guess", json=test_drawing, timeout=10
+            f"{self.WEBAPP_URL}/guess", json=test_drawing, timeout=10
         )
         self.assertEqual(response.status_code, 200)
 
@@ -88,7 +87,7 @@ class TestEndToEnd(unittest.TestCase):
         # Step 2: Submit feedback
         feedback_data = {"country": country_name, "drawing_id": result["drawing_id"]}
         response = requests.post(
-            f"{self.webapp_url}/feedback", json=feedback_data, timeout=10
+            f"{self.WEBAPP_URL}/feedback", json=feedback_data, timeout=10
         )
         self.assertEqual(response.status_code, 200)
 
