@@ -9,6 +9,7 @@ on:
       - "webapp/**"
       - "tests/data/**"
       - "tests/test_e2e.py"
+      - "tests/test_admin_e2e.py"
 
 jobs:
   test:

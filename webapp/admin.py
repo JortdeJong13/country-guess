@@ -92,4 +92,5 @@ def delete_drawing(filename):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5003, debug=True)
+    debug = os.getenv("DEBUG", "0") == "1"
+    app.run(host="0.0.0.0", port=5003, debug=debug)

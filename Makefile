@@ -42,7 +42,7 @@ evaluate-model:
 .PHONY: test-e2e
 test-e2e:
 	@echo "Running end-to-end tests..."
-	python -m unittest tests/test_e2e.py -v
+	python -m unittest discover tests -v
 
 # Start the ML server
 .PHONY: run-mlserver
@@ -70,6 +70,5 @@ run-app:
 # Start the admin app
 .PHONY: run-admin
 run-admin:
-	@python -m webbrowser http://127.0.0.1:5003
 	@echo "Starting admin app..."
-	python -m webapp.admin
+	DEBUG=$(DEBUG) python -m webapp.admin
