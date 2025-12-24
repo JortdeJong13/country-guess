@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /daily_country
+Disallow: /guess
+Disallow: /feedback
+Disallow: /drawing
+Disallow: /health
