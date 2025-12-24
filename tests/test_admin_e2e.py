@@ -84,8 +84,7 @@ class TestAdminEndToEnd(unittest.TestCase):
         print("Ensure no unvalidated drawings left")
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual("No unvalidated drawings found", data["message"])
+        self.assertEqual("No unvalidated drawings found", response.json()["message"])
 
 
 if __name__ == "__main__":

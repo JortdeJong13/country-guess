@@ -32,7 +32,7 @@ class TestEndToEnd(unittest.TestCase):
 
     MLSERVER_URL = "http://localhost:5001"
     WEBAPP_URL = "http://localhost:5002"
-    DRAWING_DIR = Path("tests/data/drawings_tmp")
+    DRAWING_DIR = Path("tests/data/drawings_app")
 
     @classmethod
     def setUpClass(cls):
@@ -97,7 +97,7 @@ class TestEndToEnd(unittest.TestCase):
         self.assertTrue(files, f"Drawing of {country_name} has not been saved")
 
     def test_country_guess_app(self):
-        """Test the Country Guess App end-to-end for all countries."""
+        """Test the Country Guess App end-to-end for all test drawings."""
         for test_file in self.test_files:
             # Load test drawing
             with open(test_file, encoding="utf-8") as f:
