@@ -29,6 +29,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/robots.txt")
+def serve_robots_txt():
+    return app.send_static_file("robots.txt")
+
+
 def get_daily_country():
     today = datetime.date.today().isoformat()
 
