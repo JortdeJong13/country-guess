@@ -108,12 +108,11 @@ const leaderboardMessagesLow = [
 const dailyChallengeMessages = [
   "Well done, that’s today’s {{selected}} challenge.",
   "You wrapped up the daily challenge with {{selected}}.",
+  "That wasn't so hard now was it?",
   "That’s a solid {{selected}}, daily challenge finished.",
   "Good job, {{selected}} closes out today’s challenge.",
   "That’s it for today! New challenge tomorrow.",
-  "Challenge complete! Check back tomorrow for another country.",
-  "You’re done for today, tomorrow brings a fresh challenge.",
-  "Daily challenge cleared. See you tomorrow!",
+  "Daily challenge cleared!",
 ];
 
 const countryFacts = {
