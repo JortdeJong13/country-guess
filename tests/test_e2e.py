@@ -41,10 +41,10 @@ class TestEndToEnd(unittest.TestCase):
         env["DRAWING_DIR"] = str(cls.DRAWING_DIR)
 
         cls.mlserver_process = subprocess.Popen(
-            ["make", "run-mlserver", "DEBUG=0"],
+            ["just", "DEBUG=0", "run-mlserver"],
         )
         cls.webapp_process = subprocess.Popen(
-            ["make", "run-webapp", "DEBUG=0"],
+            ["just", "DEBUG=0", "run-webapp"],
             env=env,
         )
 
