@@ -33,7 +33,7 @@ jobs:
       - name: Run evaluation
         id: eval
         run: |
-          report=$(make evaluate-model)
+          report=$(just evaluate-model)
           echo "$report" > report.txt
 
       - name: Create accuracy shield

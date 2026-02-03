@@ -30,4 +30,4 @@ jobs:
           pip install -r webapp/requirements.txt
 
       - name: Run end-to-end tests
-        run: make test-e2e
+        run: just test-e2e
