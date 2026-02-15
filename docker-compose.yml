@@ -22,8 +22,32 @@ services:
       - "5002:5002"
     environment:
       - MLSERVER_URL=http://mlserver:5001
-      - DRAWING_DIR=data/drawings
+      - DRAWING_STORE_URL=http://drawingstore:8080
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+
+  drawings-db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - ./data/drawings:/data/drawings # Optional
+      - ./data/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+
+  drawingstore:
+    build:
+      context: ./
+      dockerfile: ./drawingstore/Dockerfile
+    image: ghcr.io/jortdejong13/country-guess-drawing-store:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@drawings-db:5432/${DB_NAME}?sslmode=disable
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+    depends_on:
+      - drawings-db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
