@@ -11,7 +11,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
     volumes:
-      - ./mlruns:/mlruns # Optional
+      - ./mlruns:/app/mlruns # Optional
 
   webapp:
     build:
