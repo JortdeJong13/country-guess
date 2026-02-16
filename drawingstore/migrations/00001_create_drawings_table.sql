@@ -27,6 +27,7 @@ CREATE INDEX IF NOT EXISTS idx_drawings_unvalidated_id
   WHERE validated = false;
 
 -- Trigger function to keep updated_at current on updates.
+-- +goose StatementBegin
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -34,6 +35,7 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+-- +goose StatementEnd
 
 DROP TRIGGER IF EXISTS set_updated_at ON drawings;
 CREATE TRIGGER set_updated_at

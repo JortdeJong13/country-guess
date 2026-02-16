@@ -17,5 +17,6 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates
 
 COPY --from=builder /app/drawingstore .
+COPY drawingstore/migrations ./migrations
 
 ENTRYPOINT ["./drawingstore"]
