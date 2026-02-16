@@ -39,12 +39,13 @@ class TestEndToEnd(unittest.TestCase):
         # Start servers with custom environment
         env = os.environ.copy()
         env["DRAWING_DIR"] = str(cls.DRAWING_DIR)
+        env["MLSERVER_URL"] = cls.MLSERVER_URL
 
         cls.mlserver_process = subprocess.Popen(
-            ["just", "DEBUG=0", "run-mlserver"],
+            ["python", "-m", "mlserver.serve"],
         )
         cls.webapp_process = subprocess.Popen(
-            ["just", "DEBUG=0", "run-webapp"],
+            ["python", "-m", "webapp.app"],
             env=env,
         )
 
