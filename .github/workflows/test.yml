@@ -30,4 +30,4 @@ jobs:
           pip install -r webapp/requirements.txt
 
       - name: Run end-to-end tests
-        run: just test-e2e
+        run: python -m unittest discover tests -v

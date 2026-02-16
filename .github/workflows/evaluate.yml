@@ -31,10 +31,11 @@ jobs:
       - name: Run evaluation
         id: eval
         run: |
-          report=$(just evaluate-model | grep -v "^Evaluating" | grep -v "^python")
-          echo "report<<EOF" >> $GITHUB_OUTPUT
-          echo "$report" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo "report<<EOF"
+            python -m tests.evaluation
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Comment results on PR
         uses: marocchino/sticky-pull-request-comment@v2

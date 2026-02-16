@@ -28,7 +28,7 @@ class TestAdminEndToEnd(unittest.TestCase):
         env["DRAWING_DIR"] = str(cls.DRAWING_DIR)
 
         cls.admin_process = subprocess.Popen(
-            ["just", "DEBUG=0", "run-admin"],
+            ["python", "-m", "webapp.admin"],
             env=env,
         )
 
