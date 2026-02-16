@@ -47,6 +47,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://db_user:db_password@drawings-db:5432/db_name?sslmode=disable
     depends_on:
-      - drawings-db
+      drawings-db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]

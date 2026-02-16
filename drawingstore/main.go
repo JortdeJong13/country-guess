@@ -47,8 +47,21 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	// Simple structured request logger using slog
+	r.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			start := time.Now()
+			next.ServeHTTP(w, r)
+			logger.Info("http_request",
+				"method", r.Method,
+				"path", r.URL.Path,
+				"remote", r.RemoteAddr,
+				"request_id", middleware.GetReqID(r.Context()),
+				"duration", time.Since(start).String(),
+			)
+		})
+	})
 
 	// Health endpoint
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
