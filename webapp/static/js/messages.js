@@ -280,8 +280,6 @@ const countryFacts = {
   Martinique:
     "Martinique's Mount Pelée erupted in 1902, destroying the city of Saint-Pierre.",
   Mauritania: "Mauritania's Richat Structure is visible from space.",
-  Mauritius:
-    "Mauritius was the only known habitat of the now-extinct dodo bird.",
   Mayotte:
     "40% of the population of Mayotte, an overseas department of France, is aged 15 or younger.",
   Mexico:
