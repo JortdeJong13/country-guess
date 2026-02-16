@@ -5,7 +5,7 @@ import "encoding/json"
 // CreateDrawingRequest is the payload accepted by POST /drawings.
 type CreateDrawingRequest struct {
 	Geometry json.RawMessage `json:"geometry"`
-	Ranking  json.RawMessage `json:"ranking"`
+	Ranking  []RankingItem   `json:"ranking"`
 	Author   *string         `json:"author,omitempty"`
 	HashedIP *string         `json:"hashed_ip,omitempty"`
 }
@@ -17,11 +17,11 @@ type CreateDrawingResponse struct {
 
 // UpdateDrawingRequest is the allowed partial-update payload for PUT /drawings/{id}.
 type UpdateDrawingRequest struct {
-	CountryName *string          `json:"country_name,omitempty"`
-	Author      *string          `json:"author,omitempty"`
-	HashedIP    *string          `json:"hashed_ip,omitempty"`
-	Validated   *bool            `json:"validated,omitempty"`
-	Ranking     *json.RawMessage `json:"ranking,omitempty"`
+	Country   *string        `json:"country,omitempty"`
+	Author    *string        `json:"author,omitempty"`
+	HashedIP  *string        `json:"hashed_ip,omitempty"`
+	Validated *bool          `json:"validated,omitempty"`
+	Ranking   *[]RankingItem `json:"ranking,omitempty"`
 }
 
 // GetDrawingResponse represents the response shape for GET /drawings which

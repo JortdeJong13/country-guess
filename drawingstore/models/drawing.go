@@ -18,7 +18,7 @@ type RankingItem struct {
 type Drawing struct {
 	ID           uuid.UUID       `json:"id"`
 	Geometry     json.RawMessage `json:"geometry"` // GeoJSON geometry object
-	Country      *string         `json:"country_name,omitempty"`
+	Country      *string         `json:"country,omitempty"`
 	Author       *string         `json:"author,omitempty"`
 	HashedIP     *string         `json:"hashed_ip,omitempty"`
 	Validated    bool            `json:"validated"`
