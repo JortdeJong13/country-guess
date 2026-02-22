@@ -9,7 +9,7 @@ RUN go mod download
 COPY drawingstore/. .
 
 ENV CGO_ENABLED=0
-RUN go build -o drawingstore -ldflags="-s -w" ./main.go
+RUN go build -o drawingstore -ldflags="-s -w" .
 
 FROM gcr.io/distroless/static
 
