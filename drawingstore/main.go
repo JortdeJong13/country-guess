@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"log/slog"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jortdejong13/country-guess/drawingstore/migrations"
-	"github.com/jortdejong13/country-guess/drawingstore/models"
 )
 
 // Temporarily local development DB URL
@@ -63,12 +61,8 @@ func main() {
 		})
 	})
 
-	// Health endpoint
-	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(models.HealthResponse{Status: "healthy"})
-	})
+	// Register routes
+	RegisterRoutes(r, pool, logger)
 
 	srv := &http.Server{
 		Addr:         ":8080",
