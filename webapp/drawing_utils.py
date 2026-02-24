@@ -32,7 +32,7 @@ class Drawing:
 
         for country, score in self.ranking:
             if country == self.country_name:
-                return score
+                return normalize_score(score, self.geometry)
         return None
 
     @property
@@ -44,6 +44,14 @@ class Drawing:
     def guess_score(self) -> float:
         """Return the score for the guessed country."""
         return self.ranking[0][1]
+
+
+def normalize_score(score, geometry, penalty=1):
+    """Reduces score for countries with simple geometry."""
+    lines = json.loads(geometry)["coordinates"]
+    size = sum(len(line) for line in lines)
+    size_factor = size / (size + penalty)
+    return score * size_factor
 
 
 def load_drawing(drawing_file: Path) -> Drawing:
