@@ -20,7 +20,7 @@ class Drawing:
     ranking: list[tuple[str, float]]
     country_name: Optional[str] = None
     author: Optional[str] = None
-    hashed_ip: Optional[str] = None
+    author_id: Optional[str] = None
     validated: bool = False
     filename: Optional[str] = None
 
@@ -71,7 +71,7 @@ def load_drawing(drawing_file: Path) -> Drawing:
         ranking=props.get("ranking"),
         country_name=props.get("country_name"),
         author=props.get("author"),
-        hashed_ip=props.get("hashed_ip"),
+        author_id=props.get("author_id"),
         validated=props.get("validated", False),
         filename=drawing_file.name,
     )
@@ -169,7 +169,7 @@ def save_drawing(drawing, filename=None, output_dir="./data/drawings/"):
                     "timestamp": drawing.timestamp,
                     "country_name": drawing.country_name,
                     "author": drawing.author,
-                    "hashed_ip": drawing.hashed_ip,
+                    "author_id": drawing.author_id,
                     "validated": drawing.validated,
                     "ranking": drawing.ranking,
                 },
