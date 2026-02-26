@@ -5,7 +5,7 @@ import uuid
 from typing import Dict, Optional
 
 import requests
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, make_response, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines
@@ -26,7 +26,18 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if request.cookies.get("author_id"):
+        return render_template("index.html")
+
+    author_id = str(uuid.uuid4())
+    response = make_response(render_template("index.html"))
+    response.set_cookie(
+        "author_id",
+        author_id,
+        max_age=60 * 60 * 24 * 365,  # 1 year
+        httponly=True,
+    )
+    return response
 
 
 @app.route("/robots.txt")
@@ -119,9 +130,7 @@ def feedback():
     # Add metadata to drawing
     drawing.country_name = data["country"]
     drawing.author = data.get("author")
-    ip_addr = request.remote_addr
-    hashed_ip = hashlib.sha256(ip_addr.encode()).hexdigest() if ip_addr else None
-    drawing.hashed_ip = hashed_ip
+    drawing.author_id = request.cookies.get("author_id")
 
     save_drawing(drawing, output_dir=DRAWING_DIR)
 
