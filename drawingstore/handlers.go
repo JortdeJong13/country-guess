@@ -9,6 +9,8 @@ import (
 	"log/slog"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jortdejong13/country-guess/drawingstore/models"
 )
@@ -19,6 +21,8 @@ import (
 // Current handlers:
 // - GET  /health    : health check
 // - POST /drawings  : create a new drawing
+// - GET  /drawings/{id} : retrieve a single drawing by ID
+
 func RegisterRoutes(r chi.Router, pool *pgxpool.Pool, logger *slog.Logger) {
 	// Create a JSON helper scoped to this file.
 	writeJSON := func(w http.ResponseWriter, status int, v any) {
@@ -111,6 +115,64 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool, logger *slog.Logger) {
 
 		// Return created id
 		writeJSON(w, http.StatusCreated, models.CreateDrawingResponse{ID: id})
+	})
+
+	// GET /drawings/{id} - retrieve a single drawing
+	r.Get("/drawings/{id}", func(w http.ResponseWriter, r *http.Request) {
+		drawingIDStr := chi.URLParam(r, "id")
+		id, err := uuid.Parse(drawingIDStr)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "invalid drawing ID", err.Error())
+			return
+		}
+
+		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+		defer cancel()
+
+		var drawing models.Drawing
+		var rankingJSON json.RawMessage // To read JSONB from DB
+
+		err = pool.QueryRow(ctx,
+			`SELECT
+					id, geometry, country, author, author_id, validated,
+					ranking, country_score, country_guess, guess_score, normalized_score,
+					created_at, updated_at
+				 FROM drawings WHERE id = $1`,
+			id,
+		).Scan(
+			&drawing.ID,
+			&drawing.Geometry,
+			&drawing.Country,
+			&drawing.Author,
+			&drawing.AuthorID,
+			&drawing.Validated,
+			&rankingJSON,          // Scan ranking into raw JSON
+			&drawing.CountryScore, // Scan country_score directly
+			&drawing.CountryGuess,
+			&drawing.GuessScore,
+			&drawing.NormalizedScore,
+			&drawing.CreatedAt,
+			&drawing.UpdatedAt,
+		)
+
+		if err != nil {
+			if err == pgx.ErrNoRows {
+				writeError(w, http.StatusNotFound, "drawing not found", "no drawing with the given ID")
+				return
+			}
+			logger.Error("query drawing failed", "error", err, "id", id)
+			writeError(w, http.StatusInternalServerError, "failed to retrieve drawing", err.Error())
+			return
+		}
+
+		// Unmarshal the ranking JSONB into the struct
+		if err := json.Unmarshal(rankingJSON, &drawing.Ranking); err != nil {
+			logger.Error("unmarshal ranking failed", "error", err, "id", id)
+			writeError(w, http.StatusInternalServerError, "failed to parse ranking data", err.Error())
+			return
+		}
+
+		writeJSON(w, http.StatusOK, drawing)
 	})
 }
 
