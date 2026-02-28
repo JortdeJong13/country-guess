@@ -62,6 +62,29 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool, logger *slog.Logger) {
 			guessScore = &cs
 		}
 
+		// Derive normalized score
+		var normalizedScore *float64
+		if guessScore != nil && len(req.Geometry) > 0 {
+			type MultiLineString struct {
+				Coordinates [][][]float64 `json:"coordinates"`
+			}
+			var geom MultiLineString
+			if err := json.Unmarshal(req.Geometry, &geom); err == nil {
+				// Compute geometry size
+				size := 0
+				for _, line := range geom.Coordinates {
+					size += len(line)
+				}
+				if size > 0 {
+					penalty := 200.0
+					sizeF := float64(size)
+					sizeFactor := sizeF / (sizeF + penalty)
+					ns := (*guessScore) * sizeFactor
+					normalizedScore = &ns
+				}
+			}
+		}
+
 		// Marshal ranking to JSON for JSONB storage
 		rankingJSON, err := json.Marshal(req.Ranking)
 		if err != nil {
@@ -76,9 +99,9 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool, logger *slog.Logger) {
 
 		var id string
 		err = pool.QueryRow(ctx,
-			`INSERT INTO drawings (geometry, country, author, hashed_ip, ranking, country_guess, guess_score)
-			 VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
-			req.Geometry, nil, req.Author, req.HashedIP, rankingJSON, countryGuess, guessScore,
+			`INSERT INTO drawings (geometry, country, author, author_id, ranking, country_guess, guess_score, normalized_score)
+			 VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id`,
+			req.Geometry, nil, req.Author, req.AuthorID, rankingJSON, countryGuess, guessScore, normalizedScore,
 		).Scan(&id)
 		if err != nil {
 			logger.Error("insert drawing failed", "error", err)
