@@ -7,7 +7,7 @@ type CreateDrawingRequest struct {
 	Geometry json.RawMessage `json:"geometry"`
 	Ranking  []RankingItem   `json:"ranking"`
 	Author   *string         `json:"author,omitempty"`
-	HashedIP *string         `json:"hashed_ip,omitempty"`
+	AuthorID *string         `json:"author_id,omitempty"`
 }
 
 // CreateDrawingResponse is returned after successfully creating a drawing.
@@ -19,7 +19,7 @@ type CreateDrawingResponse struct {
 type UpdateDrawingRequest struct {
 	Country   *string        `json:"country,omitempty"`
 	Author    *string        `json:"author,omitempty"`
-	HashedIP  *string        `json:"hashed_ip,omitempty"`
+	AuthorID  *string        `json:"author_id,omitempty"`
 	Validated *bool          `json:"validated,omitempty"`
 	Ranking   *[]RankingItem `json:"ranking,omitempty"`
 }
