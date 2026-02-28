@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jortdejong13/country-guess/drawingstore/handlers"
 	"github.com/jortdejong13/country-guess/drawingstore/migrations"
 )
 
@@ -27,7 +28,7 @@ func main() {
 	logger.Info("running embedded database migrations")
 	if err := migrations.RunURL(databaseURL); err != nil {
 		logger.Error("migrations failed", "error", err)
-		// Fail fast; migrations must succeed before serving traffic.
+		// Migrations must succeed before serving traffic.
 		os.Exit(1)
 	}
 	logger.Info("migrations applied")
@@ -61,8 +62,11 @@ func main() {
 		})
 	})
 
-	// Register routes
-	RegisterRoutes(r, pool, logger)
+	// Initialize the handlers API struct with its dependencies
+	api := handlers.NewAPI(pool, logger)
+
+	// Register all routes using the API instance's method
+	api.RegisterRoutes(r)
 
 	srv := &http.Server{
 		Addr:         ":8080",
