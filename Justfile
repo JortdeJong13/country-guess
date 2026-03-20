@@ -58,3 +58,8 @@ run-app:
 run-admin:
     @echo "Starting admin app..."
     DEBUG={{ DEBUG }} python -m webapp.admin
+
+# Print the total unique users based on author_id
+unique-users:
+    @echo "Counting total unique users..."
+    @find data/drawings -name "*.geojson" -print0 | xargs -0 jq -r '.features[].properties.author_id' | sort | uniq | wc -l
