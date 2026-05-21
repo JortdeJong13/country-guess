@@ -14,7 +14,7 @@
         "country_name": "Germany",
         "author": "Robert",
         "author_id": "fe4c6e24-4c35-4474-bd3b-637fd76b0099",
-        "validated": false,
+        "validated": true,
         "ranking": [
           [
             "France",
