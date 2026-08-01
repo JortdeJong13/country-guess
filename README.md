@@ -88,18 +88,46 @@ Then there is the admin app. The admin app allows you to validate user drawings.
 
 ## Architecture and Design
 
-The following diagram depicts the different components that make up the app:
+The main components and their relationships are:
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/design-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/design-light.svg">
-  <img alt="Design diagram" src="images/design-dark.svg" />
-</picture>
+```text
+Model development
+                              ┌─────────────────────┐       ┌─────────────────────┐
+                              │ Reference countries │──────►│ Model training      │
+                              └─────────────────────┘       └──────────┬──────────┘
+                                        │                              ▼
+                                        │
+Application                             │
+                                        │
+                  drawing / ranking
+┌─────────────────────┐       ┌─────────────────────┐       ┌─────────────────────┐
+│ Web app             │──────►│ ML Server           │──────►│ Model registry      │
+└──────────┬──────────┘       └─────────────────────┘       └─────────────────────┘
+           │ drawings, feedback, leaderboard
+           ▼
+┌─────────────────────┐       ┌─────────────────────┐
+│ Drawing Store API   │◄──────│ Admin app           │
+└──────────┬──────────┘       └─────────────────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Drawing database    │
+└─────────────────────┘
+```
 
-The application consists of four runtime services: the ML server, the web app backend, drawingstore, and PostgreSQL.<br>
-The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns directory is not mounted, the ML server will fall back on a default model within the image.
+The reference countries are used both to train and evaluate models and by the ML Server at runtime. The model registry stores trained models and identifies the model used for predictions. Evaluation data is read from the drawing database through the Drawing Store API. The drawing database is the runtime source of truth.
 
-The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server responds with a ranking of all countries in the reference dataset. The drawing is immediately stored as a pending PostgreSQL row; feedback is then sent to drawingstore. The leaderboard is served by indexed SQL queries. The current GeoJSON files remain legacy import data.
+The main request flow is:
+
+```text
+draw ─────────────► web app ─────► ML Server ──────────────► country ranking
+                    │
+                    └────────────► Drawing Store API ──► drawing database
+
+feedback ─────────► web app ─────► Drawing Store API (update drawing)
+leaderboard next/previous ──────► Drawing Store API (ranked query)
+admin validate/delete ──────────► Drawing Store API
+```
 
 ## License
 

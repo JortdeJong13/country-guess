@@ -9,6 +9,17 @@ DRAWING_STORE_URL = os.environ["DRAWING_STORE_URL"]
 app = Flask(__name__)
 
 
+def fetch_summary(author_id=None):
+    params = {"author_id": author_id} if author_id else None
+    response = requests.get(
+        f"{DRAWING_STORE_URL}/drawings/summary",
+        params=params,
+        timeout=5,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
 @app.route("/")
 def index():
     return render_template("index.html", is_admin=True)
@@ -24,10 +35,18 @@ def unvalidated_drawing():
         )
         response.raise_for_status()
         drawings = response.json().get("drawings", [])
-        if not drawings:
-            return jsonify({"message": "No unvalidated drawings found"})
+        drawing = drawings[0] if drawings else None
+        author_id = drawing.get("author_id") if drawing else None
+        summary = fetch_summary(author_id)
 
-        drawing = drawings[0]
+        if drawing is None:
+            return jsonify(
+                {
+                    "message": "No unvalidated drawings found",
+                    "unvalidated_count": summary["unvalidated"],
+                }
+            )
+
         return jsonify(
             {
                 "message": "Drawing loaded successfully",
@@ -39,6 +58,9 @@ def unvalidated_drawing():
                 "country_guess": drawing.get("country_guess"),
                 "guess_score": drawing.get("guess_score"),
                 "author": drawing.get("author"),
+                "author_id": author_id,
+                "unvalidated_count": summary["unvalidated"],
+                "validated_author_count": summary.get("validated_by_author"),
             }
         )
     except (ConnectionError, Timeout) as error:

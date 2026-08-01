@@ -31,9 +31,12 @@ type ListDrawingsResponse struct {
 
 // DrawingSummaryResponse contains lightweight collection counts.
 type DrawingSummaryResponse struct {
-	Total        int `json:"total"`
-	WithFeedback int `json:"with_feedback"`
-	Validated    int `json:"validated"`
+	Total             int  `json:"total"`
+	WithFeedback      int  `json:"with_feedback"`
+	Validated         int  `json:"validated"`
+	Unvalidated       int  `json:"unvalidated"`
+	UniqueAuthors     int  `json:"unique_authors"`
+	ValidatedByAuthor *int `json:"validated_by_author,omitempty"`
 }
 
 // LeaderboardResponse contains one stable leaderboard position.

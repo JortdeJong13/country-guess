@@ -28,7 +28,6 @@ services:
 
   drawings-db:
     image: postgres:16-alpine
-    # PostgreSQL is internal to the Compose network. Use drawingstore for API access.
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-country_guess}
       POSTGRES_USER: ${POSTGRES_USER:-country_guess}

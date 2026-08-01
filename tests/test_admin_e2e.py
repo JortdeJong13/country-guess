@@ -41,8 +41,8 @@ class TestAdminEndToEnd(unittest.TestCase):
         )
         wait_for_service(f"{cls.ADMIN_URL}/")
 
-        cls._create_drawing("France", "France", 0.9)
-        cls._create_drawing("Germany", "Germany", 0.8)
+        cls._create_drawing("France", "France", 0.9, "admin-test-author")
+        cls._create_drawing("Germany", "Germany", 0.8, "admin-test-author")
 
     @classmethod
     def tearDownClass(cls):
@@ -52,7 +52,7 @@ class TestAdminEndToEnd(unittest.TestCase):
         )
 
     @classmethod
-    def _create_drawing(cls, country, guess, score):
+    def _create_drawing(cls, country, guess, score, author_id):
         response = requests.post(
             f"{cls.DRAWING_STORE_URL}/drawings",
             json={
@@ -64,6 +64,7 @@ class TestAdminEndToEnd(unittest.TestCase):
                     {"country": guess, "score": score},
                     {"country": "Other", "score": 1 - score},
                 ],
+                "author_id": author_id,
             },
             timeout=5,
         )
@@ -83,6 +84,9 @@ class TestAdminEndToEnd(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual("Drawing loaded successfully", data["message"])
+        self.assertEqual(2, data["unvalidated_count"])
+        self.assertEqual("admin-test-author", data["author_id"])
+        self.assertEqual(0, data["validated_author_count"])
         first_id = data["id"]
 
         response = requests.patch(
@@ -97,6 +101,8 @@ class TestAdminEndToEnd(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual("Drawing loaded successfully", data["message"])
+        self.assertEqual(1, data["unvalidated_count"])
+        self.assertEqual(1, data["validated_author_count"])
         second_id = data["id"]
 
         response = requests.delete(
@@ -107,7 +113,9 @@ class TestAdminEndToEnd(unittest.TestCase):
 
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual("No unvalidated drawings found", response.json()["message"])
+        data = response.json()
+        self.assertEqual("No unvalidated drawings found", data["message"])
+        self.assertEqual(0, data["unvalidated_count"])
 
 
 if __name__ == "__main__":
