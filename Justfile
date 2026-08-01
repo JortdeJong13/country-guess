@@ -11,7 +11,7 @@ DEBUG := "1"
 # Evaluate the model
 evaluate-model:
     @echo "Evaluating the model..."
-    python -m tests.evaluation --model_name {{ MODEL_NAME }}
+    python -m tests.evaluation --model_name {{ MODEL_NAME }} --drawing_store_url {{ DRAWING_STORE_URL }}
 
 # Run end-to-end test against native PostgreSQL. Run `just setup-local-db` first
 test-e2e:

@@ -6,6 +6,7 @@ import unittest
 import requests
 
 from tests.e2e_services import (
+    _free_local_port,
     start_drawingstore,
     stop_drawingstore,
     stop_process,
@@ -26,11 +27,13 @@ class TestAdminEndToEnd(unittest.TestCase):
             cls.drawingstore_process,
             cls.DRAWING_STORE_URL,
         ) = start_drawingstore()
+        cls.ADMIN_URL = f"http://127.0.0.1:{_free_local_port()}"
 
         admin_env = os.environ.copy()
         admin_env.update(
             {
                 "DEBUG": "0",
+                "ADMIN_PORT": cls.ADMIN_URL.rsplit(":", 1)[1],
                 "DRAWING_STORE_URL": cls.DRAWING_STORE_URL,
             }
         )

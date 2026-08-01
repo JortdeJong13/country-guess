@@ -7,7 +7,7 @@ from imgaug.augmentables import polys
 from shapely import MultiPolygon, simplify
 from shapelysmooth import chaikin_smooth
 
-from .data import Dataset, geom_to_img
+from .data import ReferenceDataset, geom_to_img
 from .utils import decompose, normalize_geom
 
 
@@ -81,11 +81,11 @@ def generate_drawing(polygon, shape, temp=1.0):
     return img
 
 
-class ValDataset(Dataset):
+class ValDataset(ReferenceDataset):
     """Extends the base dataset for evaluating on generated drawings"""
 
     def __init__(self, shape=(64, 64), temp=1.0):
-        Dataset.__init__(self, shape=shape)
+        super().__init__(shape=shape)
         self.temp = temp
 
     def __getitem__(self, idx):
@@ -96,11 +96,11 @@ class ValDataset(Dataset):
         return {"country_name": country_name, "drawing": drawing}
 
 
-class TripletDataset(Dataset):
+class TripletDataset(ReferenceDataset):
     """Extends the base dataset for fetching triplet samples"""
 
     def __init__(self, shape=(64, 64), temp=1.0):
-        Dataset.__init__(self, shape=shape)
+        super().__init__(shape=shape)
         self.temp = temp
 
     def __getitem__(self, idx):
@@ -122,8 +122,8 @@ class TripletDataset(Dataset):
 
     def get_random_neg(self, ref_idx):
         """Get a random other index."""
-        idx = random.randint(0, len(self.gdf) - 1)
+        idx = random.randint(0, len(self.samples) - 1)
         while idx == ref_idx:
-            idx = random.randint(0, len(self.gdf) - 1)
+            idx = random.randint(0, len(self.samples) - 1)
 
         return idx

@@ -120,4 +120,5 @@ def delete_drawing(drawing_id):
 
 if __name__ == "__main__":
     debug = os.getenv("DEBUG", "0") == "1"
-    app.run(host="0.0.0.0", port=5003, debug=debug)
+    port = int(os.getenv("ADMIN_PORT", "5003"))
+    app.run(host="0.0.0.0", port=port, debug=debug)

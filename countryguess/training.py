@@ -10,8 +10,8 @@ def triplet_mining(anc_emb, pos_emb, neg_emb, pos_idx, neg_idx):
     anc_emb = anc_emb.tile((anc_emb.shape[0], 1))
     pos_emb = pos_emb.tile((pos_emb.shape[0], 1))
     neg_emb = neg_emb.repeat(neg_emb.shape[0], 1)
-    pos_idx = pos_idx.tile((pos_idx.shape[0]))
-    neg_idx = neg_idx.repeat((neg_idx.shape[0]))
+    pos_idx = pos_idx.tile(pos_idx.shape[0])
+    neg_idx = neg_idx.repeat(neg_idx.shape[0])
 
     # Mask valid triplets
     valid = pos_idx != neg_idx

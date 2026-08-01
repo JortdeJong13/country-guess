@@ -1,7 +1,8 @@
-"""Load and preprocess country geometries."""
+"""Load and preprocess reference country geometries."""
 
 import logging
 import random
+from itertools import pairwise
 from pathlib import Path
 
 import geopandas as gpd
@@ -32,7 +33,7 @@ def geom_to_img(geom, shape, img=None):
         points = np.array(geom.coords).astype(int)
 
         # Draw lines between consecutive points
-        for p1, p2 in zip(points[:-1], points[1:]):
+        for p1, p2 in pairwise(points):
             rr, cc = draw.line(p1[1], p1[0], p2[1], p2[0])
             img[rr, cc] = 1
         return img
@@ -55,35 +56,29 @@ def geom_to_img(geom, shape, img=None):
         raise ValueError(f"Unsupported geometry type: {type(geom)}")
 
 
-class Dataset:
-    """Base dataset for fetching country geometries"""
+class ReferenceDataset:
+    """Dataset of local reference country geometries."""
 
     # Class variable for sharing reference data
     _ref_gdf = None
 
     def __init__(self, shape=(64, 64)):
         self.shape = shape
-        self.geom_col = f"geom_{shape[0]}_{shape[1]}"
         self._idx = 0
 
-        # Load reference data and normalize geometries
+        # Keep the GeoDataFrame for the reference-data notebook and normalize
+        # a small in-memory sample list for model access.
         self.ref_gdf = self.get_ref_gdf()
-        self.ref_gdf = self.add_normal_geom(self.ref_gdf)
-
-        # Set working dataset
-        self.gdf = self.set_working_gdf()
-
-    def set_working_gdf(self) -> gpd.GeoDataFrame:
-        """Set the reference countries as the working GeoDataFrame"""
-        return self.ref_gdf
+        self.reference_samples = self._normalize_samples(self.ref_gdf)
+        self.samples = self.reference_samples
 
     @classmethod
     def get_ref_gdf(cls) -> gpd.GeoDataFrame:
         """Get and cache reference data"""
-        if Dataset._ref_gdf is None:
+        if ReferenceDataset._ref_gdf is None:
             # Load reference data
-            Dataset._ref_gdf = cls.load_gdf("./data/reference/")
-        return Dataset._ref_gdf
+            ReferenceDataset._ref_gdf = cls.load_gdf("./data/reference/")
+        return ReferenceDataset._ref_gdf
 
     @staticmethod
     def load_gdf(path):
@@ -95,26 +90,27 @@ class Dataset:
 
         return gdf
 
-    def add_normal_geom(self, gdf):
-        """Add normalized geometry column to GeoDataFrame"""
-        if self.geom_col not in gdf:
-            gdf[self.geom_col] = gdf["geometry"].apply(normalize_geom, shape=self.shape)
-        return gdf
+    def _normalize_samples(self, gdf):
+        """Convert a GeoDataFrame into the dataset's normalized sample shape."""
+        return [
+            {
+                "country_name": row["country_name"],
+                "geometry": normalize_geom(row.geometry, shape=self.shape),
+            }
+            for _, row in gdf.iterrows()
+        ]
 
     def from_country_name(self, country_name):
         """Get the reference image for a country"""
-        idx = self.ref_gdf.index[self.ref_gdf["country_name"] == country_name]
-        if idx.empty:
-            logger.warning("Country %s not found", country_name)
-            return np.zeros(self.shape, dtype=np.uint8)
+        for sample in self.reference_samples:
+            if sample["country_name"] == country_name:
+                return geom_to_img(sample["geometry"], self.shape)
 
-        geom = self.ref_gdf.loc[idx.item(), self.geom_col]
-        ref_img = geom_to_img(geom, self.shape)
-
-        return ref_img
+        logger.warning("Country %s not found", country_name)
+        return np.zeros(self.shape, dtype=np.uint8)
 
     def __len__(self):
-        return len(self.gdf)
+        return len(self.samples)
 
     def __iter__(self):
         return self
@@ -134,36 +130,4 @@ class Dataset:
         # Handle negative indices
         idx %= len(self)
 
-        geom = self.gdf.loc[idx, self.geom_col]
-        country_name = self.gdf.loc[idx, "country_name"]
-
-        return {"country_name": country_name, "geometry": geom}
-
-
-class TestDataset(Dataset):
-    """For accessing user drawn countries"""
-
-    def __init__(self, shape=(64, 64)):
-        Dataset.__init__(self, shape=shape)
-        # Drop countries without a reference
-        reference_countries = set(self.ref_gdf["country_name"])
-        self.gdf = self.gdf[self.gdf["country_name"].isin(reference_countries)].copy()  # type: ignore
-        self.gdf = self.gdf[self.gdf["validated"]].copy()
-
-        # Normalize test data
-        self.gdf = self.add_normal_geom(self.gdf)
-
-        # Sort test data by timestamp
-        self.gdf = self.gdf.sort_values(by="timestamp")  # type: ignore
-        self.gdf = self.gdf.reset_index(drop=True)
-
-    def set_working_gdf(self):
-        """Set user drawings as the working GeoDataFrame"""
-        return self.load_gdf("./data/drawings/")
-
-    def __getitem__(self, idx):
-        item = super().__getitem__(idx)
-        country_name, geom = item["country_name"], item["geometry"]
-        drawing = geom_to_img(geom, self.shape)
-
-        return {"country_name": country_name, "drawing": drawing}
+        return self.samples[idx]

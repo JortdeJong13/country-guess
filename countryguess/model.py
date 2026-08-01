@@ -9,7 +9,7 @@ from mlflow.exceptions import MlflowException
 from mlflow.pytorch import load_model
 from torch import nn
 
-from .data import Dataset, geom_to_img
+from .data import ReferenceDataset, geom_to_img
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -157,7 +157,7 @@ def fetch_model(model_name):
     model = load_model(model_path, map_location=device)
 
     # Load reference data
-    ref_data = Dataset(shape=model.shape)
+    ref_data = ReferenceDataset(shape=model.shape)
     model.load_reference(ref_data)
 
     logger.info("Successfully loaded model and reference data")
