@@ -1,4 +1,0 @@
-Flask
-Requests
-Shapely
-datetime

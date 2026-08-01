@@ -2,7 +2,7 @@
 Test the Country Guess App end-to-end.
 
 Usage:
-    python -m unittest tests/test_e2e.py
+    uv run --only-group app python -m unittest tests/test_e2e.py
 """
 
 import json

@@ -1,8 +1,0 @@
-Flask
-mlflow-skinny==2.17.0
-torch==2.5.1
-numpy
-Shapely
-geopandas
-scikit-image
-matplotlib>=3.3

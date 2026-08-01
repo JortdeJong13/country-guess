@@ -12,6 +12,9 @@ on:
       - "tests/e2e_services.py"
       - "tests/test_e2e.py"
       - "tests/test_admin_e2e.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "Justfile"
 
 jobs:
   test:
@@ -21,15 +24,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           python-version: "3.12"
+          enable-cache: true
 
       - name: Install dependencies
-        run: |
-          pip install -r mlserver/requirements.txt
-          pip install -r webapp/requirements.txt
+        run: uv sync --locked --only-group app
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -44,6 +46,6 @@ jobs:
             -c "ALTER USER postgres WITH PASSWORD 'postgres';"
 
       - name: Run end-to-end tests
-        run: python -m unittest discover tests -v
+        run: uv run --locked --no-sync python -m unittest discover tests -v
         env:
           TEST_DATABASE_ADMIN_URL: postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable

@@ -16,6 +16,8 @@ if ! command -v pg_isready >/dev/null 2>&1 || ! pg_isready -h 127.0.0.1 -p 5432 
     exit 1
 fi
 
+uv sync --locked --only-group app
+
 DRAWINGSTORE_PID=""
 MLSERVER_PID=""
 
@@ -43,8 +45,8 @@ DATABASE_URL="$DATABASE_URL" go -C drawingstore run . &
 DRAWINGSTORE_PID=$!
 
 echo "Starting ML server..."
-DEBUG="$DEBUG" MODEL_NAME="$MODEL_NAME" python -m mlserver.serve &
+DEBUG="$DEBUG" MODEL_NAME="$MODEL_NAME" uv run --locked --no-sync python -m mlserver.serve &
 MLSERVER_PID=$!
 
 echo "Starting web app..."
-DEBUG="$DEBUG" MLSERVER_URL="$MLSERVER_URL" DRAWING_STORE_URL="$DRAWING_STORE_URL" python -m webapp.app
+DEBUG="$DEBUG" MLSERVER_URL="$MLSERVER_URL" DRAWING_STORE_URL="$DRAWING_STORE_URL" uv run --locked --no-sync python -m webapp.app

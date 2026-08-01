@@ -10,7 +10,7 @@ Welcome to my Country Guess App side project! With this machine learning applica
 - [Getting Started](#getting-started)
   - [Using Pre-built Docker Images](#1-using-pre-built-docker-images-recommended)
   - [Building Docker Images Locally](#2-building-docker-images-locally)
-  - [Local Python Installation](#3-local-python-installation)
+  - [Running the app locally](#3-running-the-app-locally)
 - [Usage](#usage)
   - [Drawing](#drawing)
   - [Diving in](#diving-in)
@@ -54,15 +54,24 @@ Create the database and role once:
 just setup-local-db
 ```
 
-Install the required packages:
+Install uv and the project dependencies:
 ```bash
-pip install -r mlserver/requirements.txt
-pip install -r webapp/requirements.txt
+brew install uv
+uv sync --only-group app
 ```
 
 Start the app locally:
 ```bash
 just run-app
+```
+
+The project uses `pyproject.toml` for dependency declarations and commits
+`uv.lock` so local development, CI, and Docker use the same resolved versions.
+The `app` dependency group contains the web and ML services. The `training`
+group also includes the notebook and data-generation dependencies:
+```bash
+uv sync --only-group training
+uv run --locked --only-group training jupyter lab
 ```
 
 <br>After setting up, you can access the app at [http://localhost:5002](http://localhost:5002).

@@ -2,7 +2,7 @@
 Evaluate the model on test data.
 
 Usage:
-    python -m tests.evaluation --model_name <model_name> --drawing_store_url <drawing_store_url>
+    uv run --only-group app python -m tests.evaluation --model_name <model_name> --drawing_store_url <drawing_store_url>
 """
 
 import argparse

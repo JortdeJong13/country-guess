@@ -12,6 +12,8 @@ on:
       - "mlruns/0/**"
       - "mlruns/models/default/**"
       - "docker-compose.yml"
+      - "pyproject.toml"
+      - "uv.lock"
 
 jobs:
   build:

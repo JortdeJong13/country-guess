@@ -11,22 +11,22 @@ DEBUG := "1"
 # Evaluate the model
 evaluate-model:
     @echo "Evaluating the model..."
-    python -m tests.evaluation --model_name {{ MODEL_NAME }} --drawing_store_url {{ DRAWING_STORE_URL }}
+    uv run --locked --only-group app python -m tests.evaluation --model_name {{ MODEL_NAME }} --drawing_store_url {{ DRAWING_STORE_URL }}
 
 # Run end-to-end test against native PostgreSQL. Run `just setup-local-db` first
 test-e2e:
     @echo "Running end-to-end tests..."
-    python -m unittest discover tests -v
+    uv run --locked --only-group app python -m unittest discover tests -v
 
 # Start the ML server
 run-mlserver:
     @echo "Starting ML server..."
-    DEBUG={{ DEBUG }} MODEL_NAME={{ MODEL_NAME }} python -m mlserver.serve
+    DEBUG={{ DEBUG }} MODEL_NAME={{ MODEL_NAME }} uv run --locked --only-group app python -m mlserver.serve
 
 # Start the web app
 run-webapp:
     @echo "Starting web app..."
-    DEBUG={{ DEBUG }} MLSERVER_URL={{ MLSERVER_URL }} DRAWING_STORE_URL={{ DRAWING_STORE_URL }} python -m webapp.app
+    DEBUG={{ DEBUG }} MLSERVER_URL={{ MLSERVER_URL }} DRAWING_STORE_URL={{ DRAWING_STORE_URL }} uv run --locked --only-group app python -m webapp.app
 
 # Prepare the native PostgreSQL database used by the local app mode
 setup-local-db:
@@ -53,7 +53,7 @@ run-app:
 # Start the admin app
 run-admin:
     @echo "Starting admin app..."
-    DEBUG={{ DEBUG }} DRAWING_STORE_URL={{ DRAWING_STORE_URL }} python -m webapp.admin
+    DEBUG={{ DEBUG }} DRAWING_STORE_URL={{ DRAWING_STORE_URL }} uv run --locked --only-group app python -m webapp.admin
 
 # Print the total unique authors based on author_id
 unique-authors:

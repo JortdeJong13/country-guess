@@ -1,14 +1,21 @@
 FROM python:3.12-slim
 
 WORKDIR /app
+ENV PATH="/root/.local/bin:/app/.venv/bin:$PATH" \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
 
-# Install dependencies
 RUN apt-get update && apt-get install -y \
-    curl gdal-bin libgdal-dev g++ ffmpeg \
+    ca-certificates curl gdal-bin libgdal-dev g++ ffmpeg \
     libgeos-dev libproj-dev \
     && rm -rf /var/lib/apt/lists/*
-COPY mlserver/requirements.txt mlserver/
-RUN pip install --no-cache-dir -r mlserver/requirements.txt
+
+ADD https://astral.sh/uv/0.12.1/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# Install only the ML server dependency group.
+COPY pyproject.toml uv.lock ./
+RUN uv sync --locked --no-dev --only-group ml
 
 # Copy reference data and code
 COPY data/reference data/reference

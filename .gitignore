@@ -1,6 +1,6 @@
 .DS_Store
 .ipynb_checkpoints
-/venv
+/.venv
 __pycache__
 .trash
 .jupyter
