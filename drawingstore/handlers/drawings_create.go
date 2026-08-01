@@ -53,12 +53,11 @@ func (api *API) CreateDrawing(w http.ResponseWriter, r *http.Request) {
 	err = api.Pool.QueryRow(ctx,
 		`INSERT INTO drawings (
 			geometry, country, author, author_id, ranking, point_count,
-			country_score, country_guess, guess_score, normalized_score
+			country_score, country_guess, guess_score
 		)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`,
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
 		req.Geometry, drawing.Country, drawing.Author, drawing.AuthorID, rankingJSON,
 		pointCount, drawing.CountryScore, drawing.CountryGuess, drawing.GuessScore,
-		drawing.NormalizedScore,
 	).Scan(&id)
 	if err != nil {
 		api.Logger.Error("insert drawing failed", "error", err)

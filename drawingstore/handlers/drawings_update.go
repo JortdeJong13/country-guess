@@ -67,12 +67,11 @@ func (api *API) UpdateDrawing(w http.ResponseWriter, r *http.Request) {
 	updated, err := tx.Exec(ctx,
 		`UPDATE drawings
 		 SET country = $1, author = $2, validated = $3,
-		     country_score = $4, country_guess = $5, guess_score = $6,
-		     normalized_score = $7
-		 WHERE id = $8`,
+		     country_score = $4, country_guess = $5, guess_score = $6
+		 WHERE id = $7`,
 		drawing.Country, drawing.Author, drawing.Validated,
 		drawing.CountryScore, drawing.CountryGuess, drawing.GuessScore,
-		drawing.NormalizedScore, id,
+		id,
 	)
 	if err != nil {
 		api.Logger.Error("update drawing failed", "error", err, "id", id)

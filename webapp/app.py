@@ -170,7 +170,6 @@ def drawing():
                 "total": result["total"],
                 "country_name": stored.get("country"),
                 "country_score": stored.get("country_score"),
-                "normalized_score": stored.get("normalized_score"),
                 "author": stored.get("author"),
                 "timestamp": stored["created_at"],
             }

@@ -532,7 +532,7 @@ export function setLeaderboardMessage(data) {
   const medal = medals[data.rank] || `#${data.rank + 1}`;
 
   // Fist line
-  const leaderboardScore = data.normalized_score ?? data.country_score;
+  const leaderboardScore = data.country_score;
   const scorePercent = Math.round(leaderboardScore * 100);
   let message = `${medal} / ${data.total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
 

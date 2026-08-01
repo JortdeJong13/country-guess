@@ -12,6 +12,8 @@ import (
 	"github.com/jortdejong13/country-guess/drawingstore/models"
 )
 
+const leaderboardMinimumPointCount = 100
+
 // ListDrawings handles filtered and bounded drawing collection queries.
 func (api *API) ListDrawings(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
@@ -132,7 +134,7 @@ func (api *API) GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 	rowArgs := append(append([]any{}, args...), 1, rank)
 	drawing, err := scanDrawing(api.Pool.QueryRow(ctx,
 		`SELECT`+drawingFields+` FROM drawings WHERE `+where+
-			` ORDER BY normalized_score DESC, created_at ASC, id ASC LIMIT $`+
+			` ORDER BY country_score DESC, created_at ASC, id ASC LIMIT $`+
 			strconv.Itoa(len(args)+1)+` OFFSET $`+strconv.Itoa(len(args)+2),
 		rowArgs...,
 	))
@@ -177,7 +179,8 @@ func leaderboardFilters(validated *bool) (string, []any) {
 		"country IS NOT NULL",
 		"country = country_guess",
 		"country <> 'Other'",
-		"normalized_score IS NOT NULL",
+		"country_score IS NOT NULL",
+		fmt.Sprintf("point_count >= %d", leaderboardMinimumPointCount),
 	}
 	args := make([]any, 0, 1)
 	if validated != nil {
