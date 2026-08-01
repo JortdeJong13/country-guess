@@ -7,7 +7,9 @@ on:
       - "countryguess/**"
       - "mlserver/**"
       - "webapp/**"
+      - "drawingstore/**"
       - "tests/data/**"
+      - "tests/e2e_services.py"
       - "tests/test_e2e.py"
       - "tests/test_admin_e2e.py"
 
@@ -29,5 +31,19 @@ jobs:
           pip install -r mlserver/requirements.txt
           pip install -r webapp/requirements.txt
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: drawingstore/go.mod
+          cache: true
+
+      - name: Start PostgreSQL
+        run: |
+          sudo systemctl start postgresql
+          sudo -u postgres psql -v ON_ERROR_STOP=1 -d postgres \
+            -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+
       - name: Run end-to-end tests
         run: python -m unittest discover tests -v
+        env:
+          TEST_DATABASE_ADMIN_URL: postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable

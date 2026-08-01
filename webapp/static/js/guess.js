@@ -71,9 +71,7 @@ async function sendFeedback(drawingId, countryName, author) {
       throw new Error(`Server responded with status ${response.status}`);
     }
 
-    const data = await response.json();
-    console.log("Feedback sent successfully:", data);
-    return data;
+    return response.json();
   } catch (error) {
     console.error("Failed to send feedback:", error);
     return null;

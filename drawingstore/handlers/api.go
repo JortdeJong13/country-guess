@@ -33,8 +33,12 @@ func (api *API) RegisterRoutes(r chi.Router) {
 
 	// Drawings endpoints
 	r.Post("/drawings", api.CreateDrawing)
+	r.Get("/drawings", api.ListDrawings)
+	r.Get("/drawings/summary", api.GetDrawingSummary)
 	r.Get("/drawings/{id}", api.GetDrawing)
+	r.Patch("/drawings/{id}", api.UpdateDrawing)
 	r.Delete("/drawings/{id}", api.DeleteDrawing)
+	r.Get("/leaderboard", api.GetLeaderboard)
 }
 
 // writeJSON is a helper to write a JSON response.

@@ -2,8 +2,8 @@ import { renderUserDrawing, clearCanvas } from "./drawing.js";
 import { showMessage, showLoadingMessage } from "./messages.js";
 import { initializeButtonBounce } from "./animations.js";
 
-// Hold filename
-let filename;
+// Hold drawing ID
+let drawingId;
 
 // UI Elements
 const leftBtn = document.getElementById("left-btn");
@@ -14,15 +14,19 @@ const rightBtn = document.getElementById("right-btn");
  */
 async function fetchDrawing() {
   const response = await fetch(`/unvalidated_drawing`);
+  const data = await response.json().catch(() => null);
+
   if (!response.ok) {
-    throw new Error("Failed to fetch unvalidated drawing");
+    const error = new Error(data?.message || "Failed to fetch unvalidated drawing");
+    error.status = response.status;
+    throw error;
   }
-  return response.json();
+  return data;
 }
 
-async function approveDrawingAPI(filename) {
-  const response = await fetch(`/drawing/${filename}`, {
-    method: "PUT",
+async function approveDrawingAPI(id) {
+  const response = await fetch(`/drawing/${id}`, {
+    method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ validated: true }),
   });
@@ -32,8 +36,8 @@ async function approveDrawingAPI(filename) {
   return response.json();
 }
 
-async function deleteDrawingAPI(filename) {
-  const response = await fetch(`/drawing/${filename}`, {
+async function deleteDrawingAPI(id) {
+  const response = await fetch(`/drawing/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {
@@ -47,42 +51,46 @@ async function deleteDrawingAPI(filename) {
  */
 async function showDrawing() {
   clearCanvas();
+  drawingId = undefined;
   rightBtn.classList.add("locked");
   leftBtn.classList.add("locked");
 
   showLoadingMessage();
-  const data = await fetchDrawing();
+  try {
+    const data = await fetchDrawing();
 
-  if (data.message === "No unvalidated drawings found") {
-    showMessage("No drawings to validate...");
-    return;
-  }
+    if (data.message === "No unvalidated drawings found") {
+      showMessage("No drawings to validate...");
+      return;
+    }
 
-  rightBtn.classList.remove("locked");
-  leftBtn.classList.remove("locked");
+    rightBtn.classList.remove("locked");
+    leftBtn.classList.remove("locked");
 
-  renderUserDrawing(data.lines);
-  filename = data.filename;
-  console.log("Drawing:", filename);
+    renderUserDrawing(data.lines);
+    drawingId = data.id;
 
-  // Message
-  const scorePercent = Math.round(data.country_score * 100);
-  const guessScorePercent = Math.round(data.guess_score * 100);
-  const date = new Date(data.timestamp).toISOString().split("T")[0];
-  const authorSuffix = data.author?.trim() ? ` by ${data.author.trim()}` : "";
+    // Message
+    const scorePercent = Math.round(data.country_score * 100);
+    const guessScorePercent = Math.round(data.guess_score * 100);
+    const date = new Date(data.timestamp).toISOString().split("T")[0];
+    const authorSuffix = data.author?.trim() ? ` by ${data.author.trim()}` : "";
 
-  showMessage(`${data.country_name} (${scorePercent}%)
+    showMessage(`${data.country_name} (${scorePercent}%)
   Prediction: ${data.country_guess} (${guessScorePercent}%)
   Drawn on ${date}${authorSuffix}`);
+  } catch (error) {
+    showMessage("Could not load drawings for validation.");
+  }
 }
 
 function approveDrawing() {
-  if (!filename) {
-    console.error("No filename to approve!");
+  if (!drawingId) {
+    console.error("No drawing ID to approve!");
     return;
   }
 
-  approveDrawingAPI(filename)
+  approveDrawingAPI(drawingId)
     .then(() => {
       showDrawing();
     })
@@ -93,12 +101,12 @@ function approveDrawing() {
 }
 
 function deleteDrawing() {
-  if (!filename) {
-    console.error("No filename to delete!");
+  if (!drawingId) {
+    console.error("No drawing ID to delete!");
     return;
   }
 
-  deleteDrawingAPI(filename)
+  deleteDrawingAPI(drawingId)
     .then(() => {
       showDrawing();
     })

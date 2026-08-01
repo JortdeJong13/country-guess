@@ -7,6 +7,7 @@ on:
       - "countryguess/**"
       - "mlserver/**"
       - "webapp/**"
+      - "drawingstore/**"
       - "data/reference/**"
       - "mlruns/0/**"
       - "mlruns/models/default/**"
@@ -34,7 +35,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push images
-        run: docker compose push
+        run: docker compose push mlserver webapp drawingstore
 
       - name: Cleanup
         if: always()

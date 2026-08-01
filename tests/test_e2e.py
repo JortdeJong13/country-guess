@@ -7,24 +7,19 @@ Usage:
 
 import json
 import os
-import shutil
 import subprocess
-import time
+import sys
 import unittest
 from pathlib import Path
 
 import requests
 
-
-def wait_for_service(url, timeout=10):
-    for _ in range(timeout):
-        try:
-            if requests.get(url, timeout=1).status_code == 200:
-                return
-        except requests.exceptions.RequestException:
-            pass
-        time.sleep(1)
-    raise RuntimeError(f"Service at {url} is unhealthy")
+from tests.e2e_services import (
+    start_drawingstore,
+    stop_drawingstore,
+    stop_process,
+    wait_for_service,
+)
 
 
 class TestEndToEnd(unittest.TestCase):
@@ -32,21 +27,37 @@ class TestEndToEnd(unittest.TestCase):
 
     MLSERVER_URL = "http://localhost:5001"
     WEBAPP_URL = "http://localhost:5002"
-    DRAWING_DIR = Path("tests/data/drawings_app")
+    DRAWING_STORE_URL = "http://localhost:8080"
 
     @classmethod
     def setUpClass(cls):
+        (
+            cls.database_name,
+            cls.drawingstore_process,
+            cls.DRAWING_STORE_URL,
+        ) = start_drawingstore()
+
         # Start servers with custom environment
-        env = os.environ.copy()
-        env["DRAWING_DIR"] = str(cls.DRAWING_DIR)
-        env["MLSERVER_URL"] = cls.MLSERVER_URL
+        mlserver_env = os.environ.copy()
+        mlserver_env.update({"DEBUG": "0", "MODEL_NAME": "triplet_model"})
+        webapp_env = os.environ.copy()
+        webapp_env.update(
+            {
+                "DEBUG": "0",
+                "MLSERVER_URL": cls.MLSERVER_URL,
+                "DRAWING_STORE_URL": cls.DRAWING_STORE_URL,
+            }
+        )
 
         cls.mlserver_process = subprocess.Popen(
-            ["python", "-m", "mlserver.serve"],
+            [sys.executable, "-m", "mlserver.serve"],
+            env=mlserver_env,
+            start_new_session=True,
         )
         cls.webapp_process = subprocess.Popen(
-            ["python", "-m", "webapp.app"],
-            env=env,
+            [sys.executable, "-m", "webapp.app"],
+            env=webapp_env,
+            start_new_session=True,
         )
 
         # Wait for services
@@ -59,14 +70,10 @@ class TestEndToEnd(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Stop servers
-        cls.mlserver_process.terminate()
-        cls.mlserver_process.wait()
-        cls.webapp_process.terminate()
-        cls.webapp_process.wait()
+        stop_process(cls.mlserver_process)
+        stop_process(cls.webapp_process)
 
-        # Remove the entire drawings directory
-        if cls.DRAWING_DIR.exists():
-            shutil.rmtree(cls.DRAWING_DIR)
+        stop_drawingstore(cls.database_name, cls.drawingstore_process)
 
     def _run_country_guess_test(self, country_name, test_drawing):
         """Walk through the country guess flow on the webapp"""
@@ -92,13 +99,25 @@ class TestEndToEnd(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-        # Step 3: Verify drawing was saved
-        country_file = country_name.lower().replace(" ", "_")
-        files = list(self.DRAWING_DIR.glob(f"{country_file}_*.geojson"))
-        self.assertTrue(files, f"Drawing of {country_name} has not been saved")
+        # Step 3: Verify drawing was saved in PostgreSQL
+        response = requests.get(
+            f"{self.DRAWING_STORE_URL}/drawings/{result['drawing_id']}", timeout=5
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(country_name, response.json()["country"])
+
+        # Step 4: TODO: Test leaderboard feature
 
     def test_country_guess_app(self):
         """Test the Country Guess App end-to-end for all test drawings."""
+        empty_response = requests.get(
+            f"{self.WEBAPP_URL}/drawing?rank=0", timeout=5
+        )
+        self.assertEqual(404, empty_response.status_code)
+        self.assertEqual(
+            "No drawing found for rank 0", empty_response.json()["message"]
+        )
+
         for test_file in self.test_files:
             # Load test drawing
             with open(test_file, encoding="utf-8") as f:
@@ -108,6 +127,12 @@ class TestEndToEnd(unittest.TestCase):
             with self.subTest(country_name=country_name):
                 print(f"\nTesting country: {country_name}")
                 self._run_country_guess_test(country_name, test_drawing)
+
+        leaderboard_response = requests.get(
+            f"{self.WEBAPP_URL}/drawing?rank=0", timeout=5
+        )
+        self.assertEqual(200, leaderboard_response.status_code)
+        self.assertIn("id", leaderboard_response.json())
 
 
 if __name__ == "__main__":

@@ -17,12 +17,18 @@ import (
 	"github.com/jortdejong13/country-guess/drawingstore/migrations"
 )
 
-// Temporarily local development DB URL
-const databaseURL = "postgres://db_user:db_password@drawings-db:5432/db_name?sslmode=disable"
-
 func main() {
 	// Structured logger
 	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{}))
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		logger.Error("DATABASE_URL is required")
+		os.Exit(1)
+	}
+	serverAddr := os.Getenv("HTTP_ADDR")
+	if serverAddr == "" {
+		serverAddr = ":8080"
+	}
 
 	// Run embedded migrations via the migrations package.
 	logger.Info("running embedded database migrations")
@@ -34,13 +40,29 @@ func main() {
 	logger.Info("migrations applied")
 
 	// Setup pgx connection pool for application use.
+	poolConfig, err := pgxpool.ParseConfig(databaseURL)
+	if err != nil {
+		logger.Error("failed to parse database URL", "error", err)
+		os.Exit(1)
+	}
+	poolConfig.MaxConns = 10
+	poolConfig.MinConns = 0
+	poolConfig.MaxConnLifetime = time.Hour
+
 	ctx := context.Background()
-	pool, err := pgxpool.New(ctx, databaseURL)
+	pool, err := pgxpool.NewWithConfig(ctx, poolConfig)
 	if err != nil {
 		logger.Error("failed to create pgxpool", "error", err)
 		os.Exit(1)
 	}
 	defer pool.Close()
+	pingCtx, cancelPing := context.WithTimeout(ctx, 5*time.Second)
+	if err := pool.Ping(pingCtx); err != nil {
+		cancelPing()
+		logger.Error("database ping failed", "error", err)
+		os.Exit(1)
+	}
+	cancelPing()
 
 	// Basic router and middleware (chi)
 	r := chi.NewRouter()
@@ -69,7 +91,7 @@ func main() {
 	api.RegisterRoutes(r)
 
 	srv := &http.Server{
-		Addr:         ":8080",
+		Addr:         serverAddr,
 		Handler:      r,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
