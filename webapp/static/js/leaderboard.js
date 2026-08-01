@@ -10,10 +10,14 @@ let totalDrawings = 0;
 
 async function fetchDrawingByRank(rank) {
   const response = await fetch(`/drawing?rank=${rank}`);
+  const data = await response.json().catch(() => null);
+
   if (!response.ok) {
-    throw new Error("Failed to fetch drawing");
+    const error = new Error(data?.message || "Failed to fetch drawing");
+    error.status = response.status;
+    throw error;
   }
-  return response.json();
+  return data;
 }
 
 /**
@@ -49,7 +53,14 @@ export async function showLeaderboardAt(rank) {
     return { success: true, rank: currentRank, total: totalDrawings };
   } catch (error) {
     console.error("Error loading leaderboard drawing:", error);
-    msg.setLeaderboardMessage(null, null, null);
-    return { success: false };
+
+    if (error.status === 404 && rank === 0) {
+      totalDrawings = 0;
+      msg.setEmptyLeaderboardMessage();
+    } else {
+      msg.setLeaderboardMessage(null);
+    }
+
+    return { success: false, rank: currentRank, total: totalDrawings };
   }
 }

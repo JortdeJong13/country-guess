@@ -1,26 +1,19 @@
 import datetime
 import hashlib
+import json
 import os
 import uuid
-from typing import Dict, Optional
 
 import requests
 from flask import Flask, jsonify, make_response, render_template, request
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from countryguess.utils import proces_lines
-from webapp.drawing_utils import (
-    Drawing,
-    DrawingStore,
-    load_ranked_drawing,
-    save_drawing,
-)
 
-DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
 MLSERVER_URL = os.environ["MLSERVER_URL"]
-DAILY_COUNTRY: Dict[str, Optional[str]] = {"date": None, "country": None}
+DRAWING_STORE_URL = os.environ["DRAWING_STORE_URL"]
+DAILY_COUNTRY: dict[str, str | None] = {"date": None, "country": None}
 
-drawing_store = DrawingStore()
 app = Flask(__name__)
 
 
@@ -46,7 +39,7 @@ def serve_robots_txt():
 
 
 def get_daily_country():
-    today = datetime.date.today().isoformat()
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
 
     # Check cache for daily country
     if DAILY_COUNTRY["date"] == today:
@@ -58,8 +51,8 @@ def get_daily_country():
     countries = response.json()["countries"]
 
     # Pick a random country as the daily country
-    hash = hashlib.sha256(f"{today}-country-guess-salt".encode()).hexdigest()
-    index = int(hash, 16) % len(countries)
+    digest = hashlib.sha256(f"{today}-country-guess-salt".encode()).hexdigest()
+    index = int(digest, 16) % len(countries)
     country = countries[index]
 
     DAILY_COUNTRY["date"] = today
@@ -73,8 +66,10 @@ def daily_country():
     try:
         country = get_daily_country()
         return jsonify({"country": country})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except requests.RequestException as error:
+        return jsonify({"error": str(error)}), 502
+    except (KeyError, TypeError, ValueError) as error:
+        return jsonify({"error": str(error)}), 502
 
 
 @app.route("/guess", methods=["POST"])
@@ -91,25 +86,26 @@ def guess():
         response.raise_for_status()
         ranking = response.json()["ranking"]
 
-        # Create the drawing
-        drawing = Drawing(
-            geometry=geometry,
-            timestamp=datetime.datetime.now().isoformat(),
-            ranking=ranking,
+        store_response = requests.post(
+            f"{DRAWING_STORE_URL}/drawings",
+            json={
+                "geometry": json.loads(geometry),
+                "ranking": [
+                    {"country": country, "score": score} for country, score in ranking
+                ],
+                "author_id": request.cookies.get("author_id"),
+            },
+            timeout=5,
         )
-
-        # Store the drawing and ranking in the session
-        drawing_id = str(uuid.uuid4())
-        drawing_store.store(drawing_id, drawing)
+        store_response.raise_for_status()
+        drawing_id = store_response.json()["id"]
 
         return jsonify({"ranking": ranking, "drawing_id": drawing_id})
 
     except (ConnectionError, Timeout) as conn_err:
-        # Handle connection errors and timeouts
         return jsonify({"message": "Server unreachable", "error": str(conn_err)}), 502
 
     except (HTTPError, ValueError) as http_err:
-        # Handle HTTP errors and JSON decoding errors
         return jsonify({"message": "Server error", "error": str(http_err)}), 500
 
 
@@ -123,33 +119,72 @@ def feedback():
         return jsonify({"message": "Country not provided"}), 400
 
     drawing_id = data.get("drawing_id")
-    drawing = drawing_store.get(drawing_id)
-    if not drawing:
-        return jsonify({"message": "Drawing not found"}), 400
+    if not drawing_id:
+        return jsonify({"message": "Drawing ID not provided"}), 400
 
-    # Add metadata to drawing
-    drawing.country_name = data["country"]
-    drawing.author = data.get("author")
-    drawing.author_id = request.cookies.get("author_id")
-
-    save_drawing(drawing, output_dir=DRAWING_DIR)
-
-    drawing_store.remove(drawing_id)
-    return jsonify({"message": "Feedback received"})
+    try:
+        response = requests.patch(
+            f"{DRAWING_STORE_URL}/drawings/{drawing_id}",
+            json={
+                "country": data["country"],
+                "author": data.get("author"),
+            },
+            timeout=5,
+        )
+        response.raise_for_status()
+        return jsonify({"message": "Feedback received"})
+    except (ConnectionError, Timeout) as conn_err:
+        return jsonify(
+            {"message": "Drawing store unreachable", "error": str(conn_err)}
+        ), 502
+    except HTTPError as http_err:
+        if http_err.response is not None and http_err.response.status_code == 404:
+            return jsonify({"message": "Drawing not found"}), 404
+        return jsonify({"message": "Drawing store error", "error": str(http_err)}), 502
 
 
 @app.route("/drawing")
 def drawing():
+    rank_value = request.args.get("rank", "0")
     try:
-        rank = int(request.args.get("rank", 0))
-        drawing = load_ranked_drawing(rank, drawing_dir=DRAWING_DIR)
+        rank = int(rank_value)
+    except ValueError:
+        return jsonify({"message": "Invalid rank"}), 400
+    if rank < 0:
+        return jsonify({"message": "Invalid rank"}), 400
 
-        if drawing is None:
+    try:
+        response = requests.get(
+            f"{DRAWING_STORE_URL}/leaderboard",
+            params={"rank": rank},
+            timeout=5,
+        )
+        response.raise_for_status()
+        result = response.json()
+        stored = result["drawing"]
+        return jsonify(
+            {
+                "id": stored["id"],
+                "lines": stored["geometry"]["coordinates"],
+                "rank": result["rank"],
+                "total": result["total"],
+                "country_name": stored.get("country"),
+                "country_score": stored.get("country_score"),
+                "normalized_score": stored.get("normalized_score"),
+                "author": stored.get("author"),
+                "timestamp": stored["created_at"],
+            }
+        )
+    except (ConnectionError, Timeout) as conn_err:
+        return jsonify(
+            {"message": "Drawing store unreachable", "error": str(conn_err)}
+        ), 502
+    except HTTPError as http_err:
+        if http_err.response is not None and http_err.response.status_code == 404:
             return jsonify({"message": f"No drawing found for rank {rank}"}), 404
-
-        return jsonify(drawing)
-    except Exception as e:
-        return jsonify({"message": "Failed to load drawing", "error": str(e)}), 500
+        return jsonify(
+            {"message": "Failed to load drawing", "error": str(http_err)}
+        ), 502
 
 
 @app.route("/health")

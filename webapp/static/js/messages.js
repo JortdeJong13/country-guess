@@ -512,8 +512,12 @@ export function clearLeaderboardMessageCache() {
   leaderboardMessageCache = {};
 }
 
+export function setEmptyLeaderboardMessage() {
+  showMessage("No drawings on the leaderboard yet!");
+}
+
 export function setLeaderboardMessage(data) {
-  if (data.rank == null) {
+  if (!data || data.rank == null) {
     showMessage("Failed to load leaderboard..");
     return;
   }
@@ -528,12 +532,13 @@ export function setLeaderboardMessage(data) {
   const medal = medals[data.rank] || `#${data.rank + 1}`;
 
   // Fist line
-  const scorePercent = Math.round(data.country_score * 100);
+  const leaderboardScore = data.normalized_score ?? data.country_score;
+  const scorePercent = Math.round(leaderboardScore * 100);
   let message = `${medal} / ${data.total}\u00A0\u00A0\u00A0 | \u00A0\u00A0\u00A0Score: ${scorePercent}%\n`;
 
   // Second line
   const messageList =
-    data.country_score > 0.5 ? leaderboardMessagesHigh : leaderboardMessagesLow;
+    leaderboardScore > 0.5 ? leaderboardMessagesHigh : leaderboardMessagesLow;
 
   message += getRandomMessage(messageList, {
     selected: data.country_name,

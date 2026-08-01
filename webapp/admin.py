@@ -1,12 +1,10 @@
-import json
 import os
-from pathlib import Path
 
+import requests
 from flask import Flask, jsonify, render_template, request
+from requests.exceptions import ConnectionError, HTTPError, Timeout
 
-from webapp.drawing_utils import load_drawing, load_unvalidated_drawing, save_drawing
-
-DRAWING_DIR = os.environ.get("DRAWING_DIR", "data/drawings")
+DRAWING_STORE_URL = os.environ["DRAWING_STORE_URL"]
 
 app = Flask(__name__)
 
@@ -19,76 +17,83 @@ def index():
 @app.route("/unvalidated_drawing")
 def unvalidated_drawing():
     try:
-        drawing = load_unvalidated_drawing(drawing_dir=DRAWING_DIR)
-        if drawing is None:
+        response = requests.get(
+            f"{DRAWING_STORE_URL}/drawings",
+            params={"queue": "validation", "limit": 1},
+            timeout=5,
+        )
+        response.raise_for_status()
+        drawings = response.json().get("drawings", [])
+        if not drawings:
             return jsonify({"message": "No unvalidated drawings found"})
 
+        drawing = drawings[0]
         return jsonify(
             {
                 "message": "Drawing loaded successfully",
-                "lines": json.loads(drawing.geometry)["coordinates"],
-                "timestamp": drawing.timestamp,
-                "country_name": drawing.country_name,
-                "country_score": drawing.country_score,
-                "country_guess": drawing.country_guess,
-                "guess_score": drawing.guess_score,
-                "author": drawing.author,
-                "filename": drawing.filename,
+                "id": drawing["id"],
+                "lines": drawing["geometry"]["coordinates"],
+                "timestamp": drawing["created_at"],
+                "country_name": drawing.get("country"),
+                "country_score": drawing.get("country_score"),
+                "country_guess": drawing.get("country_guess"),
+                "guess_score": drawing.get("guess_score"),
+                "author": drawing.get("author"),
             }
         )
-    except Exception as e:
+    except (ConnectionError, Timeout) as error:
         return jsonify(
-            {"message": "Failed to load unvalidated drawing", "error": str(e)}
-        ), 500
+            {"message": "Drawing store unreachable", "error": str(error)}
+        ), 502
+    except HTTPError as error:
+        return jsonify(
+            {"message": "Failed to load unvalidated drawing", "error": str(error)}
+        ), 502
 
 
-@app.route("/drawing/<path:filename>", methods=["PUT"])
-def update_drawing(filename):
-    file_path = os.path.join(DRAWING_DIR, filename)
-
-    if not os.path.exists(file_path):
-        return jsonify({"message": f"Drawing '{filename}' not found."}), 404
-
-    # Prevent directory traversal
-    if not os.path.abspath(file_path).startswith(os.path.abspath(DRAWING_DIR)):
-        return jsonify({"message": "File outside the drawing directory."}), 403
-
-    request_data = request.json
-    if not request_data or not isinstance(request_data, dict):
+@app.route("/drawing/<drawing_id>", methods=["PATCH"])
+def update_drawing(drawing_id):
+    request_data = request.get_json(silent=True)
+    if not isinstance(request_data, dict):
         return jsonify({"message": "Invalid JSON data provided."}), 400
 
     try:
-        # Load drawing
-        drawing = load_drawing(Path(file_path))
+        response = requests.patch(
+            f"{DRAWING_STORE_URL}/drawings/{drawing_id}",
+            json=request_data,
+            timeout=5,
+        )
+        response.raise_for_status()
+        return jsonify({"message": f"Drawing '{drawing_id}' updated successfully."})
+    except (ConnectionError, Timeout) as error:
+        return jsonify(
+            {"message": "Drawing store unreachable", "error": str(error)}
+        ), 502
+    except HTTPError as error:
+        status = error.response.status_code if error.response is not None else 502
+        return jsonify(
+            {"message": "Failed to update drawing", "error": str(error)}
+        ), status
 
-        # Update drawing fields
-        for field_name, value in request_data.items():
-            setattr(drawing, field_name, value)
 
-        # Save updated drawing
-        save_drawing(drawing, filename, output_dir=DRAWING_DIR)
-
-        return jsonify({"message": f"Drawing '{filename}' updated successfully."}), 200
-    except Exception as e:
-        return jsonify({"message": "Failed to update drawing", "error": str(e)}), 500
-
-
-@app.route("/drawing/<path:filename>", methods=["DELETE"])
-def delete_drawing(filename):
-    file_path = os.path.join(DRAWING_DIR, filename)
-
-    if not os.path.exists(file_path):
-        return jsonify({"message": f"Drawing '{filename}' not found."}), 404
-
-    # Prevent directory traversal
-    if not os.path.abspath(file_path).startswith(os.path.abspath(DRAWING_DIR)):
-        return jsonify({"message": "File outside the drawing directory."}), 403
-
+@app.route("/drawing/<drawing_id>", methods=["DELETE"])
+def delete_drawing(drawing_id):
     try:
-        os.remove(file_path)
-        return jsonify({"message": f"Drawing '{filename}' deleted successfully."}), 200
-    except Exception as e:
-        return jsonify({"message": "Failed to delete drawing", "error": str(e)}), 500
+        response = requests.delete(
+            f"{DRAWING_STORE_URL}/drawings/{drawing_id}",
+            timeout=5,
+        )
+        response.raise_for_status()
+        return jsonify({"message": f"Drawing '{drawing_id}' deleted successfully."})
+    except (ConnectionError, Timeout) as error:
+        return jsonify(
+            {"message": "Drawing store unreachable", "error": str(error)}
+        ), 502
+    except HTTPError as error:
+        status = error.response.status_code if error.response is not None else 502
+        return jsonify(
+            {"message": "Failed to delete drawing", "error": str(error)}
+        ), status
 
 
 if __name__ == "__main__":

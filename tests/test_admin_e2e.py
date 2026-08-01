@@ -1,87 +1,110 @@
 import os
-import shutil
 import subprocess
+import sys
 import unittest
-from pathlib import Path
 
 import requests
 
-from tests.test_e2e import wait_for_service
+from tests.e2e_services import (
+    start_drawingstore,
+    stop_drawingstore,
+    stop_process,
+    wait_for_service,
+)
 
 
 class TestAdminEndToEnd(unittest.TestCase):
-    """Test the Country Guess Admin App end-to-end."""
+    """Test validation and deletion through the admin app and drawingstore."""
 
     ADMIN_URL = "http://localhost:5003"
-    TEST_DRAWINGS_DIR = Path("tests/data/drawings")
-    DRAWING_DIR = Path("tests/data/drawings_admin")
+    DRAWING_STORE_URL = "http://localhost:8080"
 
     @classmethod
     def setUpClass(cls):
-        # Copy test drawings to the drawing directory
-        if cls.DRAWING_DIR.exists():
-            shutil.rmtree(cls.DRAWING_DIR)
-        shutil.copytree(cls.TEST_DRAWINGS_DIR, cls.DRAWING_DIR)
+        (
+            cls.database_name,
+            cls.drawingstore_process,
+            cls.DRAWING_STORE_URL,
+        ) = start_drawingstore()
 
-        # Start admin server with custom environment
-        env = os.environ.copy()
-        env["DRAWING_DIR"] = str(cls.DRAWING_DIR)
-
-        cls.admin_process = subprocess.Popen(
-            ["python", "-m", "webapp.admin"],
-            env=env,
+        admin_env = os.environ.copy()
+        admin_env.update(
+            {
+                "DEBUG": "0",
+                "DRAWING_STORE_URL": cls.DRAWING_STORE_URL,
+            }
         )
+        cls.admin_process = subprocess.Popen(
+            [sys.executable, "-m", "webapp.admin"],
+            env=admin_env,
+            start_new_session=True,
+        )
+        wait_for_service(f"{cls.ADMIN_URL}/")
 
-        # Wait for the admin service to start
-        wait_for_service(f"{cls.ADMIN_URL}/", timeout=20)
+        cls._create_drawing("France", "France", 0.9)
+        cls._create_drawing("Germany", "Germany", 0.8)
 
     @classmethod
     def tearDownClass(cls):
-        # Stop admin server
-        cls.admin_process.terminate()
-        cls.admin_process.wait()
+        stop_process(cls.admin_process)
+        stop_drawingstore(
+            cls.database_name, cls.drawingstore_process
+        )
 
-        # Delete the temporary drawings directory
-        if cls.DRAWING_DIR.exists():
-            shutil.rmtree(cls.DRAWING_DIR)
+    @classmethod
+    def _create_drawing(cls, country, guess, score):
+        response = requests.post(
+            f"{cls.DRAWING_STORE_URL}/drawings",
+            json={
+                "geometry": {
+                    "type": "MultiLineString",
+                    "coordinates": [[[0, 0], [1, 1]]],
+                },
+                "ranking": [
+                    {"country": guess, "score": score},
+                    {"country": "Other", "score": 1 - score},
+                ],
+            },
+            timeout=5,
+        )
+        if response.status_code != 201:
+            raise AssertionError(response.text)
+        drawing_id = response.json()["id"]
+        response = requests.patch(
+            f"{cls.DRAWING_STORE_URL}/drawings/{drawing_id}",
+            json={"country": country},
+            timeout=5,
+        )
+        if response.status_code != 200:
+            raise AssertionError(response.text)
 
     def test_admin_page(self):
-        """Simulate the full admin workflow."""
-
-        # Step 1: Call GET /unvalidated_drawing
-        print("Get first unvalidated drawing")
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual("Drawing loaded successfully", data["message"])
+        first_id = data["id"]
 
-        # Step 2: Update the drawing status to validated
-        print("Set drawing status to validated")
-        file_name = data["filename"]
-        response = requests.put(
-            f"{self.ADMIN_URL}/drawing/{file_name}",
+        response = requests.patch(
+            f"{self.ADMIN_URL}/drawing/{first_id}",
             json={"validated": True},
             timeout=5,
         )
         self.assertEqual(response.status_code, 200)
         self.assertIn("updated successfully.", response.json()["message"])
 
-        # Step 3: Call GET /unvalidated_drawing again
-        print("Get second unvalidated drawing")
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual("Drawing loaded successfully", data["message"])
+        second_id = data["id"]
 
-        # Step 4: Delete the drawing
-        print("Delete drawing")
-        file_name = data["filename"]
-        response = requests.delete(f"{self.ADMIN_URL}/drawing/{file_name}", timeout=5)
+        response = requests.delete(
+            f"{self.ADMIN_URL}/drawing/{second_id}", timeout=5
+        )
         self.assertEqual(response.status_code, 200)
         self.assertIn("deleted successfully.", response.json()["message"])
 
-        # Step 5: Call GET /unvalidated_drawing again
-        print("Ensure no unvalidated drawings left")
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
         self.assertEqual("No unvalidated drawings found", response.json()["message"])

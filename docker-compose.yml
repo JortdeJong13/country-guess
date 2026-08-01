@@ -11,7 +11,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
     volumes:
-      - ./mlruns:/mlruns # Optional
+      - ./mlruns:/app/mlruns # Optional
 
   webapp:
     build:
@@ -22,8 +22,31 @@ services:
       - "5002:5002"
     environment:
       - MLSERVER_URL=http://mlserver:5001
-      - DRAWING_DIR=data/drawings
+      - DRAWING_STORE_URL=http://drawingstore:8080
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+
+  drawings-db:
+    image: postgres:16-alpine
+    # PostgreSQL is internal to the Compose network. Use drawingstore for API access.
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-country_guess}
+      POSTGRES_USER: ${POSTGRES_USER:-country_guess}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-country_guess_dev}
     volumes:
-      - ./data/drawings:/data/drawings # Optional
+      - ${DRAWING_DB_DATA:-./data/db}:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+
+  drawingstore:
+    build:
+      context: ./
+      dockerfile: ./drawingstore/Dockerfile
+    image: ghcr.io/jortdejong13/country-guess-drawing-store:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-country_guess}:${POSTGRES_PASSWORD:-country_guess_dev}@drawings-db:5432/${POSTGRES_DB:-country_guess}?sslmode=disable
+    depends_on:
+      drawings-db:
+        condition: service_healthy

@@ -26,37 +26,46 @@ Welcome to my Country Guess App side project! With this machine learning applica
 
 ## Getting Started
 
-The Country Guess App is accessible at [country-guess.nl](https://country-guess.nl), try it out! Alternatively, you can follow the instructions to run the app locally:
+The Country Guess App is accessible at [country-guess.nl](https://country-guess.nl), try it out! Or you can follow the instructions to run the app locally:
 
 ### 1. Using Pre-built Docker Images (Recommended)
 Pull and run the latest images:
 ```bash
 docker compose pull
-docker compose up -d
+docker compose up
 ```
 
-### 2. Building Docker Images Locally
-Build and run the containers:
+### 2. Building the images yourself
+Build and run all services in Docker:
 ```bash
-docker compose up -d --build
+docker compose up --build
 ```
 
-### 3. Local Python Installation
-1. Install the required packages:
+### 3. Running the app locally
+Install PostgreSQL 16 and start it as a native background service:
+```bash
+brew install postgresql@16
+export PATH="$(brew --prefix postgresql@16)/bin:$PATH"
+brew services start postgresql@16
+```
+
+Create the database and role once:
+```bash
+just setup-local-db
+```
+
+Install the required packages:
 ```bash
 pip install -r mlserver/requirements.txt
 pip install -r webapp/requirements.txt
 ```
-2. Set the model name and run the ML server:
+
+Start the app locally:
 ```bash
-MODEL_NAME=triplet_model python -m mlserver.serve
-```
-3. Set the ML server URL and start the web app:
-```bash
-MLSERVER_URL=http://127.0.0.1:5001/predict python -m webapp.app
+just run-app
 ```
 
-<br>After setting up, you can access the app at [http://localhost:5002](http://localhost:5002)
+<br>After setting up, you can access the app at [http://localhost:5002](http://localhost:5002).
 
 ## Usage
 
@@ -75,7 +84,7 @@ The Model Training notebook is used to train a machine learning model. At the mo
 
 When training a model, you can start an MLflow Tracking server by running the ```mlflow ui``` command. Here you can compare different runs and register a model through the UI. The ML server will select the model with the “champion” alias. The model name can be set in the docker-compose.yml or by changing the environment variable when running the app locally.
 
-Then there is the admin app. The admin app allows you to validate user drawings. You can approve a drawing to mark it as valid. Or you can reject a drawing to delete it. Deleting miscellaneous drawings will keep the test data clean and remove them from the leaderboard. You can run the admin app locally with `make run-admin`.
+Then there is the admin app. The admin app allows you to validate user drawings. You can approve a drawing to mark it as valid. Or you can reject a drawing to delete it. Deleting miscellaneous drawings will keep the test data clean and remove them from the leaderboard. You can run the admin app locally with `just run-admin` when drawingstore is running.
 
 ## Architecture and Design
 
@@ -87,10 +96,10 @@ The following diagram depicts the different components that make up the app:
   <img alt="Design diagram" src="images/design-dark.svg" />
 </picture>
 
-The application consists of two independent services: the ML server and the web app backend.<br>
+The application consists of four runtime services: the ML server, the web app backend, drawingstore, and PostgreSQL.<br>
 The ML server image is built using a copy of the reference data. The mlruns directory is mounted as a volume to the ML server container, this way the ML server can use models added later. Users can change the model name in the docker-compose.yml file, and the ML server will select the model with the “champion” alias. If the mlruns directory is not mounted, the ML server will fall back on a default model within the image.
 
-The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server responses with a ranking of all the countries in the reference country dataset. The user can confirm this guess or select the correct country from a dropdown list. The drawing will be saved along with the country name. To preserve user drawings, the drawings data is mounted as a volume. If no drawings data is mounted, the drawings made will not persist outside the Docker container.
+The web app is based on Flask. After the user has drawn a country shape, the web app sends it to the ML server. The ML server responds with a ranking of all countries in the reference dataset. The drawing is immediately stored as a pending PostgreSQL row; feedback is then sent to drawingstore. The leaderboard is served by indexed SQL queries. The current GeoJSON files remain legacy import data.
 
 ## License
 

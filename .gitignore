@@ -5,3 +5,5 @@ __pycache__
 .trash
 .jupyter
 bruno
+.env
+data/db
