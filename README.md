@@ -91,19 +91,15 @@ Then there is the admin app. The admin app allows you to validate user drawings.
 The main components and their relationships are:
 
 ```text
-Model development
-                              ┌─────────────────────┐       ┌─────────────────────┐
+Model development             ┌─────────────────────┐       ┌─────────────────────┐
                               │ Reference countries │──────►│ Model training      │
                               └─────────────────────┘       └──────────┬──────────┘
-                                        │                              ▼
-                                        │
-Application                             │
-                                        │
-                  drawing / ranking
-┌─────────────────────┐       ┌─────────────────────┐       ┌─────────────────────┐
+Application                             ▲                              │
+                                        │                              ▼              
+┌─────────────────────┐       ┌─────────┴───────────┐       ┌─────────────────────┐
 │ Web app             │──────►│ ML Server           │──────►│ Model registry      │
 └──────────┬──────────┘       └─────────────────────┘       └─────────────────────┘
-           │ drawings, feedback, leaderboard
+           │
            ▼
 ┌─────────────────────┐       ┌─────────────────────┐
 │ Drawing Store API   │◄──────│ Admin app           │
