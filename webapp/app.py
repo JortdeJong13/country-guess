@@ -39,7 +39,7 @@ def serve_robots_txt():
 
 
 def get_daily_country():
-    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+    today = datetime.datetime.now(datetime.UTC).date().isoformat()
 
     # Check cache for daily country
     if DAILY_COUNTRY["date"] == today:
