@@ -2,7 +2,7 @@
 
 MODEL_NAME := "triplet_model"
 MLSERVER_URL := "http://127.0.0.1:5001"
-DRAWING_STORE_URL := "http://127.0.0.1:8080"
+DRAWING_STORE_URL := "http://home-server:8080"
 DATABASE_URL := "postgres://country_guess:country_guess_dev@127.0.0.1:5432/country_guess?sslmode=disable"
 DEBUG := "1"
 
@@ -41,12 +41,6 @@ setup-local-db:
     fi
     @echo "Native PostgreSQL database is ready."
 
-# Import the committed legacy GeoJSON corpus into PostgreSQL once.
-# Validate without writing using: go -C drawingstore run ./cmd/import-legacy-drawings --dir ../data/drawings -dry-run
-import-legacy-drawings:
-    @echo "Importing legacy drawings into PostgreSQL..."
-    @DATABASE_URL={{ DATABASE_URL }} go -C drawingstore run ./cmd/import-legacy-drawings --dir ../data/drawings
-
 # Start the drawings API locally. PostgreSQL must be running separately
 run-drawingstore:
     @echo "Starting drawingstore..."
@@ -61,7 +55,7 @@ run-admin:
     @echo "Starting admin app..."
     DEBUG={{ DEBUG }} DRAWING_STORE_URL={{ DRAWING_STORE_URL }} python -m webapp.admin
 
-# Print the total unique users based on author_id
-unique-users:
-    @echo "Counting total unique users..."
-    @find data/drawings -name "*.geojson" -print0 | xargs -0 jq -r '.features[].properties.author_id' | sort | uniq | wc -l
+# Print the total unique authors based on author_id
+unique-authors:
+    @echo "Counting total unique authors..."
+    @curl --fail --silent --show-error "{{ DRAWING_STORE_URL }}/drawings/summary" | jq -r '.unique_authors'

@@ -75,10 +75,14 @@ async function showDrawing() {
     const guessScorePercent = Math.round(data.guess_score * 100);
     const date = new Date(data.timestamp).toISOString().split("T")[0];
     const authorSuffix = data.author?.trim() ? ` by ${data.author.trim()}` : "";
+    const validatedCount = data.author_id
+      ? ` (${data.validated_author_count})`
+      : "";
 
     showMessage(`${data.country_name} (${scorePercent}%)
   Prediction: ${data.country_guess} (${guessScorePercent}%)
-  Drawn on ${date}${authorSuffix}`);
+  Drawn on ${date}${authorSuffix}${validatedCount}
+  ${data.unvalidated_count} drawings left to validate`);
   } catch (error) {
     showMessage("Could not load drawings for validation.");
   }
