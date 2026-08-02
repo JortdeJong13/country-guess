@@ -10,7 +10,9 @@ import {
   showLeaderboard,
   showLeaderboardNext,
   showLeaderboardPrevious,
+  reportCurrentDrawing,
 } from "./leaderboard.js";
+import { getReportedMessage } from "./messages.js";
 import "./minigame.js";
 import * as ani from "./animations.js";
 
@@ -21,6 +23,7 @@ let appState = "home"; // "home", "confirm", "leaderboard"
 const leftBtn = document.getElementById("left-btn");
 const rightBtn = document.getElementById("right-btn");
 const leaderboardBtn = document.getElementById("leaderboard-btn");
+const reportBtn = document.getElementById("report-btn");
 const undoBtn = document.getElementById("undo-btn");
 
 /**
@@ -62,6 +65,7 @@ function updateUI() {
 
 function updateHomeUI() {
   ani.hideUndoBtn();
+  reportBtn.classList.add("hidden");
   ani.showLeaderboardButton();
   enableDrawing();
   canvas.style.cursor = "crosshair";
@@ -74,6 +78,7 @@ function updateHomeUI() {
 
 function updateConfirmUI() {
   ani.hideLeaderboardButton();
+  reportBtn.classList.add("hidden");
   disableDrawing();
   canvas.style.cursor = "default";
   leftBtn.textContent = "Confirm";
@@ -83,6 +88,7 @@ function updateConfirmUI() {
 
 function updateLeaderboardUI() {
   ani.hideUndoBtn();
+  reportBtn.classList.remove("hidden");
   disableDrawing();
   canvas.style.cursor = "default";
   leftBtn.textContent = "Previous";
@@ -122,6 +128,17 @@ function handleLeaderboardButtonClick() {
     handleRefresh();
   } else {
     handleShowLeaderboard();
+  }
+}
+
+async function handleReportButtonClick() {
+  if (!window.confirm("Report this drawing?")) return;
+
+  try {
+    await reportCurrentDrawing();
+    window.alert(getReportedMessage());
+  } catch (error) {
+    window.alert("Could not report this drawing.");
   }
 }
 
@@ -188,6 +205,7 @@ function initializeEventListeners() {
   rightBtn.addEventListener("click", handleRightButtonClick);
   undoBtn.addEventListener("click", undoLine);
   leaderboardBtn.addEventListener("click", handleLeaderboardButtonClick);
+  reportBtn.addEventListener("click", handleReportButtonClick);
 }
 
 /**

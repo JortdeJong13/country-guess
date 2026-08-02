@@ -26,6 +26,7 @@ type Drawing struct {
 	CountryGuess *string         `json:"country_guess,omitempty"`
 	GuessScore   *float64        `json:"guess_score,omitempty"`
 	PointCount   *int            `json:"point_count,omitempty"`
+	ReportCount  int             `json:"report_count"`
 	CreatedAt    time.Time       `json:"created_at"`
 	UpdatedAt    time.Time       `json:"updated_at"`
 }

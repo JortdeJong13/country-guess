@@ -59,19 +59,26 @@ func (api *API) UpdateDrawing(w http.ResponseWriter, r *http.Request) {
 	if req.Author != nil {
 		drawing.Author = req.Author
 	}
+	if req.Report != nil && *req.Report {
+		drawing.ReportCount++
+	}
 	if req.Validated != nil {
 		drawing.Validated = *req.Validated
+		if *req.Validated {
+			drawing.ReportCount = 0
+		}
 	}
 	drawing.CalculateDerivedFields()
 
 	updated, err := tx.Exec(ctx,
 		`UPDATE drawings
 		 SET country = $1, author = $2, validated = $3,
-		     country_score = $4, country_guess = $5, guess_score = $6
-		 WHERE id = $7`,
+		     country_score = $4, country_guess = $5, guess_score = $6,
+		     report_count = $7
+		 WHERE id = $8`,
 		drawing.Country, drawing.Author, drawing.Validated,
 		drawing.CountryScore, drawing.CountryGuess, drawing.GuessScore,
-		id,
+		drawing.ReportCount, id,
 	)
 	if err != nil {
 		api.Logger.Error("update drawing failed", "error", err, "id", id)

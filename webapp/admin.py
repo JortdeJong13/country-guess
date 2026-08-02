@@ -34,19 +34,21 @@ def unvalidated_drawing():
             timeout=5,
         )
         response.raise_for_status()
-        drawings = response.json().get("drawings", [])
+        queue = response.json()
+        drawings = queue.get("drawings", [])
         drawing = drawings[0] if drawings else None
-        author_id = drawing.get("author_id") if drawing else None
-        summary = fetch_summary(author_id)
+        validation_count = queue.get("total", 0)
 
         if drawing is None:
             return jsonify(
                 {
-                    "message": "No unvalidated drawings found",
-                    "unvalidated_count": summary["unvalidated"],
+                    "message": "No drawings found for validation",
+                    "validation_count": validation_count,
                 }
             )
 
+        author_id = drawing.get("author_id")
+        summary = fetch_summary(author_id)
         return jsonify(
             {
                 "message": "Drawing loaded successfully",
@@ -55,11 +57,12 @@ def unvalidated_drawing():
                 "timestamp": drawing["created_at"],
                 "country_name": drawing.get("country"),
                 "country_score": drawing.get("country_score"),
+                "report_count": drawing.get("report_count", 0),
                 "country_guess": drawing.get("country_guess"),
                 "guess_score": drawing.get("guess_score"),
                 "author": drawing.get("author"),
                 "author_id": author_id,
-                "unvalidated_count": summary["unvalidated"],
+                "validation_count": validation_count,
                 "validated_author_count": summary.get("validated_by_author"),
             }
         )

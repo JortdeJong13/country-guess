@@ -106,13 +106,32 @@ class TestEndToEnd(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(country_name, response.json()["country"])
 
-        # Step 4: TODO: Test leaderboard feature
+    def _run_leaderboard_test(self):
+        """Test leaderboard loading and reporting through the webapp."""
+        leaderboard_response = requests.get(
+            f"{self.WEBAPP_URL}/drawing?rank=0", timeout=5
+        )
+        self.assertEqual(200, leaderboard_response.status_code)
+        leaderboard_drawing = leaderboard_response.json()
+        self.assertIn("id", leaderboard_drawing)
+
+        response = requests.post(
+            f"{self.WEBAPP_URL}/report",
+            json={"drawing_id": leaderboard_drawing["id"]},
+            timeout=5,
+        )
+        self.assertEqual(200, response.status_code)
+
+        response = requests.get(
+            f"{self.DRAWING_STORE_URL}/drawings/{leaderboard_drawing['id']}",
+            timeout=5,
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(1, response.json()["report_count"])
 
     def test_country_guess_app(self):
         """Test the Country Guess App end-to-end for all test drawings."""
-        empty_response = requests.get(
-            f"{self.WEBAPP_URL}/drawing?rank=0", timeout=5
-        )
+        empty_response = requests.get(f"{self.WEBAPP_URL}/drawing?rank=0", timeout=5)
         self.assertEqual(404, empty_response.status_code)
         self.assertEqual(
             "No drawing found for rank 0", empty_response.json()["message"]
@@ -128,11 +147,7 @@ class TestEndToEnd(unittest.TestCase):
                 print(f"\nTesting country: {country_name}")
                 self._run_country_guess_test(country_name, test_drawing)
 
-        leaderboard_response = requests.get(
-            f"{self.WEBAPP_URL}/drawing?rank=0", timeout=5
-        )
-        self.assertEqual(200, leaderboard_response.status_code)
-        self.assertIn("id", leaderboard_response.json())
+        self._run_leaderboard_test()
 
 
 if __name__ == "__main__":

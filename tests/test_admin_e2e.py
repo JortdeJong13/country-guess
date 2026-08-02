@@ -44,8 +44,28 @@ class TestAdminEndToEnd(unittest.TestCase):
         )
         wait_for_service(f"{cls.ADMIN_URL}/")
 
-        cls._create_drawing("France", "France", 0.9, "admin-test-author")
-        cls._create_drawing("Germany", "Germany", 0.8, "admin-test-author")
+        cls.france_id = cls._create_drawing(
+            "France", "France", 0.9, "admin-test-author"
+        )
+        cls.germany_id = cls._create_drawing(
+            "Germany", "Germany", 0.8, "admin-test-author"
+        )
+
+        response = requests.patch(
+            f"{cls.DRAWING_STORE_URL}/drawings/{cls.germany_id}",
+            json={"validated": True},
+            timeout=5,
+        )
+        if response.status_code != 200:
+            raise AssertionError(response.text)
+
+        response = requests.patch(
+            f"{cls.DRAWING_STORE_URL}/drawings/{cls.germany_id}",
+            json={"report": True},
+            timeout=5,
+        )
+        if response.status_code != 200:
+            raise AssertionError(response.text)
 
     @classmethod
     def tearDownClass(cls):
@@ -81,16 +101,19 @@ class TestAdminEndToEnd(unittest.TestCase):
         )
         if response.status_code != 200:
             raise AssertionError(response.text)
+        return drawing_id
 
     def test_admin_page(self):
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual("Drawing loaded successfully", data["message"])
-        self.assertEqual(2, data["unvalidated_count"])
+        self.assertEqual(2, data["validation_count"])
         self.assertEqual("admin-test-author", data["author_id"])
-        self.assertEqual(0, data["validated_author_count"])
+        self.assertEqual(1, data["validated_author_count"])
+        self.assertEqual(1, data["report_count"])
         first_id = data["id"]
+        self.assertEqual(self.germany_id, first_id)
 
         response = requests.patch(
             f"{self.ADMIN_URL}/drawing/{first_id}",
@@ -100,13 +123,20 @@ class TestAdminEndToEnd(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("updated successfully.", response.json()["message"])
 
+        response = requests.get(
+            f"{self.DRAWING_STORE_URL}/drawings/{first_id}", timeout=5
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(0, response.json()["report_count"])
+
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual("Drawing loaded successfully", data["message"])
-        self.assertEqual(1, data["unvalidated_count"])
+        self.assertEqual(1, data["validation_count"])
         self.assertEqual(1, data["validated_author_count"])
         second_id = data["id"]
+        self.assertEqual(self.france_id, second_id)
 
         response = requests.delete(
             f"{self.ADMIN_URL}/drawing/{second_id}", timeout=5
@@ -117,8 +147,8 @@ class TestAdminEndToEnd(unittest.TestCase):
         response = requests.get(f"{self.ADMIN_URL}/unvalidated_drawing", timeout=5)
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual("No unvalidated drawings found", data["message"])
-        self.assertEqual(0, data["unvalidated_count"])
+        self.assertEqual("No drawings found for validation", data["message"])
+        self.assertEqual(0, data["validation_count"])
 
 
 if __name__ == "__main__":

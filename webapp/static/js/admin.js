@@ -59,7 +59,7 @@ async function showDrawing() {
   try {
     const data = await fetchDrawing();
 
-    if (data.message === "No unvalidated drawings found") {
+    if (data.message === "No drawings found for validation") {
       showMessage("No drawings to validate...");
       return;
     }
@@ -79,10 +79,10 @@ async function showDrawing() {
       ? ` (${data.validated_author_count})`
       : "";
 
-    showMessage(`${data.country_name} (${scorePercent}%)
+    showMessage(`${data.country_name} (${scorePercent}%) (!${data.report_count})
   Prediction: ${data.country_guess} (${guessScorePercent}%)
   Drawn on ${date} by ${authorSuffix}${validatedCount}
-  ${data.unvalidated_count} drawings left to validate`);
+  ${data.validation_count} drawings left to review`);
   } catch (error) {
     showMessage("Could not load drawings for validation.");
   }

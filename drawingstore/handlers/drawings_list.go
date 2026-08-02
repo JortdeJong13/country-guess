@@ -64,9 +64,13 @@ func (api *API) ListDrawings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	listArgs := append(append([]any{}, args...), limit, offset)
+	orderBy := "created_at ASC, id ASC"
+	if queue == "validation" {
+		orderBy = "report_count DESC, country_score DESC NULLS LAST, created_at ASC, id ASC"
+	}
 	rows, err := api.Pool.Query(ctx,
 		`SELECT`+drawingFields+` FROM drawings WHERE `+where+
-			` ORDER BY created_at ASC, id ASC LIMIT $`+strconv.Itoa(len(args)+1)+
+			` ORDER BY `+orderBy+` LIMIT $`+strconv.Itoa(len(args)+1)+
 			` OFFSET $`+strconv.Itoa(len(args)+2),
 		listArgs...,
 	)
@@ -161,7 +165,8 @@ func drawingFilters(queue string, validated, excludeOther *bool) (string, []any)
 
 	if queue == "validation" {
 		// Pending rows have no feedback and must not enter the admin queue.
-		filters = append(filters, "country IS NOT NULL", "validated = false")
+		// Reported drawings remain in the queue until their reports are reviewed.
+		filters = append(filters, "country IS NOT NULL", "(validated = false OR report_count > 0)")
 	}
 	if excludeOther != nil && *excludeOther {
 		filters = append(filters, "country IS NOT NULL", "country <> 'Other'")

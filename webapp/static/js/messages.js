@@ -115,6 +115,16 @@ const dailyChallengeMessages = [
   "Daily challenge cleared!",
 ];
 
+const reportedMessages = [
+  "Thank you for reporting this drawing.",
+  "I didn't like this drawing either.",
+  "Alright, I'll take a look.",
+  "Drawing has been reported.",
+  "Was it that bad?",
+  "Drawing reported. Author will be tracked down and eleminated.",
+  "Did you know you can report it more than once?",
+];
+
 const countryFacts = {
   Afghanistan:
     "Afghanistan's landscape is dominated by the Hindu Kush mountain range.",
@@ -461,6 +471,10 @@ function getRandomMessage(messageList, variables) {
   }
 
   return template;
+}
+
+export function getReportedMessage() {
+  return getRandomMessage(reportedMessages, {});
 }
 
 export function setConfidenceBasedMessage(guessedCountry, score) {

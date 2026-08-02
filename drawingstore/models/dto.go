@@ -21,6 +21,7 @@ type UpdateDrawingRequest struct {
 	Country   *string `json:"country,omitempty"`
 	Author    *string `json:"author,omitempty"`
 	Validated *bool   `json:"validated,omitempty"`
+	Report    *bool   `json:"report,omitempty"`
 }
 
 // ListDrawingsResponse is returned by filtered drawing collections.

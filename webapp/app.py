@@ -143,6 +143,34 @@ def feedback():
         return jsonify({"message": "Drawing store error", "error": str(http_err)}), 502
 
 
+@app.route("/report", methods=["POST"])
+def report():
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"message": "Invalid input"}), 400
+
+    drawing_id = data.get("drawing_id")
+    if not isinstance(drawing_id, str) or not drawing_id:
+        return jsonify({"message": "Drawing ID not provided"}), 400
+
+    try:
+        response = requests.patch(
+            f"{DRAWING_STORE_URL}/drawings/{drawing_id}",
+            json={"report": True},
+            timeout=5,
+        )
+        response.raise_for_status()
+        return jsonify({"message": "Drawing reported"})
+    except (ConnectionError, Timeout) as conn_err:
+        return jsonify(
+            {"message": "Drawing store unreachable", "error": str(conn_err)}
+        ), 502
+    except HTTPError as http_err:
+        if http_err.response is not None and http_err.response.status_code == 404:
+            return jsonify({"message": "Drawing not found"}), 404
+        return jsonify({"message": "Drawing store error", "error": str(http_err)}), 502
+
+
 @app.route("/drawing")
 def drawing():
     rank_value = request.args.get("rank", "0")

@@ -10,7 +10,7 @@ import (
 const drawingFields = `
 	id, geometry, country, author, author_id, validated,
 	ranking, country_score, country_guess, guess_score, point_count,
-	created_at, updated_at`
+	report_count, created_at, updated_at`
 
 type rowScanner interface {
 	Scan(dest ...any) error
@@ -33,6 +33,7 @@ func scanDrawing(row rowScanner) (*models.Drawing, error) {
 		&drawing.CountryGuess,
 		&drawing.GuessScore,
 		&drawing.PointCount,
+		&drawing.ReportCount,
 		&drawing.CreatedAt,
 		&drawing.UpdatedAt,
 	)

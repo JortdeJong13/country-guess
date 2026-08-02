@@ -69,6 +69,22 @@
     color: var(--color-neutral-text-medium);
 }
 
+.report-button {
+    position: absolute;
+    right: 0.25rem;
+    bottom: 0;
+    z-index: 2;
+    padding: 0.25rem;
+    color: var(--color-neutral-text);
+    background: transparent;
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+.report-button:hover {
+    text-decoration: none;
+}
+
 /* Animation keyframes */
 @keyframes slideDown {
     0% {
@@ -311,6 +327,11 @@ button {
         background-color: var(--color-rose-hover) !important;
         transform: scale(1.1);
         transition: all 0.2s ease;
+    }
+
+    .report-button:hover {
+        transform: scale(1.1);
+        transition: all 0.2s ease-in-out;
     }
 
     .github-link:hover {
