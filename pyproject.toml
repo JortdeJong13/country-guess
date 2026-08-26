@@ -44,3 +44,4 @@ test = [
 [tool.uv]
 package = false
 required-version = ">=0.12.1,<0.13"
+python-preference = "system"
