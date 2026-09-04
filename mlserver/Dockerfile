@@ -15,7 +15,8 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 
 # Install only the ML server dependency group.
 COPY pyproject.toml uv.lock ./
-RUN uv sync --locked --no-dev --only-group ml
+RUN uv sync --locked --no-dev --only-group ml --no-install-package torch
+RUN uv pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
 
 # Copy reference data and code
 COPY data/reference data/reference
